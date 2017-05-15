@@ -4,10 +4,10 @@
 #   SCAR::RHEL
 #
 # DESCRIPTION
-#   Performs SCAR initialization tasks specific to Red Hat
+#
 #
 # SEE ALSO
-#   SCAR SCAR::RHEL6 SCAR::RHEL7
+#
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)
@@ -17,16 +17,12 @@
 package SCAR::RHEL;
 
 # Standard pragmas
+use utf8;
 use strict;
 use warnings FATAL => 'all';
 
-# SCAR modules
-use Config::Tiny;
-use Module::Pluggable inner => 0;
-
-# ------------------------------------------------------------------------------
-
-my $VERSION   = 0.01;
+# Module version
+our $VERSION   = 0.01;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -40,18 +36,21 @@ my $VERSION   = 0.01;
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ( $class, $conf, $log, $backup ) = @_;
-    SCAR->version_check($class, $VERSION);
-    my $self = bless {
-        conf   => Config::Tiny->read($conf),
-        log    => $log,
-        backup => $backup,
-    }, $class;
-    $self->search_path( new => $self->{conf}->{directories}->{plugins} );
-    $self->{log}->info("$class: Initialized");
-    sleep 1;
+    my ( $class, %args ) = @_;
+    my $self = bless \%args, $class;
+
+    open( SYSTEM, "getconf LONG_BIT 2>&1 |") || die "can't fork: $!";
+    {
+        $self->{ARCH} = $_;
+    }
+    close SYSTEM || die "Bad command: $! $?";
+
+    print "$self->{ARCH}\n";
+
     return $self;
 }
+
+# ------------------------------------------------------------------------------
 
 1;
 

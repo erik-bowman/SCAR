@@ -31,6 +31,7 @@ $main::help = <<'HELP';
 HELP
 
 # Standard pragmas
+use utf8;
 use strict;
 use warnings FATAL => 'all';
 
@@ -45,8 +46,8 @@ use POSIX qw(uname strftime);
 use File::Path qw(make_path remove_tree);
 
 # SCAR modules
-use Config::Tiny;
-use File::Copy::Recursive qw(dircopy fcopy);
+use SCAR;
+use SCAR::Config;
 
 # Development modules
 #use Data::Dumper;
@@ -90,9 +91,9 @@ $main::rhel7 = {
     },
 };
 
-$main::scar_config    = Config::Tiny->new;
-$main::os_main_config = Config::Tiny->new;
-$main::os_sub_config  = Config::Tiny->new;
+$main::scar_config    = SCAR::Config->new;
+$main::os_main_config = SCAR::Config->new;
+$main::os_sub_config  = SCAR::Config->new;
 
 $main::show_help = 0;
 $main::debug     = 0;
@@ -185,8 +186,8 @@ sub install {
 
 sub build {
     my ( $type, $config ) = @_;
-    foreach my $block ( keys $type ) {
-        foreach my $option ( keys $type->{$block} ) {
+    foreach my $block ( keys %{$type} ) {
+        foreach my $option ( keys %{$type->{$block}} ) {
             if ( $block eq 'directories' ) {
                 unless ( $type->{$block}->{$option} =~ /^\// ) {
                     $type->{$block}->{$option}
@@ -230,20 +231,20 @@ sub install_files {
     }
 
     &DEBUG("Installing libraries to: $INC[1]");
-    dircopy( "$FindBin::Bin/lib", $INC[1] );
+    SCAR->dircopy( "$FindBin::Bin/lib", $INC[1] );
 
     &DEBUG(
         "Installing plugins to: $main::defaults->{directories}->{plugins}");
-    dircopy( "$FindBin::Bin/plugins", $main::defaults->{directories}->{lib} );
+    SCAR->dircopy( "$FindBin::Bin/plugins", $main::defaults->{directories}->{lib} );
 
     &DEBUG(
         "Installing templates to: $main::defaults->{directories}->{templates}"
     );
-    dircopy( "$FindBin::Bin/templates",
+    SCAR->dircopy( "$FindBin::Bin/templates",
         $main::defaults->{directories}->{templates} );
 
     &DEBUG("Installing scripts to: $main::defaults->{directories}->{bin}");
-    dircopy( "$FindBin::Bin/bin", "$main::defaults->{directories}->{bin}" );
+    SCAR->dircopy( "$FindBin::Bin/bin", "$main::defaults->{directories}->{bin}" );
 }
 
 # ------------------------------------------------------------------------------

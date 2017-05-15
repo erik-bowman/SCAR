@@ -15,7 +15,6 @@
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)
-#
 # ------------------------------------------------------------------------------
 
 # Standard pragmas

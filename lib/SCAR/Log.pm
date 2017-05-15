@@ -31,10 +31,8 @@ use IO::Socket::UNIX qw( SOCK_STREAM SOMAXCONN );
 # SCAR modules
 use SCAR;
 
-# ------------------------------------------------------------------------------
-
-my $VERSION = 0.01;
-my @spinner = ("-", "\\", "|", "/");
+# Module version
+our $VERSION = 0.01;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -47,18 +45,13 @@ my @spinner = ("-", "\\", "|", "/");
 
 sub new {
     my ($class, $base_directory, $sock_file, $debug) = @_;
-    SCAR->version_check($class, $VERSION);
-    my @timestamp = SCAR->timestamp();
     my $self = bless {
             base => $base_directory,
             sock_file => $sock_file,
             debug => $debug,
             active => "$base_directory/$timestamp[0]",
         }, $class;
-    $self->{socket} = IO::Socket::UNIX->new(
-        Type => SOCK_STREAM,
-        Peer => $self->{sock_file},
-    );
+
     mkdir $self->{active} unless -d $self->{active};
     $self->{pos} = 0;
     $self->{'bksp'} = chr(0x08);

@@ -17,28 +17,16 @@ package SCAR;
 
 # Standard pragmas
 use utf8;
-use 5.010;
 use strict;
 use warnings FATAL => 'all';
 
 # Standard modules
-use Time::HiRes qw( sleep );
+use File::Spec;
+use File::Copy;
+use POSIX qw( strftime );
 
-# SCAR modules
-use SCAR::Log;
-use SCAR::RHEL;
-use SCAR::RHEL6;
-use SCAR::RHEL7;
-use SCAR::Backup;
-use Config::Tiny;
-use Module::Pluggable inner => 0;
-
-# Development modules
-#use Data::Dumper;
-
-# ------------------------------------------------------------------------------
-
-my $VERSION   = 0.01;
+# Module version
+our $VERSION = 0.01;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -50,22 +38,73 @@ my $VERSION   = 0.01;
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ( $class, $conf, $debug, $quiet ) = @_;
-    my $self = bless { conf => Config::Tiny->read($conf), }, $class;
-    $self->search_path( new => $self->{directories}->{plugins} );
-    my $SOCK_PATH = "$self->{conf}->{directories}->{temp}/scar.sock";
-    unlink if -d $SOCK_PATH;
-    my $pid = fork();
-    die ("Failed to SCAR.\n") unless defined $pid;
-    if ($pid) {
-        SCAR::Console->new($SOCK_PATH);
-    } else {
-        $self->init_log($SOCK_PATH, $debug);
-        $self->init_backup();
-        $self->init_os();
-        exit 0;
+    my ( $class, %args ) = @_;
+    my $self = bless \%args, $class;
+    return $self;
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+#
+# DESCRIPTION
+#
+#
+# ------------------------------------------------------------------------------
+
+sub HHMMSS {
+    my ( $self, $time ) = @_;
+    $time = time unless @_ == 2;
+    my $HHMMSS = strftime '%H:%M:%S', gmtime($time);
+    return $HHMMSS;
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+# DESCRIPTION
+#
+# ------------------------------------------------------------------------------
+
+sub YYYYMMDD {
+    my ( $self, $time ) = @_;
+    $time = time unless @_ == 2;
+    my $YYYYMMDD = strftime '%Y-%m-%d', gmtime($time);
+    return $YYYYMMDD;
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+#
+# DESCRIPTION
+#
+#
+# ------------------------------------------------------------------------------
+
+sub version_check {
+    my ( $caller, $required ) = @_;
+    die("Version mismatch detected - $caller: $required is less than $VERSION: $VERSION\n"
+    ) if $VERSION > $required;
+    return 1;
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+# DESCRIPTION
+#
+# ------------------------------------------------------------------------------
+
+sub list_contents {
+    my ( $self, $directory ) = @_;
+    opendir( my $dh, $directory );
+    my @contents = grep { /^\./ && -f "/home/bowmane/$_" } readdir($dh);
+    close $dh;
+    foreach my $item (@contents) {
+        $item = File::Spec->catdir( $directory, $item );
     }
-    return $self;
+    return @contents;
 }
 
 # ------------------------------------------------------------------------------
@@ -73,58 +112,14 @@ sub new {
 #
 # DESCRIPTION
 #
-# ARGUMENTS
-#
 # ------------------------------------------------------------------------------
 
-sub init_os {
-    my ($self) = @_;
-    my $mainconf = File::Spec->catdir(
-            $self->{conf}->{directories}->{conf},
-            "/$self->{conf}->{os}->{type}.conf"
-    );
-    my $subconf = File::Spec->catdir(
-            $self->{conf}->{directories}->{conf},
-            "/$self->{conf}->{os}->{type}$self->{conf}->{os}->{version}.conf"
-    );
-    $self->{os}->{main} = SCAR::RHEL->new($mainconf, $self->{log}, $self->{backup})
-        if $self->{conf}->{os}->{type} eq 'RHEL';
-    $self->{os}->{sub} = SCAR::RHEL6->new($subconf, $self->{log}, $self->{backup})
-        if $self->{conf}->{os}->{version} eq '6';
-    $self->{os}->{sub} = SCAR::RHEL7->new($subconf, $self->{log}, $self->{backup})
-        if $self->{conf}->{os}->{version} eq '7';
-    return $self;
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
-sub init_log {
-    my ($self, $sock_path, $debug, $quiet) = @_;
-    $self->{log} = SCAR::Log->new( $self->{conf}->{directories}->{logs}, $sock_path, $debug );
-    return $self;
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
-sub init_backup {
-    my ($self) = @_;
-    $self->{backup}
-        = SCAR::Log->new( $self->{conf}->{directories}->{backups} );
-    return $self;
+sub dircopy {
+    my ( $self, $directory, $destination ) = @_;
+    my @contents = $self->list_contents($directory);
+    foreach my $item (@contents) {
+        copy( $item, $destination );
+    }
 }
 
 # ------------------------------------------------------------------------------

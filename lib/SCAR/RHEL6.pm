@@ -24,9 +24,8 @@ use warnings FATAL => 'all';
 use Config::Tiny;
 use Module::Pluggable inner => 0;
 
-# ------------------------------------------------------------------------------
-
-my $VERSION   = 0.01;
+# Module version
+our $VERSION   = 0.01;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -43,7 +42,7 @@ sub new {
     my ( $class, $conf, $log, $backup ) = @_;
     SCAR->version_check($class, $VERSION);
     my $self = bless { conf => Config::Tiny->read($conf), log => $log, backup => $backup}, $class;
-    $self->search_path( new => $self->{conf}->{directories}->{plugins} );
+    $self->search_( new => $self->{conf}->{directories}->{plugins} );
 
     return $self;
 }
