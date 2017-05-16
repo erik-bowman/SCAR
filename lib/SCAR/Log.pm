@@ -17,16 +17,12 @@
 package SCAR::Log;
 
 # Standard pragmas
-use 5.010;
 use utf8;
 use strict;
 use warnings FATAL => 'all';
-use open ':std', ':encoding(UTF-8)';
 
 # Standard modules
-use POSIX;
-use Term::Cap;
-use IO::Socket::UNIX qw( SOCK_STREAM SOMAXCONN );
+use File::Spec::Functions;
 
 # SCAR modules
 use SCAR;
@@ -44,19 +40,21 @@ our $VERSION = 0.01;
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ($class, $base_directory, $sock_file, $debug) = @_;
-    my $self = bless {
-            base => $base_directory,
-            sock_file => $sock_file,
-            debug => $debug,
-            active => "$base_directory/$timestamp[0]",
-        }, $class;
+    my ( $class, %args ) = @_;
+    my $self = bless \%args, $class;
 
-    mkdir $self->{active} unless -d $self->{active};
-    $self->{pos} = 0;
-    $self->{'bksp'} = chr(0x08);
-    $self->{'last_size'} = 0;
-    $self->debug("$class loaded");
+    die "Unable to start '$class': no directory specified\n"
+        if !defined $self->{directory};
+    die "Unable to start '$class': invalid directory specified\n"
+        if !-d $self->{directory};
+    die
+        "Unable to start '$class': debug mode and quiet mode cannot be enabled at the same time\n"
+        if $self->{debug} && $self->{quiet};
+
+    $self->{current}
+        = File::Spec::Functions::catdir( $self->{directory}, SCAR->yyyymmdd );
+    mkdir $self->{current} unless -d $self->{current};
+
     return $self;
 }
 
@@ -69,14 +67,11 @@ sub new {
 #
 # ------------------------------------------------------------------------------
 
-sub err {
-    my ($self, $message) = @_;
-    my @timestamp = SCAR->timestamp();
-    $self->write_to_file("error.log", "$timestamp[0]: $message");
-    return 0 unless $self->{quiet};
-    print $self->{'bksp'} x $self->{'last_size'};
-    die "$timestamp[0]: ERROR: $message\n";
-    return $self;
+sub error {
+    my ( $self, $message ) = @_;
+    $self->write_to_file( "error.log", $message );
+    print SCAR->hhmmss . " ERROR: $message" if !$self->{quiet};
+    die "\n";
 }
 
 # ------------------------------------------------------------------------------
@@ -89,12 +84,9 @@ sub err {
 # ------------------------------------------------------------------------------
 
 sub info {
-    my ($self, $message) = @_;
-    my @timestamp = SCAR->timestamp();
-    $self->write_to_file("scar.log", "$timestamp[0]: $message\n");
-    return 0 if $self->{quiet};
-    $self->next("$timestamp[0]:  INFO: $message");
-    return $self;
+    my ( $self, $message ) = @_;
+    $self->write_to_file( "scar.log", $message );
+    print SCAR->hhmmss . "  INFO: $message" if !$self->{quiet};
 }
 
 # ------------------------------------------------------------------------------
@@ -107,12 +99,9 @@ sub info {
 # ------------------------------------------------------------------------------
 
 sub warn {
-    my ($self, $message) = @_;
-    my @timestamp = SCAR->timestamp();
-    $self->write_to_file("scar.log", "$timestamp[0]: $message");
-    return 0 if $self->{quiet};
-    $self->next("$timestamp[0]:  WARN: $message");
-    return $self;
+    my ( $self, $message ) = @_;
+    $self->write_to_file( "scar.log", "Warning: $message" );
+    print SCAR->hhmmss . "  WARN: $message" if !$self->{quiet};
 }
 
 # ------------------------------------------------------------------------------
@@ -125,16 +114,29 @@ sub warn {
 # ------------------------------------------------------------------------------
 
 sub debug {
-    my ($self, $message) = @_;
-    my @timestamp = SCAR->timestamp();
-    $self->write_to_file("debug.log", "$timestamp[0]: $message");
-    print $self->{socket}, "$timestamp[1]:$message";
-    return $self;
+    my ( $self, $message ) = @_;
+    $self->write_to_file( "debug.log", $message );
+    print SCAR->hhmmss . " DEBUG: $message" if $self->{debug};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   SCAR::Log->write_to_file($file, $message);
+#
+# DESCRIPTION
+#
+# ARGUMENTS
+#
+# ------------------------------------------------------------------------------
+
+sub remediation {
+    my ( $self, $message ) = @_;
+    $self->write_to_file( "remediations.log", $message );
+    print SCAR->hhmmss . " $message" if $self->{debug};
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#   write_to_file
 #
 # DESCRIPTION
 #   Writes an entry into the specified log file
@@ -146,10 +148,11 @@ sub debug {
 # ------------------------------------------------------------------------------
 
 sub write_to_file {
-    my ($self, $file, $message ) = @_;
-    open( my $fh, '>', "$self->{active}/$file" )
-        or die "Could not open file '$file' $!\n";
-    print $fh $message;
+    my ( $self, $file, $message ) = @_;
+    $file = File::Spec::Functions::catdir( $self->{current}, $file );
+    open( my $fh, '>>:encoding(utf8)', $file )
+        || die "Could not open file '$file' $!\n";
+    print $fh SCAR->hhmmss . ": $message\n";
     close $fh;
 }
 

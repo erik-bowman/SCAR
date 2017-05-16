@@ -1,10 +1,10 @@
 #!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
-#   install.pl
+#   install_test.pl
 #
 # SYNOPSIS
-#   install.pl [options] args
+#   install_test.pl [options] args
 #
 # DESCRIPTION
 #
@@ -34,6 +34,9 @@ use File::Copy;
 use Getopt::Long;
 use File::Spec::Functions;
 
+# Development module
+use Data::Dumper;
+
 # Vesion
 our $VERSION = 1.40;
 
@@ -42,13 +45,14 @@ my $login = ( getpwuid $> );
 die "must run as root" if $login ne 'root';
 
 # Installation
-my $installer = SCARInstall->new();
+my $installer = SCARInstallTest->new();
 $installer->prepare_installation;
 $installer->install_files;
 $installer->write_configuration;
 move( "/tmp/scar_install.log", $installer->{directories}->{logs} );
+print Data::Dumper::Dumper($installer);
 
-package SCARInstall;
+package SCARInstallTest;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -72,6 +76,7 @@ sub new {
         directories => {
             base      => "/SCAR",
             bin       => "bin",
+            lib       => "lib",
             temp      => "tmp",
             logs      => "logs",
             backups   => "backups",
@@ -88,6 +93,8 @@ sub new {
     Getopt::Long::GetOptions(
         'base=s'         => \$self->{directories}->{base},
         'logs=s'         => \$self->{directories}->{logs},
+        'bin=s'          => \$self->{directories}->{bin},
+        'lib=s'          => \$self->{directories}->{lib},
         'backups=s'      => \$self->{directories}->{backups},
         'reports=s'      => \$self->{directories}->{reports},
         'plugins=s'      => \$self->{directories}->{plugins},
@@ -95,6 +102,12 @@ sub new {
         'enable-healing' => \$self->{healing}->{enabled},
         'debug|d'        => \$self->{output}->{debug},
         'quiet|q'        => \$self->{output}->{quiet},
+        'test=s'         => sub {
+            $Data::Dumper::Varname = "Result";
+            if ( my $sub_ref = $self->can( $_[1] ) ) {
+                print Data::Dumper::Dumper( $self->$sub_ref(@ARGV) );
+            }
+        },
     );
 
     return $self;
@@ -113,9 +126,9 @@ sub prepare_installation {
         unless $self->{directories}->{base} =~ /^\//;
     die "You cannot set both -d [--debug] and -q [--quiet]"
         if $self->{output}->{debug} && $self->{output}->{quiet};
-    my $root_directory = $self->{directories}->{base};
     while ( my ( $type, $dir ) = each %{ $self->{directories} } ) {
         unless ( $dir =~ /^\// ) {
+            my $root_directory = $self->{directories}->{base};
             my $absolute_path
                 = File::Spec::Functions::catdir( $root_directory, $dir );
             $self->{directories}->{$type} = $absolute_path;
@@ -125,14 +138,9 @@ sub prepare_installation {
             $self->_info("Directory created: $self->{directories}->{$type}");
         }
     }
-    if ( !-d "$INC[0]/SCAR" ) {
-        mkdir "$INC[0]/SCAR";
-        $self->_info("Directory created: $INC[0]/SCAR");
-    }
-    my $bin = File::Spec::Functions::catdir($root_directory, "bin");
-    if ( !-d $bin ) {
-        mkdir $bin;
-        $self->_info("Directory created: $bin");
+    if ( !-d "$self->{directories}->{lib}/SCAR" ) {
+        mkdir "$self->{directories}->{lib}/SCAR";
+        $self->_info("Directory created: $self->{directories}->{lib}/SCAR");
     }
 }
 
@@ -148,13 +156,13 @@ sub install_files {
     my ($self) = @_;
     my $os_prefix = $self->{os}->{type} . $self->{os}->{version};
     foreach my $installed_file (
-        $self->copy_contents( "lib", $INC[0] ) )
+        $self->copy_contents( "lib", $self->{directories}->{lib} ) )
     {
         $self->_info("Installed $installed_file");
     }
     foreach my $installed_file (
         $self->copy_contents(
-            "lib/SCAR", "$INC[0]/SCAR"
+            "lib/SCAR", "$self->{directories}->{lib}/SCAR"
         )
         )
     {
@@ -253,8 +261,7 @@ sub copy_contents {
 
 sub write_configuration {
     my ($self) = @_;
-    my $root_directory = $self->{directories}->{base};
-    my $file = File::Spec::Functions::catdir($root_directory, "bin", "config.ini");
+    my $file = "$self->{directories}->{bin}/config.ini";
     die "No file name provided" if ( !defined $file or ( $file eq '' ) );
     my ($string) = $self->configuration_string();
 

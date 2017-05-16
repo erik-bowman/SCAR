@@ -1,7 +1,7 @@
-#!/usr/bin/perl
+#!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
-#   SCAR::RHEL
+#   TEST1
 #
 # DESCRIPTION
 #
@@ -14,7 +14,7 @@
 #
 # ------------------------------------------------------------------------------
 
-package SCAR::RHEL;
+package TEST1;
 
 # Standard pragmas
 use utf8;
@@ -22,32 +22,22 @@ use strict;
 use warnings FATAL => 'all';
 
 # Module version
-our $VERSION   = 0.01;
+our $VERSION = 1.40;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $result = SCAR::RHEL->new(%args);
+#   new
 #
 # DESCRIPTION
-#
-# ARGUMENTS
-#   $class, %argrs
 #
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ( $class, %args ) = @_;
-    my $self = bless \%args, $class;
-
-    open( SYSTEM, "getconf LONG_BIT 2>&1 |") || die "can't fork: $!";
-    {
-        $self->{ARCH} = $_;
-    }
-    close SYSTEM || die "Bad command: $! $?";
-
-    print "$self->{ARCH}\n";
-
-    return $self;
+    my ( $class, $imports ) = @_;
+    print Data::Dumper::Dumper($imports);
+    $imports->callback;
+    print "Initialization completed\n";
+    return bless {}, $class;
 }
 
 # ------------------------------------------------------------------------------
