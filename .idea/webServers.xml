@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b1df48f8-fa21-4e76-a9a1-c295a0f1032d" name="149.56.205.230" url="http://149.56.205.230">
+        <fileTransfer host="149.56.205.230" port="22" rootFolder="/home/bowmane" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions controlEncoding="utf-8" dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

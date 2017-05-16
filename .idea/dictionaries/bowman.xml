@@ -1,0 +1,26 @@
+<component name="ProjectDictionaryState">
+  <dictionary name="bowman">
+    <words>
+      <w>auid</w>
+      <w>chown</w>
+      <w>fchmod</w>
+      <w>fchmodat</w>
+      <w>fchown</w>
+      <w>fchownat</w>
+      <w>fremovexattr</w>
+      <w>fsetxattr</w>
+      <w>gpos</w>
+      <w>lchown</w>
+      <w>lremovexattr</w>
+      <w>lsetxattr</w>
+      <w>postdrop</w>
+      <w>postqueue</w>
+      <w>removexattr</w>
+      <w>rhel</w>
+      <w>sbin</w>
+      <w>setxattr</w>
+      <w>stig</w>
+      <w>vuln</w>
+    </words>
+  </dictionary>
+</component>
