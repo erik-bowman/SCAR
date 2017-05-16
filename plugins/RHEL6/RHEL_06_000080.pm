@@ -30,6 +30,8 @@ use utf8;
 use strict;
 use warnings FATAL => 'all';
 
+use Data::Dumper;
+
 # Plugin version
 our $VERSION = 0.01;
 
@@ -77,17 +79,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( !defined $self->{parent}->{sysctl}
-        ->{"net.ipv4.conf.default.send_redirects"}
-        || $self->{parent}->{sysctl}->{"net.ipv4.conf.default.send_redirects"}
-        ne 0 )
-    {
-        $self->{results} = "O";
-    }
-    else {
-        $self->{results} = "NF";
-    }
-    return $self->{results};
+
 }
 
 # ------------------------------------------------------------------------------
@@ -100,21 +92,7 @@ sub check {
 
 sub remediate {
     my ($self) = @_;
-    if ( $self->{backup}->check_backup("/etc/sysctl.conf") ) {
-        $self->{log}->debug(
-            "Skipping backup operation for '/etc/sysctl.conf': backup already exists"
-        );
-    }
-    else {
-        $self->{backup}->create("/etc/sysctl.conf");
-    }
-    my $remedition
-        = $self->{parent}
-        ->heal_sysctl_configuration( "net.ipv4.conf.default.send_redirects",
-        0, $self->vuln_id, $self->severity, $self->vuln_id, $self->stig_id,
-        $self->rule_title );
-    $self->{log}
-        ->remediation("Changes made to '/etc/sysctl.conf':\n\n$remedition");
+
 }
 
 # ------------------------------------------------------------------------------

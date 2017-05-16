@@ -67,8 +67,7 @@ sub start_scar {
         'quiet|q'        => \$self->{output}->{quiet},
     );
     my $scar = SCAR->new(
-        reports => $self->{directories}->{reports},
-        healing => $self->{healing}->{enabled},
+        $self->{directories}->{reports},
     );
     my $log = SCAR::Log->new(
         directory => $self->{directories}->{logs},
@@ -86,13 +85,14 @@ sub start_scar {
     foreach my $plugin ( $loader->load_plugins ) {
         my $obj = $plugin->new( $scar, $log, $backup, $RHEL6 );
         next unless $obj->can("check");
-        if ( $obj->check eq "O" && $obj->can("remediate") ) {
-            push @remediations, $obj;
-        }
+        $obj->check();
+#        if ( $obj->check eq "O" && $obj->can("remediate") ) {
+#            push @remediations, $obj;
+#        }
     }
 
     foreach my $plugin (@remediations) {
-        $plugin->remediate();
+#        $plugin->remediate();
     }
 }
 

@@ -22,6 +22,7 @@ use warnings FATAL => 'all';
 
 # Standard modules
 use POSIX;
+use File::Spec::Functions;
 
 # Module version
 our $VERSION = 0.01;
@@ -36,83 +37,77 @@ our $VERSION = 0.01;
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ( $class, %args ) = @_;
-    my $self = bless \%args, $class;
+    my ( $class ) = @_;
+    my $self = bless {}, $class;
+
     return $self;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
+#   check_failed
 #
 # DESCRIPTION
 #
+# ARGUMENTS
+#
 # ------------------------------------------------------------------------------
 
-sub list_contents {
-    my ( $self, $directory ) = @_;
-
-    die "Unable to list contents for '$directory': not a valid directory\n"
-        if !-d $directory;
-    opendir( my $dh, $directory );
-    my @contents = grep { -f File::Spec::Functions::catdir( $directory, $_ ) }
-        readdir($dh);
-    close $dh;
-
-    foreach my $item (@contents) {
-        $item = File::Spec::Functions::catdir( $directory, $item );
-    }
-
-    return @contents;
+sub check_failed {
+    my ( $self, $severity ) = @_;
+    $self->{$severity}->{not_a_finding}++;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   does_file_exist
+#   check_passed
 #
 # DESCRIPTION
 #
 # ------------------------------------------------------------------------------
 
-sub does_file_exist {
-    my ( $self, $file ) = @_;
-    return -f $file;
+sub check_passed {
+    my ( $self, $severity ) = @_;
+    $self->{$severity}->{open_findings}++;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   does_directory_exist
+#   attempting_remediation
 #
 # DESCRIPTION
 #
 # ------------------------------------------------------------------------------
 
-sub does_directory_exist {
-    my ( $self, $directory ) = @_;
-    return -d $directory;
+sub remediation_attempted {
+    my ($self) = @_;
+    $self->{remediation}->{attempted}++;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   hhmmss
+#   remediation_failed
 #
 # DESCRIPTION
 #
 # ------------------------------------------------------------------------------
 
-sub hhmmss {
-    return POSIX::strftime '%H:%M:%S', gmtime();
+sub remediation_failed {
+    my ($self) = @_;
+    $self->{remediation}->{failed}++;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   hhmmss
+#   remediation_success
 #
 # DESCRIPTION
 #
 # ------------------------------------------------------------------------------
 
-sub yyyymmdd {
-    return POSIX::strftime '%Y-%m-%d', gmtime();
+sub remediation_success {
+    my ($self) = @_;
+    $self->{remediation}->{success}++;
 }
 
 # ------------------------------------------------------------------------------
