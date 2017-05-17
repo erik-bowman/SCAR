@@ -32,6 +32,7 @@ use warnings FATAL => 'all';
 use POSIX;
 use File::Copy;
 use Getopt::Long;
+use Carp qw( croak );
 use File::Spec::Functions;
 
 # Vesion
@@ -39,14 +40,14 @@ our $VERSION = 1.40;
 
 # Require root
 my $login = ( getpwuid $> );
-die "must run as root" if $login ne 'root';
+croak 'This installer must run as root' if $login ne 'root';
 
 # Installation
 my $installer = SCARInstall->new();
 $installer->prepare_installation;
 $installer->install_files;
 $installer->write_configuration;
-move( "/tmp/scar_install.log", $installer->{directories}->{logs} );
+move( '/tmp/scar_install.log', $installer->{directories}->{logs} );
 
 package SCARInstall;
 
@@ -61,23 +62,23 @@ package SCARInstall;
 sub new {
     my ($class) = @_;
     my @uname = POSIX::uname();
-    my $os_type    = "RHEL" if $uname[2] =~ /\.el\d\.x86_64$/;
-    my $os_version = $1     if $uname[2] =~ /\.el(\d)\.x86_64$/;
+    my $OSTYPE    = $uname[2] =~ /\wel\d\wx86_64$/msx ? 'RHEL' : 0;
+    my $OSRELEASE = $uname[2] =~ /\wel(\d)\wx86_64$/msx ? $1 : 0;
     my $self       = bless {
         os => {
-            type    => $os_type,
-            version => $os_version,
+            type    => $OSTYPE,
+            version => $OSRELEASE,
         },
         healing     => { enabled => 0, },
         directories => {
-            base      => "/SCAR",
-            bin       => "bin",
-            temp      => "tmp",
-            logs      => "logs",
-            backups   => "backups",
-            reports   => "reports",
-            plugins   => "plugins",
-            templates => "templates",
+            base      => '/SCAR',
+            bin       => 'bin',
+            temp      => 'tmp',
+            logs      => 'logs',
+            backups   => 'backups',
+            reports   => 'reports',
+            plugins   => 'plugins',
+            templates => 'templates',
         },
         output => {
             debug => 0,
@@ -109,9 +110,10 @@ sub new {
 
 sub prepare_installation {
     my ($self) = @_;
-    die "The base directory must be an absolute path\n"
-        unless $self->{directories}->{base} =~ /^\//;
-    die "You cannot set both -d [--debug] and -q [--quiet]"
+    if ($self->{directories}->{base} =~ /^\\/msx) {
+        croak "The base directory must be an absolute path\n";
+    }
+    croak "You cannot set both -d [--debug] and -q [--quiet]\n"
         if $self->{output}->{debug} && $self->{output}->{quiet};
     my $root_directory = $self->{directories}->{base};
     while ( my ( $type, $dir ) = each %{ $self->{directories} } ) {
@@ -129,11 +131,12 @@ sub prepare_installation {
         mkdir "$INC[0]/SCAR";
         $self->_info("Directory created: $INC[0]/SCAR");
     }
-    my $bin = File::Spec::Functions::catdir($root_directory, "bin");
+    my $bin = File::Spec::Functions::catdir( $root_directory, "bin" );
     if ( !-d $bin ) {
         mkdir $bin;
         $self->_info("Directory created: $bin");
     }
+    return $self;
 }
 
 # ------------------------------------------------------------------------------
@@ -147,16 +150,11 @@ sub prepare_installation {
 sub install_files {
     my ($self) = @_;
     my $os_prefix = $self->{os}->{type} . $self->{os}->{version};
-    foreach my $installed_file (
-        $self->copy_contents( "lib", $INC[0] ) )
-    {
+    foreach my $installed_file ( $self->copy_contents( "lib", $INC[0] ) ) {
         $self->_info("Installed $installed_file");
     }
     foreach my $installed_file (
-        $self->copy_contents(
-            "lib/SCAR", "$INC[0]/SCAR"
-        )
-        )
+        $self->copy_contents( "lib/SCAR", "$INC[0]/SCAR" ) )
     {
         $self->_info("Installed $installed_file");
     }
@@ -254,7 +252,8 @@ sub copy_contents {
 sub write_configuration {
     my ($self) = @_;
     my $root_directory = $self->{directories}->{base};
-    my $file = File::Spec::Functions::catdir($root_directory, "bin", "config.ini");
+    my $file = File::Spec::Functions::catdir( $root_directory, "bin",
+        "config.ini" );
     die "No file name provided" if ( !defined $file or ( $file eq '' ) );
     my ($string) = $self->configuration_string();
 

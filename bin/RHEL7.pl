@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
 #   rhel7.pl
@@ -17,50 +17,22 @@
 #   Erik Bowman (erik.bowman@icsinc.com)
 # ------------------------------------------------------------------------------
 
-# Standard pragmas
-use strict;
-use warnings FATAL => 'all';
-
 # Standard modules
+use strict;
 use FindBin;
 use File::Spec;
-use Config::Tiny;
 use Getopt::Long;
+use warnings FATAL => 'all';
 
 # SCAR modules
 use SCAR;
+use SCAR::Log;
+use SCAR::RHEL7;
+use SCAR::Backup;
+use SCAR::Loader;
 
-# Development modules
-#use Data::Dumper;
-
-# ------------------------------------------------------------------------------
-
-$| = 1;
-
-# Globals
-use vars qw($debug $quiet $show_help $help $scar);
-
-$debug = 0;
-$quiet = 0;
-$show_help = 0;
-
-# Process options
-GetOptions (
-    'debug|d' => \$debug,
-    'quiet|q' => \$quiet,
-    'help|h'  => \$show_help,
-);
-
-if ($show_help) {
-    die($help);
-}
-
-if ( $debug && $quiet ) {
-    die("You cannot set both -d [--debug] and -q [--quiet]");
-}
-
-# Start SCAR
-$scar = SCAR->new(File::Spec->catdir("$FindBin::Bin", "..", "conf", "scar.conf"), $debug, $quiet );
+# Version
+our $VERSION = 0.01;
 
 # ------------------------------------------------------------------------------
 

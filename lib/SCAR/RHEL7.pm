@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
 #   SCAR::RHEL7
@@ -16,17 +16,18 @@
 
 package SCAR::RHEL7;
 
-# Standard pragmas
+# Standard modules
+use utf8;
 use strict;
+use Carp qw( croak );
 use warnings FATAL => 'all';
 
 # SCAR modules
-use Config::Tiny;
-use Module::Pluggable inner => 0;
+use SCAR;
+use SCAR::Log;
 
-# ------------------------------------------------------------------------------
-
-my $VERSION   = 0.01;
+# Module version
+our $VERSION = 0.01;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -40,14 +41,12 @@ my $VERSION   = 0.01;
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ( $class, $conf, $log, $backup ) = @_;
-    SCAR->version_check($class, $VERSION);
-    my $self = bless { conf => Config::Tiny->read($conf), log => $log, backup => $backup}, $class;
-    $self->search_path( new => $self->{conf}->{directories}->{plugins} );
-    $self->{log}->info("$class: Initialized");
-    sleep 1;
+    my ($class) = @_;
+    my $self = bless {}, $class;
     return $self;
 }
+
+# ------------------------------------------------------------------------------
 
 1;
 

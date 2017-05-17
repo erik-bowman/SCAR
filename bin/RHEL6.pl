@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
 #
@@ -22,14 +22,14 @@
 #   Erik Bowman (erik.bowman@icsinc.com)
 # ------------------------------------------------------------------------------
 
-# Standard pragmas
+# Standard modules
+use utf8;
 use strict;
-use warnings FATAL => 'all';
-
-# Standardd modules
 use FindBin;
 use Getopt::Long;
+use Carp qw( croak );
 use File::Spec::Functions;
+use warnings FATAL => 'all';
 
 # SCAR Modules
 use SCAR;
@@ -42,7 +42,7 @@ use SCAR::Loader;
 our $VERSION = 0.01;
 
 # Start
-&start_scar;
+start_scar();
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -54,7 +54,7 @@ our $VERSION = 0.01;
 # ------------------------------------------------------------------------------
 
 sub start_scar {
-    my $self = &read_configuration;
+    my $self = read_configuration();
     Getopt::Long::GetOptions(
         'base=s'         => \$self->{directories}->{base},
         'logs=s'         => \$self->{directories}->{logs},
@@ -66,21 +66,9 @@ sub start_scar {
         'debug|d'        => \$self->{output}->{debug},
         'quiet|q'        => \$self->{output}->{quiet},
     );
-    my $scar = SCAR->new(
-        reports => $self->{directories}->{reports},
-        healing => $self->{healing}->{enabled},
-    );
-    my $log = SCAR::Log->new(
-        directory => $self->{directories}->{logs},
-        quiet     => $self->{output}->{quiet},
-        debug     => $self->{output}->{debug},
-    );
-    my $RHEL6 = SCAR::RHEL6->new( $self->{directories}->{templates},
-        $self->{directories}->{temp} );
-    my $backup
-        = SCAR::Backup->new( directory => $self->{directories}->{backups}, );
-    my $loader
-        = SCAR::Loader->new( plugins => $self->{directories}->{plugins}, );
+    $main::SCAR = SCAR->new();
+    $main::RHEL6 = SCAR::RHEL6->new();
+    $main::LOADER = SCAR::Loader->new();
 
     my @remediations;
     foreach my $plugin ( $loader->load_plugins ) {
@@ -94,6 +82,7 @@ sub start_scar {
     foreach my $plugin (@remediations) {
         $plugin->remediate();
     }
+    return 1;
 }
 
 # ------------------------------------------------------------------------------
@@ -107,30 +96,27 @@ sub start_scar {
 
 sub read_configuration {
     my $configuration_file
-        = File::Spec::Functions::catdir( $FindBin::Bin, "config.ini" );
-    die "Invalid configuration file specified\n"
+        = File::Spec::Functions::catdir( $FindBin::Bin, 'config.ini' );
+    croak 'Invalid configuration file specified'
         if !-f $configuration_file;
 
     my $configuration = {};
-    my $block         = "_";
-    my $counter       = 0;
+    my $block         = '_';
 
-    open( my $fh, "<:encoding(utf8)", $configuration_file )
-        || die "Failed to open file '$configuration_file': $!\n";
+    open my $fh, '<:encoding(utf8)', $configuration_file or croak 'Failed to open file';
     while ( my $line = <$fh> ) {
-        $counter++;
         chomp $line;
-        next if $line =~ /^\s*(?:\#|\;|$)/;
+        next if $line =~ /^\s*(?:[\#|\;]|$)/msx;
         $line =~ s/\s\;\s.+$//g;
-        if ( $line =~ /^\s*\[\s*(.+?)\s*\]\s*$/ ) {
+        if ( $line =~ /^\s*\[\s*(.+?)\s*\]\s*$/msx ) {
             $configuration->{ $block = $1 } ||= {};
             next;
         }
-        if ( $line =~ /^\s*([^=]+?)\s*=\s*(.*?)\s*$/ ) {
+        if ( $line =~ /^\s*([^=]+?)\s*=\s*(.*?)\s*$/msx ) {
             $configuration->{$block}->{$1} = $2;
             next;
         }
-        die "Syntax error at line $counter: '$line'\n";
+        croak 'Syntax error';
     }
     close $fh;
     return $configuration;

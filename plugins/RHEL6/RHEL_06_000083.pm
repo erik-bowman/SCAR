@@ -7,7 +7,10 @@
 #   V-38523
 #
 # SEVERITY
-#   CAT II
+#   medium
+#
+# GROUP TITLE
+#   SRG-OS-999999
 #
 # RULE ID
 #   SV-50324r2_rule
@@ -18,6 +21,10 @@
 # RULE TITLE
 #   The system must not accept IPv4 source-routed packets on any interface.
 #
+# TODO
+#   Create Check
+#   Create Remediation
+#
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)
 #
@@ -25,252 +32,265 @@
 
 package RHEL_06_000083;
 
-# Standard pragmas
+# Standard modules
 use utf8;
 use strict;
 use warnings FATAL => 'all';
+
+# SCAR modules
+use SCAR;
+use SCAR::Log;
+use SCAR::Backup;
 
 # Plugin version
 our $VERSION = 0.01;
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $plugin = RHEL_06_000083->new($core, $log, $backup, $parent);
+#   $plugin = RHEL_06_000083->new( $parent );
 #
 # DESCRIPTION
 #   Initializes the plugin object and returns it
 #
 # ARGUMENTS
-#   $core      = The SCAR module object
-#   $log       = The SCAR::Log module object
-#   $backup    = The SCAR::Backup module object
 #   $parent    = The SCAR::RHEL6 module object
 #
 # ------------------------------------------------------------------------------
 
 sub new {
-    my ( $class, $core, $log, $backup, $parent ) = @_;
-    my $self = bless {
-        core   => $core,
-        log    => $log,
-        backup => $backup,
-        parent => $parent,
-    }, $class;
-
-    $self->{vuln_id}  = "V-38523";
-    $self->{severity} = "CAT II";
-    $self->{rule_id}  = "SV-50324r2_rule";
-    $self->{stig_id}  = "RHEL-06-000083";
-    $self->{rule_title}
-        = "The system must not accept IPv4 source-routed packets on any interface.";
+    my ( $class, $parent ) = @_;
+    my $self = bless { parent => $parent }, $class;
 
     return $self;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   check
+#   $results = RHEL_06_000083->check();
 #
 # DESCRIPTION
+#   Performs a test against the system
 #
 # ------------------------------------------------------------------------------
 
 sub check {
     my ($self) = @_;
-    if ( !defined $self->{parent}->{sysctl}
-        ->{"net.ipv4.conf.all.accept_source_route"}
-        || $self->{parent}->{sysctl}
-        ->{"net.ipv4.conf.all.accept_source_route"} ne 0 )
-    {
-        $self->{results} = "O";
-    }
-    else {
-        $self->{results} = "NF";
-    }
-    return $self->{results};
+
+    return $self;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   remediate
+#   $results = RHEL_06_000083->remediate();
 #
 # DESCRIPTION
+#   Attempts remediation
 #
 # ------------------------------------------------------------------------------
 
 sub remediate {
     my ($self) = @_;
-    if ( $self->{backup}->check_backup("/etc/sysctl.conf") ) {
-        $self->{log}->debug(
-            "Skipping backup operation for '/etc/sysctl.conf': backup already exists"
-        );
-    }
-    else {
-        $self->{backup}->create("/etc/sysctl.conf");
-    }
-    my $remedition
-        = $self->{parent}
-        ->heal_sysctl_configuration( "net.ipv4.conf.all.accept_source_route",
-        0, $self->vuln_id, $self->severity, $self->vuln_id, $self->stig_id,
-        $self->rule_title );
-    $self->{log}
-        ->remediation("Changes made to '/etc/sysctl.conf':\n\n$remedition");
+
+    return $self;
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $vuln_id = RHEL_06_000083->vuln_id();
+#   $VULN_ID = RHEL_06_000083->VULN_ID();
 #
 # DESCRIPTION
-#   Returns the plugin vuln id
+#   Returns the plugins VULN ID
 #
 # ------------------------------------------------------------------------------
 
-sub vuln_id {
+sub VULN_ID {
     my ($self) = @_;
-    return $self->{vuln_id};
+    $self->{VULN_ID} = 'V-38523';
+    return $self->{VULN_ID};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $severity = RHEL_06_000083->severity();
+#   $SEVERITY = RHEL_06_000083->SEVERITY();
 #
 # DESCRIPTION
-#   Returns the plugin severity
+#   Returns the plugins SEVERITY
 #
 # ------------------------------------------------------------------------------
 
-sub severity {
+sub SEVERITY {
     my ($self) = @_;
-    return $self->{severity};
+    $self->{SEVERITY} = 'medium';
+    return $self->{SEVERITY};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $rule_id = RHEL_06_000083->rule_id();
+#   $GROUP_TITLE = RHEL_06_000083->GROUP_TITLE();
 #
 # DESCRIPTION
-#   Returns the plugin rule id
+#   Returns the plugins GROUP TITLE
 #
 # ------------------------------------------------------------------------------
 
-sub rule_id {
+sub GROUP_TITLE {
     my ($self) = @_;
-    return $self->{rule_id};
+    $self->{GROUP_TITLE} = 'SRG-OS-999999';
+    return $self->{GROUP_TITLE};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $stig_id = RHEL_06_000083->stig_id();
+#   $RULE_ID = RHEL_06_000083->RULE_ID();
 #
 # DESCRIPTION
-#   Returns the plugin stig id
+#   Returns the plugins RULE ID
 #
 # ------------------------------------------------------------------------------
 
-sub stig_id {
+sub RULE_ID {
     my ($self) = @_;
-    return $self->{stig_id};
+    $self->{RULE_ID} = 'SV-50324r2_rule';
+    return $self->{RULE_ID};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $rule_title = RHEL_06_000083->rule_title();
+#   $STIG_ID = RHEL_06_000083->STIG_ID();
 #
 # DESCRIPTION
-#   Returns the plugin rule title
+#   Returns the plugins STIG ID
 #
 # ------------------------------------------------------------------------------
 
-sub rule_title {
+sub STIG_ID {
     my ($self) = @_;
-    return $self->{rule_title};
+    $self->{STIG_ID} = 'RHEL-06-000083';
+    return $self->{STIG_ID};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $discussion = RHEL_06_000083->discussion();
+#   $RULE_TITLE = RHEL_06_000083->RULE_TITLE();
 #
 # DESCRIPTION
-#   Returns the plugin discussion text
+#   Returns the plugins RULE TITLE
 #
 # ------------------------------------------------------------------------------
 
-sub discussion {
+sub RULE_TITLE {
     my ($self) = @_;
-    $self->{discussion} = <<'DISCUSSION';
+    $self->{RULE_TITLE}
+        = 'The system must not accept IPv4 source-routed packets on any interface.';
+    return $self->{RULE_TITLE};
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#   $DISCUSSION = RHEL_06_000083->DISCUSSION();
+#
+# DESCRIPTION
+#   Returns the plugins DISCUSSION text
+#
+# ------------------------------------------------------------------------------
+
+sub DISCUSSION {
+    my ($self) = @_;
+    $self->{DISCUSSION} = <<'DISCUSSION';
 Accepting source-routed packets in the IPv4 protocol has few legitimate uses. It should be disabled unless it is absolutely required.
 DISCUSSION
-    return $self->{discussion};
+    return $self->{DISCUSSION};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#   $check_content = RHEL_06_000083->check_content();
+#   $CHECK_CONTENT = RHEL_06_000083->CHECK_CONTENT();
 #
 # DESCRIPTION
-#   Returns the plugin check content text
+#   Returns the plugins CHECK CONTENT text
 #
 # ------------------------------------------------------------------------------
 
-sub check_content {
+sub CHECK_CONTENT {
     my ($self) = @_;
-    $self->{check_content} = <<'CHECKCONTENT';
-The status of the "net.ipv4.conf.all.accept_source_route" kernel parameter can be queried by running the following command:
+    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+The status of the ""net.ipv4.conf.all.accept_source_route"" kernel parameter can be queried by running the following command:
+
+
 
 $ sysctl net.ipv4.conf.all.accept_source_route
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+
+
+The output of the command should indicate a value of ""0"". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in ""/etc/sysctl.conf"".
+
+
 
 $ grep net.ipv4.conf.all.accept_source_route /etc/sysctl.conf
 
+
+
 If the correct value is not returned, this is a finding.
-CHECKCONTENT
-    return $self->{check_content};
+CHECK_CONTENT
+    return $self->{CHECK_CONTENT};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#    = RHEL_06_000083->fix_content();
+#   $FIX_CONTENT = RHEL_06_000083->FIX_CONTENT();
 #
 # DESCRIPTION
-#   Returns the plugin fix_content text
+#   Returns the plugins FIX CONTENT text
 #
 # ------------------------------------------------------------------------------
 
-sub fix_content {
+sub FIX_CONTENT {
     my ($self) = @_;
-    $self->{fix_content} = <<'FIXCONTENT';
-To set the runtime status of the "net.ipv4.conf.all.accept_source_route" kernel parameter, run the following command:
+    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+To set the runtime status of the ""net.ipv4.conf.all.accept_source_route"" kernel parameter, run the following command:
+
+
 
 # sysctl -w net.ipv4.conf.all.accept_source_route=0
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf":
+
+
+If this is not the system's default value, add the following line to ""/etc/sysctl.conf"":
+
+
 
 net.ipv4.conf.all.accept_source_route = 0
-FIXCONTENT
-    return $self->{fix_content};
+FIX_CONTENT
+    return $self->{FIX_CONTENT};
 }
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
-#    = RHEL_06_000083->cci();
+#   $CCI = RHEL_06_000083->CCI();
 #
 # DESCRIPTION
-#   Returns the plugin cci text
+#   Returns the plugins CCI text
 #
 # ------------------------------------------------------------------------------
 
-sub cci {
+sub CCI {
     my ($self) = @_;
-    $self->{cci} = <<'CCI';
-CCI: CCI-000366
+    $self->{CCI} = <<'CCI';
+CCI-000366
+
 The organization implements the security configuration settings.
+
 NIST SP 800-53 :: CM-6 b
+
 NIST SP 800-53A :: CM-6.1 (iv)
+
 NIST SP 800-53 Revision 4 :: CM-6 b
+
+
+
+
 CCI
-    return $self->{cci};
+    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

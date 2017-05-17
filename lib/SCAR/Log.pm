@@ -1,10 +1,10 @@
-#!/usr/bin/perl
+#!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
 #   SCAR::Log
 #
 # DESCRIPTION
-#   Handles all logging, stdout and stderr functionality for SCAR
+#
 #
 # SEE ALSO
 #   SCAR
@@ -16,13 +16,12 @@
 
 package SCAR::Log;
 
-# Standard pragmas
+# Standard modules
 use utf8;
 use strict;
+use Carp qw( croak );
+use base qw( Exporter );
 use warnings FATAL => 'all';
-
-# Standard modules
-use File::Spec::Functions;
 
 # SCAR modules
 use SCAR;
@@ -30,6 +29,12 @@ use SCAR;
 # Module version
 our $VERSION = 0.01;
 
+# Active log directory
+our $DIRECTORY;
+
+# Default exports
+our @EXPORT = qw( INFO WARN ERROR DEBUG );
+
 # ------------------------------------------------------------------------------
 # SYNOPSIS
 #
@@ -39,23 +44,11 @@ our $VERSION = 0.01;
 #
 # ------------------------------------------------------------------------------
 
-sub new {
-    my ( $class, %args ) = @_;
-    my $self = bless \%args, $class;
-
-    die "Unable to start '$class': no directory specified\n"
-        if !defined $self->{directory};
-    die "Unable to start '$class': invalid directory specified\n"
-        if !-d $self->{directory};
-    die
-        "Unable to start '$class': debug mode and quiet mode cannot be enabled at the same time\n"
-        if $self->{debug} && $self->{quiet};
-
-    $self->{current}
-        = File::Spec::Functions::catdir( $self->{directory}, SCAR->yyyymmdd );
-    mkdir $self->{current} unless -d $self->{current};
-
-    return $self;
+sub ERROR {
+    my ($message) = @_;
+    write_to_file( 'error.log', $message );
+    print HHMMSS() . " ERROR: $message";
+    croak;
 }
 
 # ------------------------------------------------------------------------------
@@ -67,11 +60,11 @@ sub new {
 #
 # ------------------------------------------------------------------------------
 
-sub error {
-    my ( $self, $message ) = @_;
-    $self->write_to_file( "error.log", $message );
-    print SCAR->hhmmss . " ERROR: $message" if !$self->{quiet};
-    die "\n";
+sub INFO {
+    my ($message) = @_;
+    write_to_file( 'scar.log', $message );
+    print HHMMSS() . "  INFO: $message";
+    return 1;
 }
 
 # ------------------------------------------------------------------------------
@@ -83,10 +76,11 @@ sub error {
 #
 # ------------------------------------------------------------------------------
 
-sub info {
-    my ( $self, $message ) = @_;
-    $self->write_to_file( "scar.log", $message );
-    print SCAR->hhmmss . "  INFO: $message" if !$self->{quiet};
+sub WARN {
+    my ($message) = @_;
+    write_to_file( 'scar.log', "Warning: $message" );
+    print HHMMSS() . "  WARN: $message";
+    return 1;
 }
 
 # ------------------------------------------------------------------------------
@@ -98,40 +92,11 @@ sub info {
 #
 # ------------------------------------------------------------------------------
 
-sub warn {
-    my ( $self, $message ) = @_;
-    $self->write_to_file( "scar.log", "Warning: $message" );
-    print SCAR->hhmmss . "  WARN: $message" if !$self->{quiet};
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
-sub debug {
-    my ( $self, $message ) = @_;
-    $self->write_to_file( "debug.log", $message );
-    print SCAR->hhmmss . " DEBUG: $message" if $self->{debug};
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
-sub remediation {
-    my ( $self, $message ) = @_;
-    $self->write_to_file( "remediations.log", $message );
-    print SCAR->hhmmss . " $message" if $self->{debug};
+sub DEBUG {
+    my ($message) = @_;
+    write_to_file( 'debug.log', $message );
+    print HHMMSS() . " DEBUG: $message";
+    return 1;
 }
 
 # ------------------------------------------------------------------------------
@@ -148,12 +113,13 @@ sub remediation {
 # ------------------------------------------------------------------------------
 
 sub write_to_file {
-    my ( $self, $file, $message ) = @_;
-    $file = File::Spec::Functions::catdir( $self->{current}, $file );
-    open( my $fh, '>>:encoding(utf8)', $file )
-        || die "Could not open file '$file' $!\n";
-    print $fh SCAR->hhmmss . ": $message\n";
+    my ( $file, $message ) = @_;
+    if ( !-d $DIRECTORY ) { croak 'No output directory defined' }
+    open my $fh, '>>:encoding(utf8)', IMPLODEPATH( $DIRECTORY, $file )
+        or croak;
+    print {$fh} HHMMSS() . ": $message\n";
     close $fh;
+    return 1;
 }
 
 # ------------------------------------------------------------------------------

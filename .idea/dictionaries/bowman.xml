@@ -13,6 +13,7 @@
       <w>lchown</w>
       <w>lremovexattr</w>
       <w>lsetxattr</w>
+      <w>perltidyrc</w>
       <w>postdrop</w>
       <w>postqueue</w>
       <w>removexattr</w>

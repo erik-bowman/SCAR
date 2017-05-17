@@ -15,16 +15,20 @@
 
 package SCAR;
 
-# Standard pragmas
+# Standard modules
 use utf8;
 use strict;
+use Carp qw( croak );
+use base qw( Exporter );
+use POSIX qw( strftime );
+use File::Spec::Functions;
 use warnings FATAL => 'all';
-
-# Standard modules
-use POSIX;
 
 # Module version
 our $VERSION = 0.01;
+
+# Default exports
+our @EXPORT = qw( AWK IMPLODEPATH EXPLODEPATH HHMMSS YYYYMMDD );
 
 # ------------------------------------------------------------------------------
 # SYNOPSIS
@@ -35,10 +39,9 @@ our $VERSION = 0.01;
 #
 # ------------------------------------------------------------------------------
 
-sub new {
-    my ( $class, %args ) = @_;
-    my $self = bless \%args, $class;
-    return $self;
+sub IMPLODEPATH {
+    my @PARTS = @_;
+    return File::Spec::Functions::catdir(@PARTS);
 }
 
 # ------------------------------------------------------------------------------
@@ -46,73 +49,61 @@ sub new {
 #
 # DESCRIPTION
 #
+# ARGUMENTS
+#
 # ------------------------------------------------------------------------------
 
-sub list_contents {
-    my ( $self, $directory ) = @_;
+sub EXPLODEPATH {
+    my @PARTS = @_;
+    return File::Spec::Functions::splitpath(@PARTS);
+}
 
-    die "Unable to list contents for '$directory': not a valid directory\n"
-        if !-d $directory;
-    opendir( my $dh, $directory );
-    my @contents = grep { -f File::Spec::Functions::catdir( $directory, $_ ) }
-        readdir($dh);
-    close $dh;
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+# DESCRIPTION
+#
+# ARGUMENTS
+#
+# ------------------------------------------------------------------------------
 
-    foreach my $item (@contents) {
-        $item = File::Spec::Functions::catdir( $directory, $item );
+sub HHMMSS {
+    return strftime '%H:%M:%S', gmtime;
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+# DESCRIPTION
+#
+# ARGUMENTS
+#
+# ------------------------------------------------------------------------------
+
+sub YYYYMMDD {
+    return strftime '%Y-%m-%d', gmtime;
+}
+
+# ------------------------------------------------------------------------------
+# SYNOPSIS
+#
+# DESCRIPTION
+#
+# ARGUMENTS
+#
+# ------------------------------------------------------------------------------
+
+sub AWK {
+    my ($CODE, $FILE) = @_;
+    my @RESULTS;
+    open my $AWK, " /bin/awk '$CODE' $FILE 2>&1 |" or croak 'Could not run awk';
+    {
+        while (my $RESULT = <$AWK>) {
+            push @RESULTS, $RESULT;
+        }
     }
-
-    return @contents;
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   does_file_exist
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
-
-sub does_file_exist {
-    my ( $self, $file ) = @_;
-    return -f $file;
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   does_directory_exist
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
-
-sub does_directory_exist {
-    my ( $self, $directory ) = @_;
-    return -d $directory;
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   hhmmss
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
-
-sub hhmmss {
-    return POSIX::strftime '%H:%M:%S', gmtime();
-}
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   hhmmss
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
-
-sub yyyymmdd {
-    return POSIX::strftime '%Y-%m-%d', gmtime();
+    close $AWK;
+    return @RESULTS;
 }
 
 # ------------------------------------------------------------------------------
