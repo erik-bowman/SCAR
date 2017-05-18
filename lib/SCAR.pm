@@ -1,8 +1,6 @@
 #!/bin/env perl
-
 package SCAR;
 
-# Standard modules
 use utf8;
 use 5.008;
 use strict;
@@ -12,74 +10,27 @@ use POSIX qw( strftime );
 use File::Spec::Functions;
 use warnings FATAL => 'all';
 
-# Module version
 our $VERSION = 0.01;
 
-# Default exports
-our @EXPORT = qw( AWK GREP PARSE IMPLODEPATH EXPLODEPATH HHMMSS YYYYMMDD );
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
+our @EXPORT_OK = qw( AWK GREP PARSE SERVICE IMPLODEPATH EXPLODEPATH HHMMSS YYYYMMDD );
 
 sub IMPLODEPATH {
     my @PARTS = @_;
     return File::Spec::Functions::catdir(@PARTS);
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
 sub EXPLODEPATH {
     my @PARTS = @_;
     return File::Spec::Functions::splitpath(@PARTS);
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
 sub HHMMSS {
     return strftime '%H:%M:%S', gmtime;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
-
 sub YYYYMMDD {
     return strftime '%Y-%m-%d', gmtime;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
 
 sub AWK {
     my ($CODE, $FILE) = @_;
@@ -94,16 +45,19 @@ sub AWK {
     return @RESULTS;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   PARSE
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
+sub SERVICE {
+    my ($DAEMON, $REQUEST) = @_;
+    my $RESULT;
+    open my $SERVICE, " /sbin/service $DAEMON $REQUEST 2>&1 |" or croak 'Could not run service';
+    {
+        $RESULT = <$SERVICE>;
+    }
+    close $SERVICE;
+    return $RESULT;
+}
 
 sub PARSE {
-    my ( $FILE, $REGEX ) = @_;
+    my ( $REGEX, $FILE ) = @_;
     my @RESULTS;
     open my $FH, '<:encoding(utf8)', $FILE or croak 'Could not parse file';
     {
@@ -116,17 +70,6 @@ sub PARSE {
     close $FH;
     return @RESULTS;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   SYSGREP
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#   $EXPRESSION         - A grep expression
-#
-# ------------------------------------------------------------------------------
 
 sub GREP {
     my ($PATTERN, $PATH) = @_;
@@ -142,6 +85,9 @@ sub GREP {
 }
 
 1;
+
+__END__
+
 =pod
 
 =head1 NAME
@@ -154,7 +100,7 @@ SCAR - Exports core methods used throughout the package.
 This docuemntation refers to SCAR version 1.4.0
 
 
-=head1 SYNOPSIS
+=head1 USAGE
 
     use SCAR;
 
@@ -170,13 +116,18 @@ This is the core module for Security Compliance and Remediation aka SCAR.
 Exports methods used ubiquitously throughout SCAR by default;
 
 
-=head1 SUBROUTINES/METHODS
+=head1 OPTIONS
+
+
+=head1 REQUIRED ARGUMENTS
 
 
 =head1 DIAGNOSTICS
 
+=head1 EXIT STATUS
 
-=head1 CONFIGURATION AND ENVIRONMENT
+
+=head1 CONFIGURATION
 
 
 =head1 DEPENDENCIES
@@ -198,7 +149,7 @@ Patches are welcome.
 Erik Bowman (erik.bowman@icsinc.com)
 
 
-=head1 LICENCE AND COPYRIGHT
+=head1 LICENSE AND COPYRIGHT
 
 Copyright (c) 2017 Erik Bowman (erik.bowman@icsinc.com). All rights reserved.
 
@@ -211,5 +162,3 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 
 =cut
-
-__END__

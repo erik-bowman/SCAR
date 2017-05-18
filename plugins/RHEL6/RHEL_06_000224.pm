@@ -21,7 +21,6 @@
 # RULE TITLE
 #   The cron service must be running.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -37,7 +36,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # SCAR modules
-use SCAR;
+use SCAR qw( SERVICE );
 use SCAR::Log;
 use SCAR::Backup;
 
@@ -74,7 +73,14 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( SERVICE( 'crond', 'status' )
+        =~ /^crond\s+[(]pid\s+\d+[)]\s+is\srunning[.]{3}$/msx )
+    {
+        $self->{STATUS} = 'NF';
+    }
+    else {
+        $self->{STATUS} = 'O';
+    }
     return $self;
 }
 
