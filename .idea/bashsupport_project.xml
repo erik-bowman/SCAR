@@ -3,6 +3,5 @@
   <component name="BashSupportProjectSettings">
     <option name="autocompleteBuiltinVars" value="true" />
     <option name="autocompletePathCommands" value="false" />
-    <option name="formatterEnabled" value="true" />
   </component>
 </project>

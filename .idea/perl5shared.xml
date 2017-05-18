@@ -4,10 +4,6 @@
     <option name="libRootUrls">
       <list>
         <option value="file://$PROJECT_DIR$/lib" />
-        <option value="file://$PROJECT_DIR$/lib/SCAR" />
-        <option value="file://$PROJECT_DIR$/plugins/RHEL6" />
-        <option value="file://$PROJECT_DIR$/plugins/RHEL7" />
-        <option value="file://$PROJECT_DIR$/plugins" />
       </list>
     </option>
     <option name="PERL_CRITIC_ENABLED" value="true" />

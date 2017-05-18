@@ -1,37 +1,39 @@
-#!/bin/env perl
 # ------------------------------------------------------------------------------
 # NAME
-#   rhel7.pl
-#
-# SYNOPSIS
-#   rhel7.pl [options]
+#   Scar::RHEL7
 #
 # DESCRIPTION
-#   Security compliance and remediation toolkit for Red Hat 7
+#   Performs Scar initialization tasks specific to Red Hat 7
 #
-# OPTIONS
-#   -d [--debug]    - enable full verbosity
-#   -q [--quiet]    - disables all output
+# SEE ALSO
+#   Scar Scar::RHEL
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)
+#
 # ------------------------------------------------------------------------------
 
+package Redhat::7;
+
 # Standard modules
+use utf8;
 use strict;
-use FindBin;
-use File::Spec;
-use Getopt::Long;
+use Carp qw( croak );
 use warnings FATAL => 'all';
 
 # Scar modules
 use Scar;
-use SCAR::Log;
-use Redhat::RHEL7;
-use SCAR::Backup;
-use SCAR::Loader;
+use Scar::Util::Log;
 
-# Version
+# Module version
 our $VERSION = 0.01;
+
+sub new {
+    my ($class) = @_;
+    my $self = bless {}, $class;
+    return $self;
+}
+
+1;
 
 __END__

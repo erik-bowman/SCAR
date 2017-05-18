@@ -31,10 +31,10 @@ use Carp qw( croak );
 use File::Spec::Functions;
 use warnings FATAL => 'all';
 
-# SCAR Modules
-use SCAR qw ( IMPLODEPATH );
+# Scar Modules
+use Scar qw ( IMPLODEPATH );
 use SCAR::Log;
-use SCAR::RHEL6;
+use Redhat::RHEL6;
 use SCAR::Backup;
 use SCAR::Loader;
 
@@ -42,8 +42,8 @@ use SCAR::Loader;
 our $VERSION = 0.01;
 
 my @PLUGINS;
-$main::RHEL6  = SCAR::RHEL6->new();
-$main::LOADER = SCAR::Loader->new();
+my Redhat::6 $RHEL6  = Redhat::6->new();
+my SCAR::Loader $LOADER = SCAR::Loader->new();
 
 # Start
 start_scar();
@@ -70,8 +70,8 @@ sub start_scar {
 
 sub run_checks {
 
-    foreach my $PLUGIN ( $main::LOADER->PLUGINS() ) {
-        my $LOADEDPLUGIN = $PLUGIN->new($main::RHEL6);
+    foreach my $PLUGIN ( $LOADER->PLUGINS() ) {
+        my $LOADEDPLUGIN = $PLUGIN->new($RHEL6);
 
         if ( !$LOADEDPLUGIN->can('check') ) {
             next;

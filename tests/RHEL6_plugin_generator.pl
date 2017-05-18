@@ -121,10 +121,10 @@ our \$VERSION = 0.01;
 #   Initializes the plugin object and returns it
 #
 # ARGUMENTS
-#   \$core      = The SCAR module object
-#   \$log       = The SCAR::Log module object
-#   \$backup    = The SCAR::Backup module object
-#   \$parent    = The SCAR::RHEL6 module object
+#   \$core      = The Scar module object
+#   \$log       = The Scar::Log module object
+#   \$backup    = The Scar::Backup module object
+#   \$parent    = The Scar::RHEL6 module object
 #
 # ------------------------------------------------------------------------------
 
