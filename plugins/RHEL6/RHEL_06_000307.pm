@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must ensure unauthorized, security-relevant configuration changes detected are tracked.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

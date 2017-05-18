@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

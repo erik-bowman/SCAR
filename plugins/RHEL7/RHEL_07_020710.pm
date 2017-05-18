@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All local initialization files must have mode 0740 or less permissive.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All system command files must have mode 755 or less permissive.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

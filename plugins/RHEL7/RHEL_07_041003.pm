@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must implement certificate status checking for PKI authentication.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The graphical desktop environment must set the idle timeout to no more than 15 minutes.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

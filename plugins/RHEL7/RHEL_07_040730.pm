@@ -21,9 +21,8 @@
 # RULE TITLE
 #   An X Windows display manager must not be installed unless approved.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

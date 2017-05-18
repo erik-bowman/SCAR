@@ -21,9 +21,8 @@
 # RULE TITLE
 #   User and group account administration utilities must be configured to store only encrypted representations of passwords.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

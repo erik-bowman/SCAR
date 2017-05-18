@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must be configured to audit changes to the /etc/sudoers file.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

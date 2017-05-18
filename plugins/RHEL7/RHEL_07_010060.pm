@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must enable a user session lock until that user re-establishes access using established identification and authentication procedures.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

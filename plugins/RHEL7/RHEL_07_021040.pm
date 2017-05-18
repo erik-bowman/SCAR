@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The umask must be set to 077 for all local interactive user accounts.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Local initialization files must not execute world-writable programs.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

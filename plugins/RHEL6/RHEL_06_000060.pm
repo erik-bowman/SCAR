@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must require at least eight characters be changed between the old and new passwords during a password change.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

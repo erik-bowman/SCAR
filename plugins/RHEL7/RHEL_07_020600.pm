@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All local interactive users must have a home directory assigned in the /etc/passwd file.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

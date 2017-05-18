@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must back up audit records on an organization defined frequency onto a different system or media than the system being audited.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

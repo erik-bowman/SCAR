@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The Trivial File Transfer Protocol (TFTP) server package must not be installed if not required for operational support.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

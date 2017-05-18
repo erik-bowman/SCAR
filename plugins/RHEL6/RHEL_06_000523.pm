@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The systems local IPv6 firewall must implement a deny-all, allow-by-exception policy for inbound packets.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

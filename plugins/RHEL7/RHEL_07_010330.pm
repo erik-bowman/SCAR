@@ -21,9 +21,8 @@
 # RULE TITLE
 #   If three unsuccessful root logon attempts within 15 minutes occur the associated account must be locked.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

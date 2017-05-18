@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must identify staff members to receive notifications of audit log storage volume capacity issues.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

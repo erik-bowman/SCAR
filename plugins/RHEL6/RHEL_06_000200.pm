@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must be configured to audit user deletions of files and programs.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

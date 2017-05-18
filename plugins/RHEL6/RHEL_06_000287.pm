@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The postfix service must be enabled for mail delivery.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

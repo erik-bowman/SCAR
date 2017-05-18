@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must disable accounts after three consecutive unsuccessful logon attempts.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

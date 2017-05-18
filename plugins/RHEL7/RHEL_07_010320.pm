@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Accounts subject to three unsuccessful logon attempts within 15 minutes must be locked for the maximum configurable period.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

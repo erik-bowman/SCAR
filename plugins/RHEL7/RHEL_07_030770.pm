@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All uses of the postqueue command must be audited.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

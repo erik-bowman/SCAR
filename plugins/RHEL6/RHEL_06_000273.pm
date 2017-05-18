@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must use SMB client signing for connecting to samba servers using mount.cifs.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

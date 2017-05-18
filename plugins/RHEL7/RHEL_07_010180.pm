@@ -21,9 +21,8 @@
 # RULE TITLE
 #   When passwords are changed the number of repeating consecutive characters must not be more than four characters.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

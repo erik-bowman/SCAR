@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

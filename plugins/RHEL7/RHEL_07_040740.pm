@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not be performing packet forwarding unless the system is a router.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

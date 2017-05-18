@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All world-writable directories must be group-owned by root, sys, bin, or an application group.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

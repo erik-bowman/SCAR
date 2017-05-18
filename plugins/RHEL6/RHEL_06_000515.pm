@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The NFS server must not have the all_squash option enabled.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

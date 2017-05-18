@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system default umask for the csh shell must be 077.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

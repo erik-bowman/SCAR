@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must provide VPN connectivity for communications over untrusted networks.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

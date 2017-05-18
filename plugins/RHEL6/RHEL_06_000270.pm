@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Remote file systems must be mounted with the nosuid option.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

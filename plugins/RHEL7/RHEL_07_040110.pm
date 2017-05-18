@@ -21,9 +21,8 @@
 # RULE TITLE
 #   A FIPS 140-2 approved cryptographic algorithm must be used for SSH communications.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   User passwords must be changed at least every 60 days.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

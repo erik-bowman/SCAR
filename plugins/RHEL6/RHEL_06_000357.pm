@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must disable accounts after excessive login failures within a 15-minute interval.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

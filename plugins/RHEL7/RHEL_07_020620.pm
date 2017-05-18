@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All local interactive user home directories defined in the /etc/passwd file must exist.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

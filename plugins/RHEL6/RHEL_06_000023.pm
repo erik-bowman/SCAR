@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must use a Linux Security Module configured to limit the privileges of system services.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

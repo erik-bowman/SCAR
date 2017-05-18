@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not allow removable media to be used as the boot loader unless approved.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

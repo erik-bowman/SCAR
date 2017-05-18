@@ -21,9 +21,8 @@
 # RULE TITLE
 #   System security patches and updates must be installed and up-to-date.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

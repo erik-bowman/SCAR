@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All networked systems must use SSH for confidentiality and integrity of transmitted and received information as well as information during preparation for transmission.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

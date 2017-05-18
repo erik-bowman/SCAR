@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The FTP daemon must be configured for logging or verbose mode.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

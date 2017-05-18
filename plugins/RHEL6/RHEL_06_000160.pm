@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must set a maximum audit log file size.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

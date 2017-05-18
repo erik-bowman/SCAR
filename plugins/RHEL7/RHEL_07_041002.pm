@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM).
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

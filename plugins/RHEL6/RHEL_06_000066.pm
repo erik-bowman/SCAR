@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system boot loader configuration file(s) must be group-owned by root.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

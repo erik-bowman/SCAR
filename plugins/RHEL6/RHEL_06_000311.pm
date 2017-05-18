@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must provide a warning when allocated audit record storage volume reaches a documented percentage of maximum audit record storage capacity.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

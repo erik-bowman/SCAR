@@ -21,9 +21,8 @@
 # RULE TITLE
 #   A separate file system must be used for user home directories (such as /home or an equivalent).
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

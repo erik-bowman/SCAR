@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must have a host-based intrusion detection tool installed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

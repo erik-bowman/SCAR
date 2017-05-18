@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not have accounts configured with blank or null passwords.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

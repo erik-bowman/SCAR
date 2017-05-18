@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The DHCP client must be disabled if not needed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

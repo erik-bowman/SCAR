@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The file permissions, ownership, and group membership of system files and commands must match the vendor values.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

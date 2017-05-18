@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All network connections associated with SSH traffic must terminate after a period of inactivity.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

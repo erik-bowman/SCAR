@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must protect the confidentiality and integrity of data at rest.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

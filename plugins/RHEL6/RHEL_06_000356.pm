@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must require administrator action to unlock an account locked by excessive failed login attempts.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

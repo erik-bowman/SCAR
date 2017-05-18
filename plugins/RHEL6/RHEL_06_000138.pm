@@ -21,9 +21,8 @@
 # RULE TITLE
 #   System logs must be rotated daily.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

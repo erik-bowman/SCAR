@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

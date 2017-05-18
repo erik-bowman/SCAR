@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must enforce requirements for the connection of mobile devices to operating systems.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

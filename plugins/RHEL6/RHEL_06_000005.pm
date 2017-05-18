@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must alert designated staff members when the audit storage volume approaches capacity.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

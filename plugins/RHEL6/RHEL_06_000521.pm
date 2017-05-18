@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The mail system must forward all mail for root to one or more system administrators.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

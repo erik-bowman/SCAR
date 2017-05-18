@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must prevent the root account from logging in from virtual consoles.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must manage information system identifiers for users and devices by disabling the user identifier after an organization defined time period of inactivity.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

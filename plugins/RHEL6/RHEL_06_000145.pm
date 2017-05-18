@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must produce audit records containing sufficient information to establish the identity of any user/subject associated with the event.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

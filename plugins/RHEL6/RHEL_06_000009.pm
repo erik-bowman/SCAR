@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The Red Hat Network Service (rhnsd) service must not be running, unless using RHN or an RHN Satellite.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

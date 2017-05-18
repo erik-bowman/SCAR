@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The SSH private host key files must have mode 0600 or less permissive.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

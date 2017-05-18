@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must set the lock delay setting  for all connection types.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

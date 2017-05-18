@@ -449,48 +449,48 @@ fi
 #
 
 ########################################
-stigID="RHEL-06-000001"
-
-if [ "$(mount | grep -c 'on /tmp ')" -eq 1 ]
-then
-    STATUS="NF"
-else
-    STATUS="O"
-fi
-echo "${stigID}:V0038455:3:${STATUS}:The system must use a separate file system for /tmp."
-
-########################################
-stigID="RHEL-06-000002"
-
-if [ "$(mount | grep -c 'on /var ')" -eq 1 ]
-then
-    STATUS="NF"
-else
-    STATUS="O"
-fi
-echo "${stigID}:V0038456:3:${STATUS}:The system must use a separate file system for /var."
+#stigID="RHEL-06-000001"
+#
+#if [ "$(mount | grep -c 'on /tmp ')" -eq 1 ]
+#then
+#    STATUS="NF"
+#else
+#    STATUS="O"
+#fi
+#echo "${stigID}:V0038455:3:${STATUS}:The system must use a separate file system for /tmp."
 
 ########################################
-stigID="RHEL-06-000003"
-
-if [ "$(mount | grep -c 'on /var/log ')" -eq 1 ]
-then
-    STATUS="NF"
-else
-    STATUS="O"
-fi
-echo "${stigID}:V0038463:3:${STATUS}:The system must use a separate file system for /var/log."
+#stigID="RHEL-06-000002"
+#
+#if [ "$(mount | grep -c 'on /var ')" -eq 1 ]
+#then
+#    STATUS="NF"
+#else
+#    STATUS="O"
+#fi
+#echo "${stigID}:V0038456:3:${STATUS}:The system must use a separate file system for /var."
 
 ########################################
-stigID="RHEL-06-000004"
+#stigID="RHEL-06-000003"
+#
+#if [ "$(mount | grep -c 'on /var/log ')" -eq 1 ]
+#then
+#    STATUS="NF"
+#else
+#    STATUS="O"
+#fi
+#echo "${stigID}:V0038463:3:${STATUS}:The system must use a separate file system for /var/log."
 
-if [ "$(mount | grep -c 'on /var/log/audit ')" -eq 1 ]
-then
-    STATUS="NF"
-else
-    STATUS="O"
-fi
-echo "${stigID}:V0038467:3:${STATUS}:The system must use a separate file system for the system audit data path."
+########################################
+#stigID="RHEL-06-000004"
+#
+#if [ "$(mount | grep -c 'on /var/log/audit ')" -eq 1 ]
+#then
+#    STATUS="NF"
+#else
+#    STATUS="O"
+#fi
+#echo "${stigID}:V0038467:3:${STATUS}:The system must use a separate file system for the system audit data path."
 
 ########################################
 stigID="RHEL-06-000005"
@@ -509,15 +509,15 @@ fi
 echo "${stigID}:V0038470:2:${STATUS}:The audit system must alert designated staff members when the audit storage volume approaches capacity."
 
 ########################################
-stigID="RHEL-06-000007"
-
-if [ "$(mount | grep -c 'on /home ')" -eq 1 ]
-then
-    STATUS="NF"
-else
-    STATUS="O"
-fi
-echo "${stigID}:V0038473:3:${STATUS}:The system must use a separate file system for user home directories."
+#stigID="RHEL-06-000007"
+#
+#if [ "$(mount | grep -c 'on /home ')" -eq 1 ]
+#then
+#    STATUS="NF"
+#else
+#    STATUS="O"
+#fi
+#echo "${stigID}:V0038473:3:${STATUS}:The system must use a separate file system for user home directories."
 
 ########################################
 stigID="RHEL-06-000008"
@@ -550,71 +550,71 @@ fi
 echo "${stigID}:V0038481:2:NR:System security patches and updates must be installed and up-to-date."
 
 ########################################
-stigID="RHEL-06-000012"
-
-if [ "$(grep -c "gpgcheck=1" /etc/yum.conf)" -eq 1 ]
-then
-    STATUS="NF"
-else
-    if [ "${HEALING}" = "YES" ]
-    then
-       backup /etc/yum.conf
-       echo "${stigID} grep -v \"^gpgcheck=\" /etc/yum.conf > /tmp/RHEL-06-000013" >> "${HEALING_FILE}"
-       echo "${stigID} echo \"gpgcheck=1\" >> /tmp/RHEL-06-000013" >> "${HEALING_FILE}"
-       echo "${stigID} mv /tmp/RHEL-06-000013 /etc/yum.conf" >> "${HEALING_FILE}"
-       STATUS="NF"
-    else
-        STATUS="O"
-        fi
-fi
-echo "${stigID}:V0038483:2:${STATUS}:The system package management tool must cryptographically verify the authenticity of system software packages during installation."
+#stigID="RHEL-06-000013"
+#
+#if [ "$(grep -c "gpgcheck=1" /etc/yum.conf)" -eq 1 ]
+#then
+#    STATUS="NF"
+#else
+#    if [ "${HEALING}" = "YES" ]
+#    then
+#       backup /etc/yum.conf
+#       echo "${stigID} grep -v \"^gpgcheck=\" /etc/yum.conf > /tmp/RHEL-06-000013" >> "${HEALING_FILE}"
+#       echo "${stigID} echo \"gpgcheck=1\" >> /tmp/RHEL-06-000013" >> "${HEALING_FILE}"
+#       echo "${stigID} mv /tmp/RHEL-06-000013 /etc/yum.conf" >> "${HEALING_FILE}"
+#       STATUS="NF"
+#    else
+#        STATUS="O"
+#        fi
+#fi
+#echo "${stigID}:V0038483:2:${STATUS}:The system package management tool must cryptographically verify the authenticity of system software packages during installation."
 
 ########################################
-stigID="RHEL-06-000015"
-
-CHECK="0"
-if [ -d /etc/yum.repos.d ]
-then
-  ls -1 /etc/yum.repos.d/* > /tmp/RHEL-06-000015
-  if [ -s /tmp/RHEL-06-000015 ]
-  then
-     for ENTRY in "$(cat /tmp/RHEL-06-000015)"
-     do
-        if [ "$(grep -c "gpgcheck=0" "${ENTRY}")" -eq 1 ]
-        then
-        if [ "${HEALING}" = "YES" ]
-        then
-            backup "${ENTRY}"
-        echo "${stigID} grep -v \"^gpgcheck=\" ${ENTRY} > /tmp/RHEL-06-000015" >> "${HEALING_FILE}"
-        echo "${stigID} echo \"gpgcheck=1\" >> /tmp/RHEL-06-000015" >> "${HEALING_FILE}"
-        echo "${stigID} mv /tmp/RHEL-06-000015 ${ENTRY}" >> "${HEALING_FILE}"
-            STATUS="NF"
-        else
-           CHECK="1"
-        fi
-    elif [ "$(grep -c "gpgcheck=" "${ENTRY}")" -eq 0 ]
-    then
-        if [ "${HEALING}" = "YES" ]
-        then
-            backup "${ENTRY}"
-        echo "${stigID} echo \"gpgcheck=1\" >> /tmp/RHEL-06-000015" >> "${HEALING_FILE}"
-        echo "${stigID} mv /tmp/RHEL-06-000015 ${ENTRY}" >> "${HEALING_FILE}"
-            STATUS="NF"
-        fi
-        fi
-     done
-     rm /tmp/RHEL-06-000015
-  fi
-  if [ "${CHECK}" -eq 0 ]
-  then
-     STATUS="NF"
-  else
-     STATUS="O"
-  fi
-else
-  STATUS="NF"
-fi
-echo "${stigID}:V0038487:3:${STATUS}:The system package management tool must cryptographically verify the authenticity of all software packages during installation."
+#stigID="RHEL-06-000015"
+#
+#CHECK="0"
+#if [ -d /etc/yum.repos.d ]
+#then
+#  ls -1 /etc/yum.repos.d/* > /tmp/RHEL-06-000015
+#  if [ -s /tmp/RHEL-06-000015 ]
+#  then
+#     for ENTRY in "$(cat /tmp/RHEL-06-000015)"
+#     do
+#        if [ "$(grep -c "gpgcheck=0" "${ENTRY}")" -eq 1 ]
+#        then
+#        if [ "${HEALING}" = "YES" ]
+#        then
+#            backup "${ENTRY}"
+#        echo "${stigID} grep -v \"^gpgcheck=\" ${ENTRY} > /tmp/RHEL-06-000015" >> "${HEALING_FILE}"
+#        echo "${stigID} echo \"gpgcheck=1\" >> /tmp/RHEL-06-000015" >> "${HEALING_FILE}"
+#        echo "${stigID} mv /tmp/RHEL-06-000015 ${ENTRY}" >> "${HEALING_FILE}"
+#            STATUS="NF"
+#        else
+#           CHECK="1"
+#        fi
+#    elif [ "$(grep -c "gpgcheck=" "${ENTRY}")" -eq 0 ]
+#    then
+#        if [ "${HEALING}" = "YES" ]
+#        then
+#            backup "${ENTRY}"
+#        echo "${stigID} echo \"gpgcheck=1\" >> /tmp/RHEL-06-000015" >> "${HEALING_FILE}"
+#        echo "${stigID} mv /tmp/RHEL-06-000015 ${ENTRY}" >> "${HEALING_FILE}"
+#            STATUS="NF"
+#        fi
+#        fi
+#     done
+#     rm /tmp/RHEL-06-000015
+#  fi
+#  if [ "${CHECK}" -eq 0 ]
+#  then
+#     STATUS="NF"
+#  else
+#     STATUS="O"
+#  fi
+#else
+#  STATUS="NF"
+#fi
+#echo "${stigID}:V0038487:3:${STATUS}:The system package management tool must cryptographically verify the authenticity of all software packages during installation."
 
 ########################################
 stigID="RHEL-06-000016"
@@ -1997,7 +1997,7 @@ cat /etc/rsyslog.conf | grep -v "#" | awk '{print $2}' | grep -v "^$" |grep "^\/
 
 for ENTRY in "$(cat /tmp/RHEL-06-000135)"
 do
-	sActualPerms="$(stat --printf %04a "${ENTRY}")"
+    sActualPerms="$(stat --printf %04a "${ENTRY}")"
     if [ "${sActualPerms}" -le "${sValidPerms}" ]
     then
         STATUS="NF"
@@ -3099,13 +3099,13 @@ else
    if [ "${HEALING}" = "YES" ]
    then
         backup /etc/samba/smb.conf
-		echo "${stigID} grep -v \"^client signing\" /etc/samba/smb.conf > /tmp/RHEL-06-000272" >> "${HEALING_FILE}"
-		echo "${stigID} echo \"client signing = mandatory\" >> /tmp/RHEL-06-000272" >> "${HEALING_FILE}"
-		echo "${stigID} mv /tmp/RHEL-06-000272 /etc/samba/smb.conf" >> "${HEALING_FILE}"
-		STATUS="NF"
-	else
-		STATUS="O"
-	fi
+        echo "${stigID} grep -v \"^client signing\" /etc/samba/smb.conf > /tmp/RHEL-06-000272" >> "${HEALING_FILE}"
+        echo "${stigID} echo \"client signing = mandatory\" >> /tmp/RHEL-06-000272" >> "${HEALING_FILE}"
+        echo "${stigID} mv /tmp/RHEL-06-000272 /etc/samba/smb.conf" >> "${HEALING_FILE}"
+        STATUS="NF"
+    else
+        STATUS="O"
+    fi
 fi
 echo "${stigID}:V0038656:3:${STATUS}:The system must use SMB client signing for connecting to samba servers using smbclient."
 

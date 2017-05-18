@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must ignore ICMPv4 bogus error responses.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

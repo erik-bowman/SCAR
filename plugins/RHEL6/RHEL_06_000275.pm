@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must employ cryptographic mechanisms to protect information in storage.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

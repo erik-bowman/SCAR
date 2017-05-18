@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Accounts must be locked upon 35 days of inactivity.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

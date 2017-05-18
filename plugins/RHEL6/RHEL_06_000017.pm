@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must use a Linux Security Module at boot time.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

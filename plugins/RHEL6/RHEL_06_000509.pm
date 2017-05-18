@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must forward audit records to the syslog service.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must provide automated support for account management functions.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

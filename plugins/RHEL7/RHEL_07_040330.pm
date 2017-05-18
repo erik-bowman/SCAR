@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The SSH daemon must not allow authentication using RSA rhosts authentication.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

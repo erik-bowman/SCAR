@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The xorg-x11-server-common (X Windows) package must not be installed, unless required.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

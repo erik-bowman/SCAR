@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All device files must be monitored by the system Linux Security Module.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must switch the system to single-user mode when available audit storage volume becomes dangerously low.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

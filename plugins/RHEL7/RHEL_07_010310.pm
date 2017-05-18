@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

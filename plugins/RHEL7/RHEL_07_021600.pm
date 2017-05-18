@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The file integrity tool must be configured to verify Access Control Lists (ACLs).
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

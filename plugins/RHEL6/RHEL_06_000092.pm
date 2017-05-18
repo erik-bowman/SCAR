@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not respond to ICMPv4 sent to a broadcast address.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

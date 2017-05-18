@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must send rsyslog output to a log aggregation server.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

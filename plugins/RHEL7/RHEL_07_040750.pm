@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The Network File System (NFS) must be configured to use RPCSEC_GSS.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

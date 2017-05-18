@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Passwords must be prohibited from reuse for a minimum of five generations.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

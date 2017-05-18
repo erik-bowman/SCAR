@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must be configured to use TCP syncookies when experiencing a TCP SYN flood.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

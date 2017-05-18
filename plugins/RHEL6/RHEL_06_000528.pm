@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The noexec option must be added to the /tmp partition.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

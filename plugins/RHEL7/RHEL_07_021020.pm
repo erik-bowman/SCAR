@@ -21,9 +21,8 @@
 # RULE TITLE
 #   File systems that are being imported via Network File System (NFS) must be mounted to prevent files with the setuid and setgid bit set from being executed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

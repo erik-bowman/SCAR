@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must take appropriate action when there are disk errors on the audit storage volume.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

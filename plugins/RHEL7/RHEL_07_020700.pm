@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Local initialization files for local interactive users must be group-owned by the users primary group or root.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

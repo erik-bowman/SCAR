@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not permit root logins using remote access programs such as ssh.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

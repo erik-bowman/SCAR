@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must display the date and time of the last successful account logon upon an SSH logon.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

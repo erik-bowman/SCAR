@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Users must not be able to change passwords more than once every 24 hours.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

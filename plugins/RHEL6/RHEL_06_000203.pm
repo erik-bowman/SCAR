@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The xinetd service must be disabled if no network services utilizing it are enabled.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

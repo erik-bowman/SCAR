@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not send ICMPv4 redirects by default.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   When passwords are changed or new passwords are established, pwquality must be used.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must limit the ability of processes to have simultaneous write and execute access to memory.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

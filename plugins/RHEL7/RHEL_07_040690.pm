@@ -21,9 +21,8 @@
 # RULE TITLE
 #   A File Transfer Protocol (FTP) server package must not be installed unless needed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The TFTP daemon must operate in secure mode which provides access only to a single directory on the host file system.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

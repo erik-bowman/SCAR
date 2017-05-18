@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must take appropriate action when there is an error sending audit records to a remote system.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

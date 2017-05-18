@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The audit system must be configured to audit all attempts to alter system time through clock_settime.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

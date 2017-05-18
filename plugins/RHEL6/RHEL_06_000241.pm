@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The SSH daemon must not permit user environment settings.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

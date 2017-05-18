@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Users must provide a password for privilege escalation.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

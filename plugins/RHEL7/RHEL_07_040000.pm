@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must limit the number of concurrent sessions to 10 for all accounts and/or account types.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

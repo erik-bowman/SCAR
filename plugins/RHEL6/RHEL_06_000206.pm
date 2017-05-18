@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The telnet-server package must not be installed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

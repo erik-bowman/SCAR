@@ -21,8 +21,7 @@
 # RULE TITLE
 #   The system must use a separate file system for /var.
 #
-# TODO
-#   Create Remediation
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

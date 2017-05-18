@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Auditing must be enabled at boot by setting a kernel parameter.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

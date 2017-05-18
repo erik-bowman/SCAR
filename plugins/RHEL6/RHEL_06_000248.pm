@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system clock must be synchronized to an authoritative DoD time source.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

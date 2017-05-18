@@ -21,9 +21,8 @@
 # RULE TITLE
 #   A file integrity baseline must be created.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

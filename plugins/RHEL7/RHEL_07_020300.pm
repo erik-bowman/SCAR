@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All Group Identifiers (GIDs) referenced in the /etc/passwd file must be defined in the /etc/group file.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

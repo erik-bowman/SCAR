@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The rsyslog daemon must not accept log messages from other servers unless the server is being used for log aggregation.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Systems with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

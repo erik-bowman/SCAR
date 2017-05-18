@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The cryptographic hash of system files and commands must match vendor values.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

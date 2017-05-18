@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All uses of the open_by_handle_at command must be audited.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

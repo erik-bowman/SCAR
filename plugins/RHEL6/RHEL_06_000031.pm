@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The /etc/passwd file must not contain password hashes.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

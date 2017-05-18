@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must detect unauthorized changes to software and information.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   SNMP community strings must be changed from the default.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

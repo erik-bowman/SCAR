@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not accept ICMPv4 redirect packets on any interface.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

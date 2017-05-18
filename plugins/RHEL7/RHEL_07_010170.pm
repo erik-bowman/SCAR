@@ -21,9 +21,8 @@
 # RULE TITLE
 #   When passwords are changed a minimum of four character classes must be changed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

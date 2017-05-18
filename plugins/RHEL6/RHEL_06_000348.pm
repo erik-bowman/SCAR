@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The FTPS/FTP service on the system must be configured with the Department of Defense (DoD) login banner.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must prohibit the reuse of passwords within five iterations.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

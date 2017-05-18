@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All uses of the restorecon command must be audited.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

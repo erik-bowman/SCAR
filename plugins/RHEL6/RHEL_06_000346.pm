@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system default umask for daemons must be 027 or 022.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

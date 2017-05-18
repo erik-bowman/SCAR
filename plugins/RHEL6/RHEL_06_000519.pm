@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system package management tool must verify contents of all files associated with packages.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

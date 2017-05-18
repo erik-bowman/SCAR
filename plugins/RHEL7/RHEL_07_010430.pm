@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The delay between logon prompts following a failed console logon attempt must be at least four seconds.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

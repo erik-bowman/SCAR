@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The file integrity tool must use FIPS 140-2 approved cryptographic hashes for validating file contents and directories.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

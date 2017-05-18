@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All accounts on the system must have unique user or account names
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

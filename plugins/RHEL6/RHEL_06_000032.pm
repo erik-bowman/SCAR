@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The root account must be the only account having a UID of 0.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

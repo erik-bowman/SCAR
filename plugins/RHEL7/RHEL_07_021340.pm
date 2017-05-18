@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must use a separate file system for /tmp (or equivalent).
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

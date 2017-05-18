@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The systems local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Vendor-provided cryptographic certificates must be installed to verify the integrity of system software.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

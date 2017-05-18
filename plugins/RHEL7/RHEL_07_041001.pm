@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must have the required packages for multifactor authentication installed.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

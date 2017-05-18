@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The atd service must be disabled.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

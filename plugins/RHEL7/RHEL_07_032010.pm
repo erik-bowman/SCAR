@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must update the DoD-approved virus scan program every seven days or more frequently.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   When passwords are changed or new passwords are assigned, the new password must contain at least one numeric character.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

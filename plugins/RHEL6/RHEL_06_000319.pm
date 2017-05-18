@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must limit users to 10 simultaneous system logins, or a site-defined number, in accordance with operational requirements.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

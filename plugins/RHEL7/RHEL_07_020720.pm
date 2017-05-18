@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All local interactive user initialization files executable search paths must contain only paths that resolve to the users home directory.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

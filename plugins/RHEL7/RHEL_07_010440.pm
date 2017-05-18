@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must not allow an unattended or automatic logon to the system via a graphical user interface.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

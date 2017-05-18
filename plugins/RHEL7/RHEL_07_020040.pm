@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Designated personnel must be notified if baseline configurations are changed in an unauthorized manner.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

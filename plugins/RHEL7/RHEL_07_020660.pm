@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All files and directories contained in local interactive user home directories must be owned by the owner of the home directory.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

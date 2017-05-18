@@ -21,9 +21,8 @@
 # RULE TITLE
 #   A file integrity tool must verify the baseline operating system configuration at least weekly.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

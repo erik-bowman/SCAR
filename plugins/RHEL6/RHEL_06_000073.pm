@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The Department of Defense (DoD) login banner must be displayed immediately prior to, or as part of, console login prompts.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

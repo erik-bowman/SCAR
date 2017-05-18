@@ -21,9 +21,8 @@
 # RULE TITLE
 #   For systems using DNS resolution, at least two name servers must be configured.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

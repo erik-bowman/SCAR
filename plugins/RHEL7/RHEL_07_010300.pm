@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The SSH daemon must not allow authentication using an empty password.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

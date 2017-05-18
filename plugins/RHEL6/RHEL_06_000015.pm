@@ -21,9 +21,7 @@
 # RULE TITLE
 #   The system package management tool must cryptographically verify the authenticity of all software packages during installation.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)
@@ -75,7 +73,11 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if (GREP('gpgcheck=0', '/etc/yum.repos.d/*')) {
+        $self->{STATUS} = 'O';
+    } else {
+        $self->{STATUS} = 'NF';
+    }
     return $self;
 }
 

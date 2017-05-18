@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Passwords for new users must be restricted to a 24 hours/1 day minimum lifetime.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

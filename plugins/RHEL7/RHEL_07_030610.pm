@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must generate audit records for all unsuccessful account access events.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

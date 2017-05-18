@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must employ automated mechanisms to facilitate the monitoring and control of remote access methods.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

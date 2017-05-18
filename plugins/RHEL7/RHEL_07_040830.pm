@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not forward IPv6 source-routed packets.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

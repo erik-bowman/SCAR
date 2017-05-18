@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must not allow an unrestricted logon to the system.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

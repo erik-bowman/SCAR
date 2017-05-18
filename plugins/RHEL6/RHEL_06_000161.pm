@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must rotate audit log files that reach the maximum file size.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

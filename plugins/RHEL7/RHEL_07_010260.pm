@@ -21,9 +21,8 @@
 # RULE TITLE
 #   Existing passwords must be restricted to a 60-day maximum lifetime.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

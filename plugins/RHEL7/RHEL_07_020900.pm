@@ -21,9 +21,8 @@
 # RULE TITLE
 #   All system device files must be correctly labeled to prevent unauthorized modification.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

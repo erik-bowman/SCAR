@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

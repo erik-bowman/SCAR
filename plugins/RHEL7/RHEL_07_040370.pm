@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must not permit direct logons to the root account using remote access via SSH.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

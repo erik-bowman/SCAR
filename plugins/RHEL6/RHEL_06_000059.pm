@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The system must require passwords to contain at least one lower-case alphabetic character.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system must provide a near real-time alert when any of the organization defined list of compromise or potential compromise indicators occurs.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

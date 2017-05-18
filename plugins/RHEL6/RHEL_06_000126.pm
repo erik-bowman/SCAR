@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The Reliable Datagram Sockets (RDS) protocol must be disabled unless required.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

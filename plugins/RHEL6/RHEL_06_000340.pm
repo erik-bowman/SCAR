@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The snmpd service must use only SNMP protocol version 3 or newer.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)

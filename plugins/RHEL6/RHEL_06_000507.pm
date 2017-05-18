@@ -21,9 +21,8 @@
 # RULE TITLE
 #   The operating system, upon successful logon, must display to the user the date and time of the last logon or access via ssh.
 #
-# TODO
-#   Create Check
-#   Create Remediation
+# TODO: Create Check
+# TODO: Create Remediation
 #
 # AUTHOR
 #   Erik Bowman (erik.bowman@icsinc.com)
