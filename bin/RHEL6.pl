@@ -32,7 +32,7 @@ use File::Spec::Functions;
 use warnings FATAL => 'all';
 
 # SCAR Modules
-use SCAR;
+use SCAR qw ( IMPLODEPATH );
 use SCAR::Log;
 use SCAR::RHEL6;
 use SCAR::Backup;
@@ -41,17 +41,12 @@ use SCAR::Loader;
 # Version
 our $VERSION = 0.01;
 
+my @PLUGINS;
+$main::RHEL6  = SCAR::RHEL6->new();
+$main::LOADER = SCAR::Loader->new();
+
 # Start
 start_scar();
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
 
 sub start_scar {
     my $self = read_configuration();
@@ -66,62 +61,93 @@ sub start_scar {
         'debug|d'        => \$self->{output}->{debug},
         'quiet|q'        => \$self->{output}->{quiet},
     );
-    $main::SCAR = SCAR->new();
-    $main::RHEL6 = SCAR::RHEL6->new();
-    $main::LOADER = SCAR::Loader->new();
 
-    my @remediations;
-    foreach my $plugin ( $loader->load_plugins ) {
-        my $obj = $plugin->new( $scar, $log, $backup, $RHEL6 );
-        next unless $obj->can("check");
-        if ( $obj->check eq "O" && $obj->can("remediate") ) {
-            push @remediations, $obj;
-        }
-    }
+    run_checks();
+    run_remediations();
 
-    foreach my $plugin (@remediations) {
-        $plugin->remediate();
-    }
     return 1;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#
-# DESCRIPTION
-#
-# ARGUMENTS
-#
-# ------------------------------------------------------------------------------
+sub run_checks {
 
-sub read_configuration {
-    my $configuration_file
-        = File::Spec::Functions::catdir( $FindBin::Bin, 'config.ini' );
-    croak 'Invalid configuration file specified'
-        if !-f $configuration_file;
+    foreach my $PLUGIN ( $main::LOADER->PLUGINS() ) {
+        my $LOADEDPLUGIN = $PLUGIN->new($main::RHEL6);
 
-    my $configuration = {};
-    my $block         = '_';
-
-    open my $fh, '<:encoding(utf8)', $configuration_file or croak 'Failed to open file';
-    while ( my $line = <$fh> ) {
-        chomp $line;
-        next if $line =~ /^\s*(?:[\#|\;]|$)/msx;
-        $line =~ s/\s\;\s.+$//g;
-        if ( $line =~ /^\s*\[\s*(.+?)\s*\]\s*$/msx ) {
-            $configuration->{ $block = $1 } ||= {};
+        if ( !$LOADEDPLUGIN->can('check') ) {
             next;
         }
-        if ( $line =~ /^\s*([^=]+?)\s*=\s*(.*?)\s*$/msx ) {
-            $configuration->{$block}->{$1} = $2;
-            next;
+
+        $LOADEDPLUGIN->check();
+
+        if ( $LOADEDPLUGIN->{STATUS} eq 'O' ) {
+
+            if ( !$LOADEDPLUGIN->can('remediate') ) {
+                next;
+            }
+
+            push @PLUGINS, $LOADEDPLUGIN;
         }
-        croak 'Syntax error';
+
     }
-    close $fh;
-    return $configuration;
+
+    return 1;
 }
 
-# ------------------------------------------------------------------------------
+sub run_remediations {
+
+    foreach my $PLUGIN (@PLUGINS) {
+        $PLUGIN->remediate();
+    }
+
+    run_checks();
+    return 1;
+}
+
+sub read_configuration {
+    my $CONFIGFILE = IMPLODEPATH( $FindBin::Bin, 'config.ini' );
+    if ( !-f $CONFIGFILE ) { croak 'Invalid configuration file specified'; }
+    my @CONTENTS;
+
+    open my $FH, '<:encoding(utf8)', $CONFIGFILE
+        or croak 'Failed to open file';
+    {
+        while ( my $LINE = <$FH> ) {
+            push @CONTENTS, $LINE;
+        }
+    }
+    close $FH;
+
+    return parse_config();
+}
+
+sub parse_config {
+    my (@CONTENTS) = @_;
+    my $CONFIG     = {};
+    my $SECTION    = '_';
+
+    foreach my $LINE (@CONTENTS) {
+        chomp $LINE;
+
+        if ( $LINE =~ /^\s*(?:[\#|\;]|$)/msx ) {
+            next;
+        }
+
+        $LINE =~ s/\s\;\s.+$//msxg;
+
+        if ( $LINE =~ /^\s*\[\s*(.+?)\s*\]\s*$/msx ) {
+            $CONFIG->{ $SECTION = $1 } ||= {};
+            next;
+        }
+
+        if ( $LINE =~ /^\s*([^=]+?)\s*=\s*(.*?)\s*$/msx ) {
+            $CONFIG->{$SECTION}->{$1} = $2;
+            next;
+        }
+
+        croak 'Syntax error';
+    }
+
+    return $CONFIG;
+}
 
 __END__

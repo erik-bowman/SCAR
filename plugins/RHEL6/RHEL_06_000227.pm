@@ -43,33 +43,12 @@ use SCAR::Backup;
 # Plugin version
 our $VERSION = 0.01;
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $plugin = RHEL_06_000227->new( $parent );
-#
-# DESCRIPTION
-#   Initializes the plugin object and returns it
-#
-# ARGUMENTS
-#   $parent    = The SCAR::RHEL6 module object
-#
-# ------------------------------------------------------------------------------
-
 sub new {
     my ( $class, $parent ) = @_;
     my $self = bless { parent => $parent }, $class;
 
     return $self;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_06_000227->check();
-#
-# DESCRIPTION
-#   Performs a test against the system
-#
-# ------------------------------------------------------------------------------
 
 sub check {
     my ($self) = @_;
@@ -82,29 +61,11 @@ sub check {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_06_000227->remediate();
-#
-# DESCRIPTION
-#   Attempts remediation
-#
-# ------------------------------------------------------------------------------
-
 sub remediate {
     my ($self) = @_;
 
     return $self;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $VULN_ID = RHEL_06_000227->VULN_ID();
-#
-# DESCRIPTION
-#   Returns the plugins VULN ID
-#
-# ------------------------------------------------------------------------------
 
 sub VULN_ID {
     my ($self) = @_;
@@ -112,29 +73,11 @@ sub VULN_ID {
     return $self->{VULN_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $SEVERITY = RHEL_06_000227->SEVERITY();
-#
-# DESCRIPTION
-#   Returns the plugins SEVERITY
-#
-# ------------------------------------------------------------------------------
-
 sub SEVERITY {
     my ($self) = @_;
     $self->{SEVERITY} = 'high';
     return $self->{SEVERITY};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $GROUP_TITLE = RHEL_06_000227->GROUP_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins GROUP TITLE
-#
-# ------------------------------------------------------------------------------
 
 sub GROUP_TITLE {
     my ($self) = @_;
@@ -142,44 +85,17 @@ sub GROUP_TITLE {
     return $self->{GROUP_TITLE};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_ID = RHEL_06_000227->RULE_ID();
-#
-# DESCRIPTION
-#   Returns the plugins RULE ID
-#
-# ------------------------------------------------------------------------------
-
 sub RULE_ID {
     my ($self) = @_;
     $self->{RULE_ID} = 'SV-50408r1_rule';
     return $self->{RULE_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $STIG_ID = RHEL_06_000227->STIG_ID();
-#
-# DESCRIPTION
-#   Returns the plugins STIG ID
-#
-# ------------------------------------------------------------------------------
-
 sub STIG_ID {
     my ($self) = @_;
     $self->{STIG_ID} = 'RHEL-06-000227';
     return $self->{STIG_ID};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_TITLE = RHEL_06_000227->RULE_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins RULE TITLE
-#
-# ------------------------------------------------------------------------------
 
 sub RULE_TITLE {
     my ($self) = @_;
@@ -188,15 +104,6 @@ sub RULE_TITLE {
     return $self->{RULE_TITLE};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $DISCUSSION = RHEL_06_000227->DISCUSSION();
-#
-# DESCRIPTION
-#   Returns the plugins DISCUSSION text
-#
-# ------------------------------------------------------------------------------
-
 sub DISCUSSION {
     my ($self) = @_;
     $self->{DISCUSSION} = <<'DISCUSSION';
@@ -204,15 +111,6 @@ SSH protocol version 1 suffers from design flaws that result in security vulnera
 DISCUSSION
     return $self->{DISCUSSION};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CHECK_CONTENT = RHEL_06_000227->CHECK_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins CHECK CONTENT text
-#
-# ------------------------------------------------------------------------------
 
 sub CHECK_CONTENT {
     my ($self) = @_;
@@ -240,15 +138,6 @@ CHECK_CONTENT
     return $self->{CHECK_CONTENT};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $FIX_CONTENT = RHEL_06_000227->FIX_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins FIX CONTENT text
-#
-# ------------------------------------------------------------------------------
-
 sub FIX_CONTENT {
     my ($self) = @_;
     $self->{FIX_CONTENT} = <<'FIX_CONTENT';
@@ -260,15 +149,6 @@ Protocol 2
 FIX_CONTENT
     return $self->{FIX_CONTENT};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CCI = RHEL_06_000227->CCI();
-#
-# DESCRIPTION
-#   Returns the plugins CCI text
-#
-# ------------------------------------------------------------------------------
 
 sub CCI {
     my ($self) = @_;

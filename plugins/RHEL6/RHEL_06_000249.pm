@@ -44,18 +44,6 @@ use SCAR::Backup;
 # Plugin version
 our $VERSION = 0.01;
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $plugin = RHEL_06_000249->new( $parent );
-#
-# DESCRIPTION
-#   Initializes the plugin object and returns it
-#
-# ARGUMENTS
-#   $parent    = The SCAR::RHEL6 module object
-#
-# ------------------------------------------------------------------------------
-
 sub new {
     my ( $class, $parent ) = @_;
     my $self = bless { parent => $parent }, $class;
@@ -63,29 +51,11 @@ sub new {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_06_000249->check();
-#
-# DESCRIPTION
-#   Performs a test against the system
-#
-# ------------------------------------------------------------------------------
-
 sub check {
     my ($self) = @_;
 
     return $self;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_06_000249->remediate();
-#
-# DESCRIPTION
-#   Attempts remediation
-#
-# ------------------------------------------------------------------------------
 
 sub remediate {
     my ($self) = @_;
@@ -93,29 +63,11 @@ sub remediate {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $VULN_ID = RHEL_06_000249->VULN_ID();
-#
-# DESCRIPTION
-#   Returns the plugins VULN ID
-#
-# ------------------------------------------------------------------------------
-
 sub VULN_ID {
     my ($self) = @_;
     $self->{VULN_ID} = 'V-38622';
     return $self->{VULN_ID};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $SEVERITY = RHEL_06_000249->SEVERITY();
-#
-# DESCRIPTION
-#   Returns the plugins SEVERITY
-#
-# ------------------------------------------------------------------------------
 
 sub SEVERITY {
     my ($self) = @_;
@@ -123,29 +75,11 @@ sub SEVERITY {
     return $self->{SEVERITY};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $GROUP_TITLE = RHEL_06_000249->GROUP_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins GROUP TITLE
-#
-# ------------------------------------------------------------------------------
-
 sub GROUP_TITLE {
     my ($self) = @_;
     $self->{GROUP_TITLE} = 'SRG-OS-000096';
     return $self->{GROUP_TITLE};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_ID = RHEL_06_000249->RULE_ID();
-#
-# DESCRIPTION
-#   Returns the plugins RULE ID
-#
-# ------------------------------------------------------------------------------
 
 sub RULE_ID {
     my ($self) = @_;
@@ -153,44 +87,17 @@ sub RULE_ID {
     return $self->{RULE_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $STIG_ID = RHEL_06_000249->STIG_ID();
-#
-# DESCRIPTION
-#   Returns the plugins STIG ID
-#
-# ------------------------------------------------------------------------------
-
 sub STIG_ID {
     my ($self) = @_;
     $self->{STIG_ID} = 'RHEL-06-000249';
     return $self->{STIG_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_TITLE = RHEL_06_000249->RULE_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins RULE TITLE
-#
-# ------------------------------------------------------------------------------
-
 sub RULE_TITLE {
     my ($self) = @_;
     $self->{RULE_TITLE} = 'Mail relaying must be restricted.';
     return $self->{RULE_TITLE};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $DISCUSSION = RHEL_06_000249->DISCUSSION();
-#
-# DESCRIPTION
-#   Returns the plugins DISCUSSION text
-#
-# ------------------------------------------------------------------------------
 
 sub DISCUSSION {
     my ($self) = @_;
@@ -199,15 +106,6 @@ This ensures ""postfix"" accepts mail messages (such as cron job reports) from t
 DISCUSSION
     return $self->{DISCUSSION};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CHECK_CONTENT = RHEL_06_000249->CHECK_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins CHECK CONTENT text
-#
-# ------------------------------------------------------------------------------
 
 sub CHECK_CONTENT {
     my ($self) = @_;
@@ -231,15 +129,6 @@ CHECK_CONTENT
     return $self->{CHECK_CONTENT};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $FIX_CONTENT = RHEL_06_000249->FIX_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins FIX CONTENT text
-#
-# ------------------------------------------------------------------------------
-
 sub FIX_CONTENT {
     my ($self) = @_;
     $self->{FIX_CONTENT} = <<'FIX_CONTENT';
@@ -251,15 +140,6 @@ inet_interfaces = localhost
 FIX_CONTENT
     return $self->{FIX_CONTENT};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CCI = RHEL_06_000249->CCI();
-#
-# DESCRIPTION
-#   Returns the plugins CCI text
-#
-# ------------------------------------------------------------------------------
 
 sub CCI {
     my ($self) = @_;

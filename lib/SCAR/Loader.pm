@@ -16,94 +16,78 @@
 
 package SCAR::Loader;
 
-# Standard pragmas
+# Standard modules
 use utf8;
 use strict;
-use warnings FATAL => 'all';
-
-# Standard modules
 use File::Find;
 use Carp qw( croak );
 use File::Spec::Functions;
+use warnings FATAL => 'all';
+
+# SCAR modules
+use SCAR qw( EXPLODEPATH );
 
 # Module version
 our $VERSION = 1.40;
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   new
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
 
 sub new {
     my ( $class, %args ) = @_;
     my $self = bless \%args, $class;
 
-    croak 'Unable to load plugins: no plugin directory specified'
-        if !defined $self->{plugins};
-    croak 'Unable to load plugins: not a valid directory'
-        if !-d $self->{plugins};
+    if ( !defined $self->{plugins} ) {
+        croak 'Unable to load plugins: no plugin directory specified';
+    }
+
+    if ( !-d $self->{plugins} ) {
+        croak 'Unable to load plugins: not a valid directory';
+    }
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   load_plugins
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
-
-sub load_plugins {
-    my ($self)  = @_;
-    my $method  = 'new';
-    my @objs    = ();
-    my @plugins = $self->find_files;
-    push @INC, $self->{plugins};
-    return () unless @plugins;
-    foreach my $plugin (@plugins) {
-        my @plugin_info = File::Spec::Functions::splitpath($plugin);
-        if ($plugin_info[2] =~ /^(.*)[.]pm$/msx) {
-            $plugin = $1
-        }
-        eval qq{"require $plugin;"};
-        croak $EVAL_ERROR if $EVAL_ERROR;
-        next unless $plugin->can($method);
-        push @objs, $plugin;
+sub PLUGINS {
+    my ($self)      = @_;
+    my $CONSTRUCTOR = 'new';
+    my @OBJECTS     = ();
+    my @PLUGINS     = $self->FIND_PLUGINS;
+    push @INC, $self->{PLUGINS};
+    if ( !@PLUGINS ) {
+        return ();
     }
-    return @objs;
+    foreach my $PLUGIN (@PLUGINS) {
+        my @plugin_info = EXPLODEPATH($PLUGIN);
+        if ( $plugin_info[2] =~ /^(.*)[.]pm$/msx ) {
+            $PLUGIN = $1;
+        }
+        eval qq{"require $PLUGIN;"};
+        croak $EVAL_ERROR if $EVAL_ERROR;
+        if ( !$PLUGIN->can($CONSTRUCTOR) ) {
+            next;
+        }
+        push @OBJECTS, $PLUGIN;
+    }
+    return @OBJECTS;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   find_files
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
-
-sub find_files {
+sub FIND_PLUGINS {
     my ($self) = @_;
-    my @files = ();
+    my @FILES = ();
     {
         local $_;
         File::Find::find(
             {   no_chdir => 1,
                 wanted   => sub {
-                    return unless $File::Find::name =~ /[.]pm$/msx;
-                    ( my $path = $File::Find::name ) =~ s#^\\./##;
-                    push @files, $path;
+                    if ( !$File::Find::name =~ /[.]pm$/msx ) {
+                        return;
+                    }
+                    ( my $PATH = $File::Find::name ) =~ s{^\\.}{}msx;
+                    push @FILES, $PATH;
                 }
             },
             $self->{plugins}
         );
     }
-    return @files;
+    return @FILES;
 }
-
-# ------------------------------------------------------------------------------
 
 1;
 

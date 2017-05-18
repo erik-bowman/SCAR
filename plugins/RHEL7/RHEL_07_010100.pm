@@ -44,18 +44,6 @@ use SCAR::Backup;
 # Plugin version
 our $VERSION = 0.01;
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $plugin = RHEL_07_010100->new( $parent );
-#
-# DESCRIPTION
-#   Initializes the plugin object and returns it
-#
-# ARGUMENTS
-#   $parent    = The SCAR::RHEL7 module object
-#
-# ------------------------------------------------------------------------------
-
 sub new {
     my ( $class, $parent ) = @_;
     my $self = bless { parent => $parent }, $class;
@@ -63,29 +51,11 @@ sub new {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_07_010100->check();
-#
-# DESCRIPTION
-#   Performs a test against the system
-#
-# ------------------------------------------------------------------------------
-
 sub check {
     my ($self) = @_;
 
     return $self;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_07_010100->remediate();
-#
-# DESCRIPTION
-#   Attempts remediation
-#
-# ------------------------------------------------------------------------------
 
 sub remediate {
     my ($self) = @_;
@@ -93,29 +63,11 @@ sub remediate {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $VULN_ID = RHEL_07_010100->VULN_ID();
-#
-# DESCRIPTION
-#   Returns the plugins VULN ID
-#
-# ------------------------------------------------------------------------------
-
 sub VULN_ID {
     my ($self) = @_;
     $self->{VULN_ID} = 'V-71899';
     return $self->{VULN_ID};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $SEVERITY = RHEL_07_010100->SEVERITY();
-#
-# DESCRIPTION
-#   Returns the plugins SEVERITY
-#
-# ------------------------------------------------------------------------------
 
 sub SEVERITY {
     my ($self) = @_;
@@ -123,29 +75,11 @@ sub SEVERITY {
     return $self->{SEVERITY};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $GROUP_TITLE = RHEL_07_010100->GROUP_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins GROUP TITLE
-#
-# ------------------------------------------------------------------------------
-
 sub GROUP_TITLE {
     my ($self) = @_;
     $self->{GROUP_TITLE} = 'SRG-OS-000029-GPOS-00010';
     return $self->{GROUP_TITLE};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_ID = RHEL_07_010100->RULE_ID();
-#
-# DESCRIPTION
-#   Returns the plugins RULE ID
-#
-# ------------------------------------------------------------------------------
 
 sub RULE_ID {
     my ($self) = @_;
@@ -153,29 +87,11 @@ sub RULE_ID {
     return $self->{RULE_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $STIG_ID = RHEL_07_010100->STIG_ID();
-#
-# DESCRIPTION
-#   Returns the plugins STIG ID
-#
-# ------------------------------------------------------------------------------
-
 sub STIG_ID {
     my ($self) = @_;
     $self->{STIG_ID} = 'RHEL-07-010100';
     return $self->{STIG_ID};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_TITLE = RHEL_07_010100->RULE_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins RULE TITLE
-#
-# ------------------------------------------------------------------------------
 
 sub RULE_TITLE {
     my ($self) = @_;
@@ -183,15 +99,6 @@ sub RULE_TITLE {
         = 'The operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces.';
     return $self->{RULE_TITLE};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $DISCUSSION = RHEL_07_010100->DISCUSSION();
-#
-# DESCRIPTION
-#   Returns the plugins DISCUSSION text
-#
-# ------------------------------------------------------------------------------
 
 sub DISCUSSION {
     my ($self) = @_;
@@ -204,15 +111,6 @@ The session lock is implemented at the point where session activity can be deter
 DISCUSSION
     return $self->{DISCUSSION};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CHECK_CONTENT = RHEL_07_010100->CHECK_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins CHECK CONTENT text
-#
-# ------------------------------------------------------------------------------
 
 sub CHECK_CONTENT {
     my ($self) = @_;
@@ -235,15 +133,6 @@ If ""idle-activation-enabled"" is not set to ""true"", this is a finding.
 CHECK_CONTENT
     return $self->{CHECK_CONTENT};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $FIX_CONTENT = RHEL_07_010100->FIX_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins FIX CONTENT text
-#
-# ------------------------------------------------------------------------------
 
 sub FIX_CONTENT {
     my ($self) = @_;
@@ -272,15 +161,6 @@ idle-activation-enabled=true
 FIX_CONTENT
     return $self->{FIX_CONTENT};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CCI = RHEL_07_010100->CCI();
-#
-# DESCRIPTION
-#   Returns the plugins CCI text
-#
-# ------------------------------------------------------------------------------
 
 sub CCI {
     my ($self) = @_;

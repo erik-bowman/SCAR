@@ -24,7 +24,7 @@ use base qw( Exporter );
 use warnings FATAL => 'all';
 
 # SCAR modules
-use SCAR;
+use SCAR qw( EXPLODEPATH IMPLODEPATH );
 use SCAR::Log;
 
 # Module version
@@ -35,14 +35,6 @@ our $DIRECTORY;
 
 # Default exports
 our @EXPORT = qw( BACKUP );
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   BACKUP
-#
-# DESCRIPTION
-#
-# ------------------------------------------------------------------------------
 
 sub BACKUP {
     my ($SOURCEFILE) = @_;
@@ -59,8 +51,6 @@ sub BACKUP {
     }
     return 1;
 }
-
-# ------------------------------------------------------------------------------
 
 1;
 
