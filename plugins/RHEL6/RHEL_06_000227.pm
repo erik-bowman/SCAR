@@ -21,7 +21,6 @@
 # RULE TITLE
 #   The SSH daemon must be configured to use only the SSHv2 protocol.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -74,7 +73,12 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( PARSE( '^Protocol\W+2$', '/etc/ssh/sshd_config' ) ) {
+        $self->{STATUS} = 'NF';
+    }
+    else {
+        $self->{STATUS} = 'O';
+    }
     return $self;
 }
 
