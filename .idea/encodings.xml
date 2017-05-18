@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/lib/SCAR.pm" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lib/SCAR/Backup.pm" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugins/RHEL6/RHEL_06_000001.pm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plugins/RHEL6/RHEL_06_000230.pm" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugins/RHEL7/RHEL_07_010010.pm" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/stigs/U_Red_Hat_Enterprise_Linux_7_V1R1.csv" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/RHEL7/audit_access.rules" charset="UTF-8" />

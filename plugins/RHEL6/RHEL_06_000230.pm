@@ -21,7 +21,6 @@
 # RULE TITLE
 #   The SSH daemon must set a timeout interval on idle sessions.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -74,7 +73,12 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( PARSE( '^ClientAliveInterval\W+900$', '/etc/ssh/sshd_config' ) ) {
+        $self->{STATUS} = 'NF';
+    }
+    else {
+        $self->{STATUS} = 'O';
+    }
     return $self;
 }
 
