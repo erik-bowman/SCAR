@@ -12,7 +12,8 @@ use warnings FATAL => 'all';
 
 our $VERSION = 0.01;
 
-our @EXPORT_OK = qw( AWK GREP PARSE SERVICE IMPLODEPATH EXPLODEPATH HHMMSS YYYYMMDD );
+our @EXPORT_OK
+    = qw( AWK GREP PARSE SERVICE CHKCONFIG IMPLODEPATH EXPLODEPATH FTIME FDATE );
 
 sub IMPLODEPATH {
     my @PARTS = @_;
@@ -24,63 +25,69 @@ sub EXPLODEPATH {
     return File::Spec::Functions::splitpath(@PARTS);
 }
 
-sub HHMMSS {
+sub FTIME {
     return strftime '%H:%M:%S', gmtime;
 }
 
-sub YYYYMMDD {
+sub FDATE {
     return strftime '%Y-%m-%d', gmtime;
 }
 
-sub AWK {
-    my ($CODE, $FILE) = @_;
+sub RUN {
+    my ( $BIN, $ARGS ) = @_;
     my @RESULTS;
-    open my $AWK, " /bin/awk '$CODE' $FILE 2>&1 |" or croak 'Could not run awk';
+
+    open my $RUN, " $BIN $ARGS 2>&1 |" or croak "Could not run $BIN\n";
     {
-        while (my $RESULT = <$AWK>) {
+
+        while ( my $RESULT = <$RUN> ) {
             push @RESULTS, $RESULT;
         }
+
     }
-    close $AWK;
+    close $RUN;
+
     return @RESULTS;
 }
 
+sub AWK {
+    my ($ARGS) = @_;
+    return RUN( '/bin/awk', $ARGS );
+}
+
+sub GREP {
+    my ($ARGS) = @_;
+    return join "\n", RUN( '/bin/grep', $ARGS );
+}
+
 sub SERVICE {
-    my ($DAEMON, $REQUEST) = @_;
-    my $RESULT;
-    open my $SERVICE, " /sbin/service $DAEMON $REQUEST 2>&1 |" or croak 'Could not run service';
-    {
-        $RESULT = <$SERVICE>;
-    }
-    close $SERVICE;
-    return $RESULT;
+    my ($ARGS) = @_;
+    return join "\n", RUN( '/sbin/service', $ARGS );
+}
+
+sub CHKCONFIG {
+    my ($ARGS) = @_;
+    return RUN( '/sbin/chkconfig', $ARGS );
 }
 
 sub PARSE {
     my ( $REGEX, $FILE ) = @_;
     my @RESULTS;
+
     open my $FH, '<:encoding(utf8)', $FILE or croak 'Could not parse file';
     {
-        while (my $LINE = <$FH>) {
-            if ($LINE =~ /$REGEX/msx) {
+
+        while ( my $LINE = <$FH> ) {
+
+            if ( $LINE =~ /$REGEX/msx ) {
                 push @RESULTS, $&;
             }
+
         }
+
     }
     close $FH;
-    return @RESULTS;
-}
 
-sub GREP {
-    my ($PATTERN, $PATH) = @_;
-    my @RESULTS;
-    open my $GREP, " /bin/grep $PATTERN $PATH 2>&1 |" or croak 'Could not run grep';
-    {
-        while (my $RESULT = <$GREP>) {
-            push @RESULTS, $RESULT;
-        }
-    }
-    close $GREP;
     return @RESULTS;
 }
 
@@ -106,8 +113,8 @@ This docuemntation refers to SCAR version 1.4.0
 
     $PATH       = IMPLODEPATH( @COMPONENTS );
     @COMPONENTS = EXPLODEPATH( $PATH );
-    $DATESTRING = YYYYMMDD();
-    $TIMESTRING = HHMMSS();
+    $DATESTRING = FDATE();
+    $TIMESTRING = FTIME();
 
 
 =head1 DESCRIPTION

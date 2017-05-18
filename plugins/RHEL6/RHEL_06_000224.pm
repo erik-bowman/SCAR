@@ -36,24 +36,12 @@ use strict;
 use warnings FATAL => 'all';
 
 # SCAR modules
-use SCAR qw( SERVICE );
+use SCAR;
 use SCAR::Log;
 use SCAR::Backup;
 
 # Plugin version
 our $VERSION = 0.01;
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $plugin = RHEL_06_000224->new( $parent );
-#
-# DESCRIPTION
-#   Initializes the plugin object and returns it
-#
-# ARGUMENTS
-#   $parent    = The SCAR::RHEL6 module object
-#
-# ------------------------------------------------------------------------------
 
 sub new {
     my ( $class, $parent ) = @_;
@@ -62,18 +50,9 @@ sub new {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_06_000224->check();
-#
-# DESCRIPTION
-#   Performs a test against the system
-#
-# ------------------------------------------------------------------------------
-
 sub check {
     my ($self) = @_;
-    if ( SERVICE( 'crond', 'status' )
+    if ( $self->{parent}->{service}->{crond}->{status}
         =~ /^crond\s+[(]pid\s+\d+[)]\s+is\srunning[.]{3}$/msx )
     {
         $self->{STATUS} = 'NF';
@@ -84,29 +63,11 @@ sub check {
     return $self;
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $results = RHEL_06_000224->remediate();
-#
-# DESCRIPTION
-#   Attempts remediation
-#
-# ------------------------------------------------------------------------------
-
 sub remediate {
     my ($self) = @_;
 
     return $self;
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $VULN_ID = RHEL_06_000224->VULN_ID();
-#
-# DESCRIPTION
-#   Returns the plugins VULN ID
-#
-# ------------------------------------------------------------------------------
 
 sub VULN_ID {
     my ($self) = @_;
@@ -114,29 +75,11 @@ sub VULN_ID {
     return $self->{VULN_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $SEVERITY = RHEL_06_000224->SEVERITY();
-#
-# DESCRIPTION
-#   Returns the plugins SEVERITY
-#
-# ------------------------------------------------------------------------------
-
 sub SEVERITY {
     my ($self) = @_;
     $self->{SEVERITY} = 'medium';
     return $self->{SEVERITY};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $GROUP_TITLE = RHEL_06_000224->GROUP_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins GROUP TITLE
-#
-# ------------------------------------------------------------------------------
 
 sub GROUP_TITLE {
     my ($self) = @_;
@@ -144,29 +87,11 @@ sub GROUP_TITLE {
     return $self->{GROUP_TITLE};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_ID = RHEL_06_000224->RULE_ID();
-#
-# DESCRIPTION
-#   Returns the plugins RULE ID
-#
-# ------------------------------------------------------------------------------
-
 sub RULE_ID {
     my ($self) = @_;
     $self->{RULE_ID} = 'SV-50406r2_rule';
     return $self->{RULE_ID};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $STIG_ID = RHEL_06_000224->STIG_ID();
-#
-# DESCRIPTION
-#   Returns the plugins STIG ID
-#
-# ------------------------------------------------------------------------------
 
 sub STIG_ID {
     my ($self) = @_;
@@ -174,29 +99,11 @@ sub STIG_ID {
     return $self->{STIG_ID};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $RULE_TITLE = RHEL_06_000224->RULE_TITLE();
-#
-# DESCRIPTION
-#   Returns the plugins RULE TITLE
-#
-# ------------------------------------------------------------------------------
-
 sub RULE_TITLE {
     my ($self) = @_;
     $self->{RULE_TITLE} = 'The cron service must be running.';
     return $self->{RULE_TITLE};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $DISCUSSION = RHEL_06_000224->DISCUSSION();
-#
-# DESCRIPTION
-#   Returns the plugins DISCUSSION text
-#
-# ------------------------------------------------------------------------------
 
 sub DISCUSSION {
     my ($self) = @_;
@@ -205,15 +112,6 @@ Due to its usage for maintenance and security-supporting tasks, enabling the cro
 DISCUSSION
     return $self->{DISCUSSION};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CHECK_CONTENT = RHEL_06_000224->CHECK_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins CHECK CONTENT text
-#
-# ------------------------------------------------------------------------------
 
 sub CHECK_CONTENT {
     my ($self) = @_;
@@ -241,15 +139,6 @@ CHECK_CONTENT
     return $self->{CHECK_CONTENT};
 }
 
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $FIX_CONTENT = RHEL_06_000224->FIX_CONTENT();
-#
-# DESCRIPTION
-#   Returns the plugins FIX CONTENT text
-#
-# ------------------------------------------------------------------------------
-
 sub FIX_CONTENT {
     my ($self) = @_;
     $self->{FIX_CONTENT} = <<'FIX_CONTENT';
@@ -263,15 +152,6 @@ The ""crond"" service is used to execute commands at preconfigured times. It is 
 FIX_CONTENT
     return $self->{FIX_CONTENT};
 }
-
-# ------------------------------------------------------------------------------
-# SYNOPSIS
-#   $CCI = RHEL_06_000224->CCI();
-#
-# DESCRIPTION
-#   Returns the plugins CCI text
-#
-# ------------------------------------------------------------------------------
 
 sub CCI {
     my ($self) = @_;
@@ -292,8 +172,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 CCI
     return $self->{CCI};
 }
-
-# ------------------------------------------------------------------------------
 
 1;
 
