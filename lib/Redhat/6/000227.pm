@@ -35,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
+use Scar qw( parse_file );
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
@@ -51,7 +51,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( PARSE( '^Protocol\W+2$', '/etc/ssh/sshd_config' ) ) {
+    if ( parse_file( '^Protocol\W+2$', '/etc/ssh/sshd_config' ) ) {
         $self->{STATUS} = 'NF';
     }
     else {

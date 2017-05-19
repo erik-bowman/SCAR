@@ -25,11 +25,9 @@ use Getopt::Long;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
-use SCAR::Log;
-use Redhat::RHEL7;
-use SCAR::Backup;
-use SCAR::Loader;
+use Redhat::7;
+use Scar::Util::Log;
+use Scar::Util::Backup;
 
 # Version
 our $VERSION = 0.01;

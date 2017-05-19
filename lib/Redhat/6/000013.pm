@@ -35,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar qw( PARSE );
+use Scar qw( parse_file );
 use Scar::Util::Log;
 use Scar::Util::Backup;
 

@@ -35,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar qw( GREP );
+use Scar qw( run_grep );
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
