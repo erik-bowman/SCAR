@@ -1,93 +1,93 @@
 package Scar;
 
+# Standard pragmas
 use utf8;
-use 5.008;
 use strict;
+use warnings FATAL => 'all';
+
+# Standard modules
 use Carp qw( croak );
 use base qw( Exporter );
 use POSIX qw( strftime );
 use File::Spec::Functions;
-use warnings FATAL => 'all';
 
+# Module version
 our $VERSION = 0.01;
 
+# Exportables
 our @EXPORT_OK
-    = qw( AWK GREP PARSE SERVICE CHKCONFIG IMPLODEPATH EXPLODEPATH FTIME FDATE );
+    = qw( run_awk run_grep parse_file run_service run_chkconfig implode_path explode_path get_strftime get_strfdate );
 
-sub IMPLODEPATH {
-    my @PARTS = @_;
-    return File::Spec::Functions::catdir(@PARTS);
+sub implode_path {
+    my @path_components = @_;
+    return File::Spec::Functions::catdir(@path_components);
 }
 
-sub EXPLODEPATH {
-    my @PARTS = @_;
-    return File::Spec::Functions::splitpath(@PARTS);
+sub explode_path {
+    my @directories = @_;
+    return File::Spec::Functions::splitpath(@directories);
 }
 
-sub FTIME {
+sub get_strftime {
     return strftime '%H:%M:%S', gmtime;
 }
 
-sub FDATE {
+sub get_strfdate {
     return strftime '%Y-%m-%d', gmtime;
 }
 
-sub RUN {
-    my ( $BIN, $ARGS ) = @_;
-    my @RESULTS;
+sub _run_system_bin {
+    my ( $bin, $args ) = @_;
+    my @results;
 
-    open my $RUN, " $BIN $ARGS 2>&1 |" or croak "Could not run $BIN\n";
+    open my $bin_handler, q<|->, qq|$bin $args 2>&1|
+        or croak "Could not run $bin\n";
     {
-
-        while ( my $RESULT = <$RUN> ) {
-            push @RESULTS, $RESULT;
+        while ( my $response_line = <$bin_handler> ) {
+            push @results, $response_line;
         }
-
     }
-    close $RUN;
+    close $bin_handler;
 
-    return @RESULTS;
+    return @results;
 }
 
-sub AWK {
-    my ($ARGS) = @_;
-    return RUN( '/bin/awk', $ARGS );
+sub run_awk {
+    my ($args) = @_;
+    return _run_system_bin( '/bin/awk', $args );
 }
 
-sub GREP {
-    my ($ARGS) = @_;
-    return join "\n", RUN( '/bin/grep', $ARGS );
+sub run_grep {
+    my ($args) = @_;
+    return join "\n", _run_system_bin( '/bin/grep', $args );
 }
 
-sub SERVICE {
-    my ($ARGS) = @_;
-    return join "\n", RUN( '/sbin/service', $ARGS );
+sub run_service {
+    my ($args) = @_;
+    return join "\n", _run_system_bin( '/sbin/service', $args );
 }
 
-sub CHKCONFIG {
-    my ($ARGS) = @_;
-    return RUN( '/sbin/chkconfig', $ARGS );
+sub run_chkconfig {
+    my ($args) = @_;
+    return _run_system_bin( '/sbin/chkconfig', $args );
 }
 
-sub PARSE {
-    my ( $REGEX, $FILE ) = @_;
-    my @RESULTS;
+sub parse_file {
+    my ( $regex, $file ) = @_;
+    my @results;
 
-    open my $FH, '<:encoding(utf8)', $FILE or croak 'Could not parse file';
+    open my $file_hanlder, '<:encoding(utf8)', $file
+        or croak 'Could not parse file';
     {
-
-        while ( my $LINE = <$FH> ) {
-
-            if ( $LINE =~ /$REGEX/msx ) {
-                push @RESULTS, $LINE;
+        while ( my $line_in_file = <$file_hanlder> ) {
+            if ( $line_in_file =~ /$regex/msx ) {
+                push @results, $line_in_file;
             }
-
         }
-
     }
-    close $FH;
+    close $file_hanlder;
 
-    return @RESULTS;
+    return @results;
 }
 
 1;
@@ -98,28 +98,14 @@ __END__
 
 =head1 NAME
 
-Scar - Exports core methods used throughout the package.
-
 
 =head1 VERSION
 
-This docuemntation refers to Scar version 1.4.0
 
-
-=head1 USAGE
-
-    use Scar;
-
-    $PATH       = IMPLODEPATH( @COMPONENTS );
-    @COMPONENTS = EXPLODEPATH( $PATH );
-    $DATESTRING = FDATE();
-    $TIMESTRING = FTIME();
+=head1 SYNOPSIS
 
 
 =head1 DESCRIPTION
-
-This is the core module for Security Compliance and Remediation aka Scar.
-Exports methods used ubiquitously throughout Scar by default;
 
 
 =head1 OPTIONS
@@ -128,43 +114,31 @@ Exports methods used ubiquitously throughout Scar by default;
 =head1 REQUIRED ARGUMENTS
 
 
+=head1 SUBROUTINES/METHODS
+
+
 =head1 DIAGNOSTICS
+
 
 =head1 EXIT STATUS
 
 
-=head1 CONFIGURATION
+=head1 CONFIGURATION AND ENVIRONMENT
 
 
 =head1 DEPENDENCIES
 
-Perl 5.008, Exporter
 
 =head1 INCOMPATIBILITIES
 
 
 =head1 BUGS AND LIMITATIONS
 
-There are no known bugs in this module.
-Please report problems to Erk Bowman (erik.bowman@icsinc.com)
-Patches are welcome.
-
 
 =head1 AUTHOR
 
-Erik Bowman (erik.bowman@icsinc.com)
-
 
 =head1 LICENSE AND COPYRIGHT
-
-Copyright (c) 2017 Erik Bowman (erik.bowman@icsinc.com). All rights reserved.
-
-This module is private software; do not redistribute it and/or
-modify it without proper authorization or approval.
-
-This program is distributed in the hopes that it wil be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 
 =cut

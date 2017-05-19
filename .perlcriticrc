@@ -1,2 +1,5 @@
+theme       = (pbp || security) && bugs
+exclude     = Miscellanea::RequireRcsKeywords
+
 [CodeLayout::RequireTidyCode]
-perltidyrc = D:\Documents\SCAR\SCAR\.perltidyrc
+perltidyrc = .perltidyrc

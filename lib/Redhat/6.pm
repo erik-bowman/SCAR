@@ -1,14 +1,15 @@
 package Redhat::6;
-use base qw( Redhat );
+
 # Standard modules
 use utf8;
 use strict;
 use FindBin;
 use Carp qw( croak );
+use base qw( Redhat );
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar qw( AWK SERVICE CHKCONFIG );
+use Scar qw( run_awk run_service run_chkconfig );
 use Scar::Util::Log;
 
 # Module version
@@ -18,52 +19,59 @@ sub new {
     my ($class) = @_;
     my $self = bless {}, $class;
 
-    my @CHKCONFIG = CHKCONFIG('--list');
-    $self->services(@CHKCONFIG);
+    my @chkconfig_entries = run_chkconfig('--list');
+    $self->services(@chkconfig_entries);
 
-    my @FSTAB = AWK(q<'/^[^#]/ { print $ 0}' /etc/fstab>);
-    $self->filesystem_table(@FSTAB);
+    my @fstab_entries = run_awk(q<'/^[^#]/ { print $ 0}' /etc/fstab>);
+    $self->filesystem_table(@fstab_entries);
 
     return $self;
 }
 
 sub services {
-    my ( $self, @CHKCONFIG ) = @_;
+    my ( $self, @chkconfig_entries ) = @_;
 
-    foreach my $ENTRY (@CHKCONFIG) {
-        my @PROPERTIES = split /[:\s]+/msx, $ENTRY;
-        my $SERVICE = $self->service_properties(@PROPERTIES);
-        $self->{service}->{$SERVICE}->{status} = SERVICE("$SERVICE status");
+    foreach my $chkconfig_entry (@chkconfig_entries) {
+        my @entry_properties = split /[:\s]+/msx, $chkconfig_entry;
+        my $service_name = $self->service_properties(@entry_properties);
+        $self->{service}->{$service_name}->{status}
+            = run_service("$service_name status");
     }
 
     return $self;
 }
 
 sub service_properties {
-    my ( $self, @PROPERTIES ) = @_;
-    my $SERVICE = shift @PROPERTIES;
+    my ( $self, @entry_properties ) = @_;
+    my $service_name = shift @entry_properties;
 
-    while (@PROPERTIES) {
-        my $RUNLEVEL = shift @PROPERTIES;
-        my $VALUE    = shift @PROPERTIES;
-        $self->{service}->{$SERVICE}->{$RUNLEVEL} = $VALUE;
+    while (@entry_properties) {
+        my $runlevel_property = shift @entry_properties;
+        my $runlevel_value    = shift @entry_properties;
+        $self->{service}->{$service_name}->{$runlevel_property}
+            = $runlevel_value;
     }
 
-    return $SERVICE;
+    return $service_name;
 }
 
 sub filesystem_table {
-    my ( $self, @FSTAB ) = @_;
+    my ( $self, @fstab_entries ) = @_;
 
-    foreach my $ENTRY (@FSTAB) {
-        my @MOUNTS = split /\s+/msx, $ENTRY;
-        my ( $DEVICE, $DIRECTORY, $TYPE, $OPTIONS, $DUMP, $FSCK ) = @MOUNTS;
-        $self->{fstab}->{$DIRECTORY} = {
-            device  => $DEVICE,
-            type    => $TYPE,
-            options => $OPTIONS,
-            dump    => $DUMP,
-            fsck    => $FSCK,
+    foreach my $fstab_entry (@fstab_entries) {
+
+        my @entry_properties = split /\s+/msx, $fstab_entry;
+
+        my ($device_property,  $directory_property, $type_property,
+            $options_property, $dump_property,      $fsck_property
+        ) = @entry_properties;
+
+        $self->{fstab}->{$directory_property} = {
+            device  => $device_property,
+            type    => $type_property,
+            options => $options_property,
+            dump    => $dump_property,
+            fsck    => $fsck_property,
         };
     }
 

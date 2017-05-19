@@ -8,52 +8,53 @@ use base qw( Exporter );
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar qw( FTIME FDATE IMPLODEPATH );
+use Scar qw( get_strftime get_strfdate implode_path );
 
 # Module version
 our $VERSION = 0.01;
 
 # Active log directory
-our $DIRECTORY;
+our $DIRECTORY = get_strfdate();
 
 # Default exports
-our @EXPORT = qw( INFO WARN ERROR DEBUG );
+our @EXPORT = qw( log_info log_warn log_error log_debug );
 
-sub ERROR {
-    my ($MESSAGE) = @_;
-    WRITELOG( 'error.log', $MESSAGE );
-    print FTIME() . " ERROR: $MESSAGE";
+sub log_error {
+    my ($message) = @_;
+    _write_to_logfile( 'error.log', $message );
+    print get_strftime() . " ERROR: $message";
     croak;
 }
 
-sub INFO {
-    my ($MESSAGE) = @_;
-    WRITELOG( 'scar.log', $MESSAGE );
-    print FTIME() . "  INFO: $MESSAGE";
+sub log_info {
+    my ($message) = @_;
+    _write_to_logfile( 'scar.log', $message );
+    print get_strftime() . "  INFO: $message";
     return 1;
 }
 
-sub WARN {
-    my ($MESSAGE) = @_;
-    WRITELOG( 'scar.log', "Warning: $MESSAGE" );
-    print FTIME() . "  WARN: $MESSAGE";
+sub log_warn {
+    my ($message) = @_;
+    _write_to_logfile( 'scar.log', "Warning: $message" );
+    print get_strftime() . "  WARN: $message";
     return 1;
 }
 
-sub DEBUG {
-    my ($MESSAGE) = @_;
-    WRITELOG( 'debug.log', $MESSAGE );
-    print FTIME() . " DEBUG: $MESSAGE";
+sub log_debug {
+    my ($message) = @_;
+    _write_to_logfile( 'debug.log', $message );
+    print get_strftime() . " DEBUG: $message";
     return 1;
 }
 
-sub WRITELOG {
-    my ( $FILE, $MESSAGE ) = @_;
+sub _write_to_logfile {
+    my ( $logfile, $message ) = @_;
     if ( !-d $DIRECTORY ) { croak 'No output directory defined' }
-    open my $FH, '>>:encoding(utf8)', IMPLODEPATH( $DIRECTORY, $FILE )
+    open my $logfile_handler, '>>:encoding(utf8)',
+        implode_path( $DIRECTORY, $logfile )
         or croak;
-    print {$FH} FTIME() . ": $MESSAGE\n";
-    close $FH;
+    print {$logfile_handler} get_strftime() . ": $message\n";
+    close $logfile_handler;
     return 1;
 }
 

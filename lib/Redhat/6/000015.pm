@@ -51,7 +51,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( GREP('"gpgcheck=0" /etc/yum.repos.d/*') ) {
+    if ( run_grep('"gpgcheck=0" /etc/yum.repos.d/*') ) {
         $self->{STATUS} = 'O';
     }
     else {

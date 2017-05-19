@@ -1,24 +1,10 @@
-# ------------------------------------------------------------------------------
-# NAME
-#   Scar::RHEL7
-#
-# DESCRIPTION
-#   Performs Scar initialization tasks specific to Red Hat 7
-#
-# SEE ALSO
-#   Scar Scar::RHEL
-#
-# AUTHOR
-#   Erik Bowman (erik.bowman@icsinc.com)
-#
-# ------------------------------------------------------------------------------
-
 package Redhat::7;
 
 # Standard modules
 use utf8;
 use strict;
 use Carp qw( croak );
+use base qw( Redhat );
 use warnings FATAL => 'all';
 
 # Scar modules

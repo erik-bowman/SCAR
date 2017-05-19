@@ -7,7 +7,7 @@
       </list>
     </option>
     <option name="PERL_CRITIC_ENABLED" value="true" />
-    <option name="PERL_TIDY_ARGS" value="--profile=D:\Documents\SCAR\SCAR\.perltidyrc" />
-    <option name="PERL_CRITIC_ARGS" value="--profile=D:\Documents\SCAR\SCAR\.perlcriticrc --theme=pbp" />
+    <option name="PERL_TIDY_ARGS" value="--profile=C:\Users\Administrator\Documents\SCAR\SCAR\.perltidyrc" />
+    <option name="PERL_CRITIC_ARGS" value="--profile=C:\Users\Administrator\Documents\SCAR\SCAR\.perlcriticrc --theme=pbp" />
   </component>
 </project>

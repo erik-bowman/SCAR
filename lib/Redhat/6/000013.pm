@@ -51,7 +51,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( PARSE( '/etc/yum.conf', 'gpgcheck\s*=\s*1' ) ) {
+    if ( parse_file( '/etc/yum.conf', 'gpgcheck\s*=\s*1' ) ) {
         $self->{STATUS} = 'NF';
     }
     else {
