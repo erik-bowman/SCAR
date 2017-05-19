@@ -1,0 +1,186 @@
+# ------------------------------------------------------------------------------
+# NAME
+#   Redhat::6::000356
+#
+# VULN ID
+#   V-38592
+#
+# SEVERITY
+#   medium
+#
+# GROUP TITLE
+#   SRG-OS-000022
+#
+# RULE ID
+#   SV-50393r4_rule
+#
+# STIG ID
+#   RHEL-06-000356
+#
+# RULE TITLE
+#   The system must require administrator action to unlock an account locked by excessive failed login attempts.
+#
+# TODO: Create Check
+# TODO: Create Remediation
+#
+# AUTHOR
+#   Erik Bowman (erik.bowman@icsinc.com)
+#
+# ------------------------------------------------------------------------------
+
+package Redhat::6::000356;
+
+# Standard modules
+use utf8;
+use strict;
+use warnings FATAL => 'all';
+
+# Scar modules
+use Scar;
+use Scar::Util::Log;
+use Scar::Util::Backup;
+
+# Plugin version
+our $VERSION = 0.01;
+
+sub new {
+    my ( $class, $parent ) = @_;
+    my $self = bless { parent => $parent }, $class;
+
+    return $self;
+}
+
+sub check {
+    my ($self) = @_;
+
+    return $self;
+}
+
+sub remediate {
+    my ($self) = @_;
+
+    return $self;
+}
+
+sub VULN_ID {
+    my ($self) = @_;
+    $self->{VULN_ID} = 'V-38592';
+    return $self->{VULN_ID};
+}
+
+sub SEVERITY {
+    my ($self) = @_;
+    $self->{SEVERITY} = 'medium';
+    return $self->{SEVERITY};
+}
+
+sub GROUP_TITLE {
+    my ($self) = @_;
+    $self->{GROUP_TITLE} = 'SRG-OS-000022';
+    return $self->{GROUP_TITLE};
+}
+
+sub RULE_ID {
+    my ($self) = @_;
+    $self->{RULE_ID} = 'SV-50393r4_rule';
+    return $self->{RULE_ID};
+}
+
+sub STIG_ID {
+    my ($self) = @_;
+    $self->{STIG_ID} = 'RHEL-06-000356';
+    return $self->{STIG_ID};
+}
+
+sub RULE_TITLE {
+    my ($self) = @_;
+    $self->{RULE_TITLE}
+        = 'The system must require administrator action to unlock an account locked by excessive failed login attempts.';
+    return $self->{RULE_TITLE};
+}
+
+sub DISCUSSION {
+    my ($self) = @_;
+    $self->{DISCUSSION} = <<'DISCUSSION';
+Locking out user accounts after a number of incorrect attempts prevents direct password guessing attacks. Ensuring that an administrator is involved in unlocking locked accounts draws appropriate attention to such situations.
+DISCUSSION
+    return $self->{DISCUSSION};
+}
+
+sub CHECK_CONTENT {
+    my ($self) = @_;
+    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+To ensure the failed password attempt policy is configured correctly, run the following command:
+
+
+
+# grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth
+
+
+
+The output should show ""unlock_time=<some-large-number>""; the largest acceptable value is 604800 seconds (one week).
+
+If that is not the case, this is a finding.
+CHECK_CONTENT
+    return $self->{CHECK_CONTENT};
+}
+
+sub FIX_CONTENT {
+    my ($self) = @_;
+    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+To configure the system to lock out accounts after a number of incorrect logon attempts and require an administrator to unlock the account using ""pam_faillock.so"", modify the content of both ""/etc/pam.d/system-auth"" and ""/etc/pam.d/password-auth"" as follows:
+
+
+
+Add the following line immediately before the ""pam_unix.so"" statement in the ""AUTH"" section:
+
+
+
+auth required pam_faillock.so preauth silent deny=3 unlock_time=604800 fail_interval=900
+
+
+
+Add the following line immediately after the ""pam_unix.so"" statement in the ""AUTH"" section:
+
+
+
+auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900
+
+
+
+Add the following line immediately before the ""pam_unix.so"" statement in the ""ACCOUNT"" section:
+
+
+
+account required pam_faillock.so
+
+
+
+Note that any updates made to ""/etc/pam.d/system-auth"" and ""/etc/pam.d/password-auth"" may be overwritten by the ""authconfig"" program.  The ""authconfig"" program should not be used.
+FIX_CONTENT
+    return $self->{FIX_CONTENT};
+}
+
+sub CCI {
+    my ($self) = @_;
+    $self->{CCI} = <<'CCI';
+CCI-000047
+
+The information system delays next login prompt according to organization defined delay algorithm, when the maximum number of unsuccessful attempts is exceeded, automatically locks the account/node for an organization defined time period or locks the account/node until released by an Administrator IAW organizational policy.
+
+NIST SP 800-53 :: AC-7 b
+
+NIST SP 800-53A :: AC-7.1 (iv)
+
+
+
+
+CCI
+    return $self->{CCI};
+}
+
+# ------------------------------------------------------------------------------
+
+1;
+
+__END__

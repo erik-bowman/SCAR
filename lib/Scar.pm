@@ -79,7 +79,7 @@ sub PARSE {
         while ( my $LINE = <$FH> ) {
 
             if ( $LINE =~ /$REGEX/msx ) {
-                push @RESULTS, $&;
+                push @RESULTS, $LINE;
             }
 
         }

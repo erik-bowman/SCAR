@@ -1,18 +1,3 @@
-# ------------------------------------------------------------------------------
-# NAME
-#   Scar::Util::Log
-#
-# DESCRIPTION
-#
-#
-# SEE ALSO
-#   Scar
-#
-# AUTHOR
-#   Erik Bowman (erik.bowman@icsinc.com)
-#
-# ------------------------------------------------------------------------------
-
 package Scar::Util::Log;
 
 # Standard modules

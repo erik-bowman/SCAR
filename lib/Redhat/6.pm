@@ -1,8 +1,9 @@
 package Redhat::6;
-
+use base qw( Redhat );
 # Standard modules
 use utf8;
 use strict;
+use FindBin;
 use Carp qw( croak );
 use warnings FATAL => 'all';
 

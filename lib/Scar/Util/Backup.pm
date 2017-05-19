@@ -24,7 +24,7 @@ use warnings FATAL => 'all';
 
 # Scar modules
 use Scar qw( EXPLODEPATH IMPLODEPATH );
-use SCAR::Log;
+use Scar::Util::Log;
 
 # Module version
 our $VERSION = 0.01;
