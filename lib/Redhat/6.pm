@@ -25,6 +25,7 @@ sub new {
     my @fstab_entries = run_awk(q<'/^[^#]/ { print $ 0}' /etc/fstab>);
     $self->filesystem_table(@fstab_entries);
 
+    $self->_ingest_auditd_conf();
     $self->_ingest_sshd_config();
 
     return $self;

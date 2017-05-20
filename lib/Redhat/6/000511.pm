@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The audit system must take appropriate action when there are disk errors on the audit storage volume.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,17 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if (!defined $self->{parent}->{files}->{'/etc/audit/auditd.conf'}->{disk_error_action}[1]) {
+        if ($self->{parent}->{files}->{'/etc/audit/auditd.conf'}->{disk_error_action}[0] =~ /^(?:syslog|exec|single|halt)$/imsx) {
+            $self->_set_finding_status('NF');
+        }
+        else {
+            $self->_set_finding_status('O');
+        }
+    }
+    else {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 

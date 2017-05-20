@@ -21,7 +21,7 @@ use Scar qw( read_file );
 
 sub _ingest_sshd_config {
     my ($self) = @_;
-    my @keywords = qw(
+    my @keywords = qw{
         AcceptEnv AddressFamily AllowAgentForwarding
         AllowGroups AllowTcpForwarding AllowUsers
         AuthorizedKeysFile AuthorizedKeysFile Banner
@@ -47,7 +47,7 @@ sub _ingest_sshd_config {
         UseLogin UsePAM UsePrivilegeSeparation
         X11DisplayOffset X11Forwarding X11UseLocalhost
         XAuthLocation
-    );
+        };
 
     my @sshd_config_entries = read_file('/etc/ssh/sshd_config');
 
@@ -64,6 +64,34 @@ sub _ingest_sshd_config {
     }
 
     return $self->{files}->{'/etc/ssh/sshd_config'};
+}
+
+sub _ingest_auditd_conf {
+    my ($self) = @_;
+    my @keywords = qw{
+        log_file log_format flush
+            freq num_logs max_log_file
+            max_log_file_action space_left
+            action_mail_acct space_left_action
+            admin_space_left admin_space_left_action
+            disk_full_action disk_error_action
+    };
+
+    my @auditd_conf_entries = read_file('/etc/audit/auditd.conf');
+
+    foreach my $keyword (@keywords) {
+
+        foreach my $auditd_conf_entry (@auditd_conf_entries) {
+
+            if ($auditd_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx) {
+                push @{$self->{files}->{'/etc/audit/auditd.conf'}->{$1}}, $2;
+            }
+
+        }
+
+    }
+
+    return $self->{files}->{'/etc/audit/auditd.conf'};
 }
 
 1;
