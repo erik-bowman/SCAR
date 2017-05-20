@@ -18,7 +18,7 @@ our $VERSION = 0.01;
 
 # Exportables
 our @EXPORT_OK = qw{
-    run_awk run_grep run_service run_chkconfig
+    run_awk run_grep run_service run_chkconfig run_find
     implode_path explode_path make_path_absolute
     get_strftime get_strfdate read_file
     get_current_directory
@@ -56,7 +56,7 @@ sub _run_system_bin {
     my ( $bin, $args ) = @_;
     my @results;
 
-    open my $bin_handler, q<-|>, qq{$bin $args 2>&1}
+    open my $bin_handler, q{-|}, qq{$bin $args 2>&1}
         or croak "Could not run '$bin': $OS_ERROR\n";
     {
         while ( my $response_line = <$bin_handler> ) {
@@ -86,6 +86,11 @@ sub run_service {
 sub run_chkconfig {
     my ($args) = @_;
     return _run_system_bin( '/sbin/chkconfig', $args );
+}
+
+sub run_find {
+    my ($args) = @_;
+    return _run_system_bin( '/bin/find', $args );
 }
 
 sub read_file {

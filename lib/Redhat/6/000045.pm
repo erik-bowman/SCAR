@@ -20,7 +20,6 @@
 # RULE TITLE
 #   Library files must have mode 0755 or less permissive.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -36,9 +35,11 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
+use Scar qw{};
 use Scar::Util::Log;
 use Scar::Util::Backup;
+
+use Data::Dumper;
 
 # Plugin version
 our $VERSION = 0.01;
@@ -52,7 +53,16 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    foreach my $lib_file ( keys %{ $self->{parent}->{lib_files} } ) {
+        if ( $self->{parent}->{lib_files}->{$lib_file}->{permissions}
+            =~ /^\d\d[67][67]$/msx )
+        {
+            $self->_set_finding_status('O');
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 

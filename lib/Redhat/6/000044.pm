@@ -51,7 +51,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if (get_file_permissions('/etc/group') =~ /^06[04]{2}$/msx) {
+    if ( get_file_permissions('/etc/group') eq '0644' ) {
         $self->_set_finding_status('NF');
     }
     else {

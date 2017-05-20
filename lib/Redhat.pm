@@ -5,6 +5,9 @@ use utf8;
 use strict;
 use warnings FATAL => 'all';
 
+# Standard modules
+use File::Find;
+
 # Module version
 our $VERSION = 0.01;
 
@@ -17,7 +20,7 @@ use Scar::Loader
     search_path => ['Redhat::7'],
     sub_name    => 'get_redhat7_plugins';
 
-use Scar qw( read_file );
+use Scar qw{ read_file get_file_permissions get_file_owner get_file_group run_find };
 
 sub _ingest_sshd_config {
     my ($self) = @_;
@@ -47,7 +50,7 @@ sub _ingest_sshd_config {
         UseLogin UsePAM UsePrivilegeSeparation
         X11DisplayOffset X11Forwarding X11UseLocalhost
         XAuthLocation
-        };
+    };
 
     my @sshd_config_entries = read_file('/etc/ssh/sshd_config');
 
@@ -55,8 +58,8 @@ sub _ingest_sshd_config {
 
         foreach my $sshd_config_entry (@sshd_config_entries) {
 
-            if ($sshd_config_entry =~ /^($keyword)\W+(.*)$/imxsg) {
-                push @{$self->{files}->{'/etc/ssh/sshd_config'}->{$1}}, $2;
+            if ( $sshd_config_entry =~ /^($keyword)\W+(.*)$/imxsg ) {
+                push @{ $self->{files}->{'/etc/ssh/sshd_config'}->{$1} }, $2;
             }
 
         }
@@ -70,11 +73,11 @@ sub _ingest_auditd_conf {
     my ($self) = @_;
     my @keywords = qw{
         log_file log_format flush
-            freq num_logs max_log_file
-            max_log_file_action space_left
-            action_mail_acct space_left_action
-            admin_space_left admin_space_left_action
-            disk_full_action disk_error_action
+        freq num_logs max_log_file
+        max_log_file_action space_left
+        action_mail_acct space_left_action
+        admin_space_left admin_space_left_action
+        disk_full_action disk_error_action
     };
 
     my @auditd_conf_entries = read_file('/etc/audit/auditd.conf');
@@ -83,8 +86,9 @@ sub _ingest_auditd_conf {
 
         foreach my $auditd_conf_entry (@auditd_conf_entries) {
 
-            if ($auditd_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx) {
-                push @{$self->{files}->{'/etc/audit/auditd.conf'}->{$1}}, $2;
+            if ( $auditd_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx ) {
+                push @{ $self->{files}->{'/etc/audit/auditd.conf'}->{$1} },
+                    $2;
             }
 
         }
@@ -92,6 +96,26 @@ sub _ingest_auditd_conf {
     }
 
     return $self->{files}->{'/etc/audit/auditd.conf'};
+}
+
+sub _get_lib_permissions {
+    my ($self) = @_;
+    my @lib_dirs
+        = qw{ /lib /lib64 /usr/lib /usr/lib64 /lib /usr/local/lib /usr/local/lib64 };
+
+    foreach my $lib_dir (@lib_dirs) {
+        my @dir_contents = run_find("-L $lib_dir -type f");
+        foreach my $content (@dir_contents) {
+            chomp $content;
+            $self->{lib_files}->{$content}->{permissions}
+                = get_file_permissions( $content );
+            $self->{lib_files}->{$content}->{owner}
+                = get_file_owner( $content );
+            $self->{lib_files}->{$content}->{group}
+                = get_file_group( $content );
+        }
+    }
+    return $self->{lib_files};
 }
 
 1;
