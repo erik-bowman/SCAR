@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The audit system must switch the system to single-user mode when available audit storage volume becomes dangerously low.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,23 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( !defined $self->{parent}->{'/etc/audit/auditd.conf'}
+        ->{admin_space_left_action}[1] )
+    {
+        if (defined $self->{parent}->{'/etc/audit/auditd.conf'}
+            ->{admin_space_left_action}[0] )
+        {
+            if ( $self->{parent}->{'/etc/audit/auditd.conf'}
+                ->{admin_space_left_action}[0]
+                =~ /(single|suspend|halt)/imsx )
+            {
+                $self->_set_finding_status('NF');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
