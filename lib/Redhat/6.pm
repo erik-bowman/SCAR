@@ -26,6 +26,7 @@ sub new {
     $self->filesystem_table(@fstab_entries);
 
     $self->_get_lib_permissions();
+    $self->_get_bin_permissions();
     $self->_ingest_auditd_conf();
     $self->_ingest_sshd_config();
     $self->_check_rpm_integrity();

@@ -119,6 +119,25 @@ sub _get_lib_permissions {
     return $self->{lib_files};
 }
 
+sub _get_bin_permissions {
+    my ($self) = @_;
+    my @bin_dirs = qw{ /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin };
+
+    foreach my $bin_dir (@bin_dirs) {
+        my @dir_contents = run_find("-L $bin_dir -type f");
+        foreach my $content (@dir_contents) {
+            chomp $content;
+            $self->{bin_files}->{$content}->{permissions}
+                = get_file_permissions($content);
+            $self->{bin_files}->{$content}->{owner}
+                = get_file_owner($content);
+            $self->{bin_files}->{$content}->{group}
+                = get_file_group($content);
+        }
+    }
+    return $self->{bin_files};
+}
+
 sub _check_rpm_integrity {
     my ($self) = @_;
     my @failed_integrity_files = run_rpm('-Va');

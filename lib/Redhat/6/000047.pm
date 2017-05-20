@@ -20,7 +20,6 @@
 # RULE TITLE
 #   All system command files must have mode 755 or less permissive.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,16 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    foreach my $bin_file ( keys %{ $self->{parent}->{bin_files} } ) {
+        if ( $self->{parent}->{bin_files}->{$bin_file}->{permissions}
+            =~ /^\d\d(\d[67]|[67]\d)/msx )
+        {
+            $self->_set_finding_status('O');
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 

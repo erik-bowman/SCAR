@@ -55,7 +55,7 @@ sub check {
     my ($self) = @_;
     foreach my $lib_file ( keys %{ $self->{parent}->{lib_files} } ) {
         if ( $self->{parent}->{lib_files}->{$lib_file}->{permissions}
-            =~ /^\d\d[67][67]$/msx )
+            =~ /^\d\d(\d[67]|[67]\d)$/msx )
         {
             $self->_set_finding_status('O');
         }
