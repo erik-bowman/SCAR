@@ -52,7 +52,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if (get_file_group('/etc/gshadow') ne 'root') {
+    if (get_file_group('/etc/gshadow') eq '0') {
         $self->_set_finding_status('NF');
     }
     else {
