@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The /etc/passwd file must be owned by root.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
