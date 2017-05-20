@@ -6,22 +6,24 @@ use strict;
 use warnings FATAL => 'all';
 
 # Standard modules
-use Carp qw( croak );
-use base qw( Exporter );
-use POSIX qw( strftime );
-use English qw( -no_match_vars );
+use Fcntl;
+use Carp qw{ croak };
+use base qw{ Exporter };
+use POSIX qw{ strftime };
+use English qw{ -no_match_vars };
 use File::Spec::Functions;
 
 # Module version
 our $VERSION = 0.01;
 
 # Exportables
-our @EXPORT_OK = qw(
+our @EXPORT_OK = qw{
     run_awk run_grep run_service run_chkconfig
     implode_path explode_path make_path_absolute
     get_strftime get_strfdate read_file
-    get_current_directory get_file_owner get_file_group
-);
+    get_current_directory
+    get_file_owner get_file_group get_file_permissions
+};
 
 sub implode_path {
     my @path_components = @_;
@@ -55,7 +57,7 @@ sub _run_system_bin {
     my @results;
 
     open my $bin_handler, q<-|>, qq{$bin $args 2>&1}
-        or croak "Could not run $bin\n";
+        or croak "Could not run '$bin': $OS_ERROR\n";
     {
         while ( my $response_line = <$bin_handler> ) {
             push @results, $response_line;
@@ -87,7 +89,7 @@ sub run_chkconfig {
 }
 
 sub read_file {
-    my ( $file ) = @_;
+    my ($file) = @_;
     my @results;
 
     open my $file_hanlder, '<:encoding(utf8)', $file
@@ -105,20 +107,30 @@ sub read_file {
 
 sub get_file_owner {
     my ($file) = @_;
-    if (!-f $file) {
-        croak "Unable to get the owner uid for file '$file': file does not exist";
+    if ( !-f $file ) {
+        croak
+            "Unable to get the owner uid for file '$file': file does not exist";
     }
-    my @file_stats = stat $file;
-    return $file_stats[4];
+    return ( stat $file )[4];
 }
 
 sub get_file_group {
     my ($file) = @_;
-    if (!-f $file) {
-        croak "Unable to get the owner gid for file '$file': file does not exist";
+    if ( !-f $file ) {
+        croak
+            "Unable to get the owner gid for file '$file': file does not exist";
     }
-    my @file_stats = stat $file;
-    return $file_stats[5];
+    return ( stat $file )[5];
+}
+
+sub get_file_permissions {
+    my ($file) = @_;
+    if ( !-f $file ) {
+        croak
+            "Unable to get permissions for file '$file': file does not exist";
+    }
+    my $file_permissions = ( stat $file )[2];
+    return sprintf '%04o', Fcntl::S_IMODE($file_permissions);
 }
 
 1;
