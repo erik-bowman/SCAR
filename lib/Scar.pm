@@ -18,7 +18,9 @@ our $VERSION = 0.01;
 
 # Exportables
 our @EXPORT_OK = qw{
-    run_awk run_grep run_service run_chkconfig run_find run_rpm
+    run_awk run_grep run_service
+    run_chkconfig run_find run_rpm
+    run_modprobe
     implode_path explode_path make_path_absolute
     get_strftime get_strfdate read_file
     get_current_directory
@@ -60,6 +62,7 @@ sub _run_system_bin {
         or croak "Could not run '$bin': $OS_ERROR\n";
     {
         while ( my $response_line = <$bin_handler> ) {
+            chomp $response_line;
             push @results, $response_line;
         }
     }
@@ -86,6 +89,11 @@ sub run_service {
 sub run_chkconfig {
     my ($args) = @_;
     return _run_system_bin( '/sbin/chkconfig', $args );
+}
+
+sub run_modprobe {
+    my ($args) = @_;
+    return _run_system_bin( '/sbin/modprobe', $args );
 }
 
 sub run_find {
