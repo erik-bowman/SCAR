@@ -52,7 +52,16 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( defined $self->{parent}->{service}->{autofs} ) {
+        for my $i ( 0 .. 6 ) {
+            if ( $self->{parent}->{service}->{autofs}->{$i} ne 'off' ) {
+                $self->_set_finding_status('O');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 
@@ -173,8 +182,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 CCI
 }
-
-# ------------------------------------------------------------------------------
 
 1;
 

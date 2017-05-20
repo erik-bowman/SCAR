@@ -59,23 +59,29 @@ sub start_scar {
         'enable-healing' => \$self->{healing}->{enabled},
         'debug|d'        => \$self->{output}->{debug},
         'quiet|q'        => \$self->{output}->{quiet},
+        'test-check=s'   => \$self->{test_check},
+        'test-heal=s'    => \$self->{test_heal},
     );
 
-    run_checks();
+    run_checks($self);
 #    run_remediations();
 
     return 1;
 }
 
 sub run_checks {
-
+    my ($self) = @_;
     foreach my $plugin ( $RHEL6->get_redhat6_plugins() ) {
-        my $initialized_plugin = $plugin->new($RHEL6);
 
+        if (defined $self->{test_check}) {
+            if ($plugin->get_stig_id ne $self->{test_check}) {
+                next;
+            }
+        }
+        my $initialized_plugin = $plugin->new($RHEL6);
         if ( !$initialized_plugin->can('check') ) {
             next;
         }
-
         print "Starting " . $initialized_plugin->get_stig_id() . "\n";
         $initialized_plugin->check();
         if (defined $initialized_plugin->get_finding_status()) {
@@ -83,29 +89,8 @@ sub run_checks {
         }
     }
 
-#        if ( $LOADEDPLUGIN->{STATUS} eq 'O' ) {
-#
-#            if ( !$LOADEDPLUGIN->can('remediate') ) {
-#                next;
-#            }
-#
-#            push @PLUGINS, $LOADEDPLUGIN;
-#        }
-#
-#    }
-
     return 1;
 }
-
-#sub run_remediations {
-#
-#    foreach my $PLUGIN (@PLUGINS) {
-#        $PLUGIN->remediate();
-#    }
-#
-#    run_checks();
-#    return 1;
-#}
 
 
 __END__
