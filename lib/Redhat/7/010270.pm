@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71933';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000077-GPOS-00045';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71933';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86557r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010270';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000077-GPOS-00045';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Passwords must be prohibited from reuse for a minimum of five generations.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86557r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010270';
+}
+
+sub get_rule_title {
+    return
+        'Passwords must be prohibited from reuse for a minimum of five generations.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed per policy requirements.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system prohibits password reuse for a minimum of five generations.
 
 
@@ -126,12 +122,10 @@ password sufficient pam_unix.so use_authtok sha512 shadow remember=5
 
 If the line containing the ""pam_unix.so"" line does not have the ""remember"" module argument set, or the value of the ""remember"" module argument is set to less than ""5"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to prohibit password reuse for a minimum of five generations.
 
 
@@ -146,12 +140,10 @@ password sufficient pam_unix.so use_authtok sha512 shadow remember=5
 
 and run the ""authconfig"" command.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000200
 
 The information system prohibits password reuse for the organization defined number of generations.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (e)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -51,11 +51,11 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( parse_file( '/etc/yum.conf', 'gpgcheck\s*=\s*1' ) ) {
-        $self->{STATUS} = 'NF';
+    if ( ingest_file( '/etc/yum.conf', 'gpgcheck\s*=\s*1' ) ) {
+        $self->_set_finding_status('NF');
     }
     else {
-        $self->{STATUS} = 'O';
+        $self->_set_finding_status('O');
     }
     return $self;
 }
@@ -66,54 +66,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38483';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000103';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38483';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50283r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000013';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000103';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system package management tool must cryptographically verify the authenticity of system software packages during installation.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50283r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000013';
+}
+
+sub get_rule_title {
+    return
+        'The system package management tool must cryptographically verify the authenticity of system software packages during installation.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Ensuring the validity of packages' cryptographic signatures prior to installation ensures the provenance of the software and protects against malicious tampering.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To determine whether ""yum"" is configured to use ""gpgcheck"", inspect ""/etc/yum.conf"" and ensure the following appears in the ""[main]"" section:
 
 
@@ -130,24 +126,20 @@ If GPG checking is not enabled, this is a finding.
 
 If the ""yum"" system package management tool is not used to update the system, verify with the SA that installed packages are cryptographically signed.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""gpgcheck"" option should be used to ensure checking of an RPM package's signature always occurs prior to its installation. To configure yum to check package signatures before installing them, ensure the following line appears in ""/etc/yum.conf"" in the ""[main]"" section:
 
 
 
 gpgcheck=1
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000663
 
 The organization (or information system) enforces explicit rules governing the installation of software by users.
@@ -160,7 +152,6 @@ NIST SP 800-53A :: SA-7.1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

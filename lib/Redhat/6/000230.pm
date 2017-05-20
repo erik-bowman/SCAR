@@ -51,11 +51,12 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( parse_file( '^ClientAliveInterval\W+900$', '/etc/ssh/sshd_config' ) ) {
-        $self->{STATUS} = 'NF';
+    if ( ingest_file( '/etc/ssh/sshd_config', '^ClientAliveInterval\W+900$' ) )
+    {
+        $self->_set_finding_status('NF');
     }
     else {
-        $self->{STATUS} = 'O';
+        $self->_set_finding_status('O');
     }
     return $self;
 }
@@ -66,54 +67,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38608';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000163';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38608';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50409r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000230';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000163';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The SSH daemon must set a timeout interval on idle sessions.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50409r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000230';
+}
+
+sub get_rule_title {
+    return 'The SSH daemon must set a timeout interval on idle sessions.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Causing idle users to be automatically logged out guards against compromises one system leading trivially to compromises on another.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Run the following command to see what the timeout interval is:
 
 
@@ -134,12 +130,10 @@ ClientAliveInterval 900
 
 If it is not, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 SSH allows administrators to set an idle timeout interval. After this interval has passed, the idle user will be automatically logged out.
 
 
@@ -158,12 +152,10 @@ The timeout [interval] is given in seconds. To have a timeout of 15 minutes, set
 
 If a shorter timeout has already been set for the login shell, that value will preempt any SSH setting made here. Keep in mind that some processes may stop SSH from correctly detecting that the user is idle.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001133
 
 The information system terminates the network connection associated with a communications session at the end of the session or after an organization-defined time period of inactivity.
@@ -178,7 +170,6 @@ NIST SP 800-53 Revision 4 :: SC-10
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

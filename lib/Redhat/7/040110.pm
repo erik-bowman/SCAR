@@ -62,46 +62,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72221';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000033-GPOS-00014';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72221';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86845r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-040110';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000033-GPOS-00014';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'A FIPS 140-2 approved cryptographic algorithm must be used for SSH communications.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86845r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-040110';
+}
+
+sub get_rule_title {
+    return
+        'A FIPS 140-2 approved cryptographic algorithm must be used for SSH communications.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.
 
 
@@ -116,12 +114,10 @@ FIPS 140-2 is the current standard for validating that mechanisms used to access
 
 Satisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000120-GPOS-00061, SRG-OS-000125-GPOS-00065, SRG-OS-000250-GPOS-00093, SRG-OS-000393-GPOS-00173
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system uses mechanisms meeting the requirements of applicable federal laws, Executive orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.
 
 
@@ -146,12 +142,10 @@ Ciphers aes128-ctr,aes192-ctr,aes256-ctr
 
 If any ciphers other than ""aes128-ctr"", ""aes192-ctr"", or ""aes256-ctr"" are listed, the ""Ciphers"" keyword is missing, or the retuned line is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure SSH to use FIPS 140-2 approved cryptographic algorithms.
 
 
@@ -166,12 +160,10 @@ Ciphers aes128-ctr,aes192-ctr,aes256-ctr
 
 The SSH service must be restarted for changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000068
 
 The information system implements cryptographic mechanisms to protect the confidentiality of remote access sessions.
@@ -210,7 +202,6 @@ NIST SP 800-53 Revision 4 :: IA-7
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

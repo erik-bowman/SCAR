@@ -62,54 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38643';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-999999';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38643';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50444r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000282';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-999999';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'There must be no world-writable files on the system.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50444r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000282';
+}
+
+sub get_rule_title {
+    return 'There must be no world-writable files on the system.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Data in world-writable files can be modified by any user on the system. In almost all circumstances, files can be configured using a combination of user and group permissions to support whatever legitimate access is needed without the risk caused by world-writable files.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To find world-writable files, run the following command for each local partition [PART], excluding special filesystems such as /selinux, /proc, or /sys:
 
 
@@ -120,20 +115,16 @@ To find world-writable files, run the following command for each local partition
 
 If there is output, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 It is generally a good idea to remove global (other) write access to a file when it is discovered. However, check with documentation for specific applications before making changes. Also, monitor for recurring world-writable files, as these may be symptoms of a misconfigured application or user account.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000366
 
 The organization implements the security configuration settings.
@@ -148,7 +139,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

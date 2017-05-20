@@ -62,58 +62,53 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71897';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000029-GPOS-00010';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71897';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86521r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010090';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000029-GPOS-00010';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must have the screen package installed.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86521r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010090';
+}
+
+sub get_rule_title {
+    return 'The operating system must have the screen package installed.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, operating systems need to be able to identify when a user's session has idled and take action to initiate the session lock.
 
 
 
 The screen package allows for a session lock to be implemented and configured.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system has the screen package installed.
 
 
@@ -130,12 +125,10 @@ screen-4.3.1-3-x86_64.rpm
 
 If is not installed, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Install the screen package to allow the initiation a session lock after a 15-minute period of inactivity for graphical users interfaces.
 
 
@@ -154,12 +147,10 @@ The console can now be locked with the following key combination:
 
 ctrl+A x
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000057
 
 The information system initiates a session lock after the organization-defined time period of inactivity.
@@ -174,7 +165,6 @@ NIST SP 800-53 Revision 4 :: AC-11 a
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

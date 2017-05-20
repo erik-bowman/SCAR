@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38446';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-999999';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38446';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50246r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000521';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-999999';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The mail system must forward all mail for root to one or more system administrators.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50246r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000521';
+}
+
+sub get_rule_title {
+    return
+        'The mail system must forward all mail for root to one or more system administrators.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 A number of system services utilize email messages sent to the root user to notify system administrators of active or impending issues.  These messages must be forwarded to at least one monitored email address.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Find the list of alias maps used by the Postfix mail server:
 
 
@@ -128,12 +124,10 @@ Query the Postfix alias maps for an alias for ""root"":
 
 If there are no aliases configured for root that forward to a monitored email address, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Set up an alias for root that forwards to a monitored email address:
 
 
@@ -142,12 +136,10 @@ Set up an alias for root that forwards to a monitored email address:
 
 # newaliases
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000366
 
 The organization implements the security configuration settings.
@@ -162,7 +154,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

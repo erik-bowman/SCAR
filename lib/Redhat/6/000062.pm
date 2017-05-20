@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38574';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000120';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38574';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50375r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000062';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000120';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes (system-auth).';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50375r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000062';
+}
+
+sub get_rule_title {
+    return
+        'The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes (system-auth).';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Inspect the ""password"" section of ""/etc/pam.d/system-auth"", ""/etc/pam.d/system-auth-ac"", and other files in ""/etc/pam.d"" to identify the number of occurrences where the ""pam_unix.so"" module is used in the ""password"" section.
 
 $ grep -E -c 'password.*pam_unix.so' /etc/pam.d/*
@@ -180,12 +176,10 @@ If any of the identified ""pam_unix.so"" modules do not use the ""sha512"" varia
 
 
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 In ""/etc/pam.d/system-auth"", ""/etc/pam.d/system-auth-ac"", ""/etc/pam.d/password-auth"", and ""/etc/pam.d/password-auth-ac"", among potentially other files, the ""password"" section of the files controls which PAM modules execute during a password change. Set the ""pam_unix.so"" module in the ""password"" section to include the argument ""sha512"", as shown below:
 
 
@@ -202,12 +196,10 @@ Note that any updates made to ""/etc/pam.d/system-auth"" will be overwritten by 
 
 
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000803
 
 The information system implements mechanisms for authentication to a cryptographic module that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for such authentication.
@@ -222,7 +214,6 @@ NIST SP 800-53 Revision 4 :: IA-7
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

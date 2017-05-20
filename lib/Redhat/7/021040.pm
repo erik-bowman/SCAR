@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72049';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000480-GPOS-00227';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72049';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86673r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-021040';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The umask must be set to 077 for all local interactive user accounts.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86673r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-021040';
+}
+
+sub get_rule_title {
+    return
+        'The umask must be set to 077 for all local interactive user accounts.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The umask controls the default access mode assigned to newly created files. A umask of 077 limits new files to mode 700 or less permissive. Although umask can be represented as a four-digit number, the first digit representing special access modes is typically ignored or required to be ""0"". This requirement applies to the globally configured system defaults and the local interactive user defaults for each account on the system.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify that the default umask for all local interactive users is ""077"".
 
 
@@ -132,24 +128,20 @@ Note: The example is for a system that is configured to create users home direct
 
 If any local interactive user initialization files are found to have a umask statement that has a value less restrictive than ""077"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Remove the umask statement from all local interactive users’ initialization files.
 
 
 
 If the account is for an application, the requirement for a umask less restrictive than ""077"" can be documented with the Information System Security Officer, but the user agreement for access to the account must specify that the local interactive user must log on to their account first and then switch the user to the application account with the correct option to gain the account’s environment variables.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000318
 
 The organization audits and reviews activities associated with configuration controlled changes to the system.
@@ -200,7 +192,6 @@ NIST SP 800-53 Revision 4 :: CM-5 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

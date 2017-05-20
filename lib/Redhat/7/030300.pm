@@ -62,46 +62,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72083';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000342-GPOS-00133';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72083';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86707r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-030300';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000342-GPOS-00133';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must off-load audit records onto a different system or media from the system being audited.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86707r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-030300';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must off-load audit records onto a different system or media from the system being audited.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
 
 
@@ -112,12 +110,10 @@ Off-loading is a common process in information systems with limited audit storag
 
 Satisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system off-loads audit records onto a different system or media from the system being audited.
 
 
@@ -138,24 +134,20 @@ If a remote server is not configured, or the line is commented out, ask the Syst
 
 If there is no evidence that the audit logs are being off-loaded to another system or media, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to off-load audit records onto a different system or media from the system being audited.
 
 
 
 Set the remote server option in ""/etc/audisp/audisp-remote.conf"" with the IP address of the log aggregation server.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001851
 
 The information system off-loads audit records per organization-defined frequency onto a different system or media than the system being audited.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: AU-4 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

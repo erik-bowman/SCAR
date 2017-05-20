@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72075';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000364-GPOS-00151';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72075';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86699r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-021700';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000364-GPOS-00151';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must not allow removable media to be used as the boot loader unless approved.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86699r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-021700';
+}
+
+sub get_rule_title {
+    return
+        'The system must not allow removable media to be used as the boot loader unless approved.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Malicious users with removable boot media can gain access to a system configured to use removable media as the boot loader. If removable media is designed to be used as the boot loader, the requirement must be documented with the Information System Security Officer (ISSO).
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the system is not configured to use a boot loader on removable media.
 
 
@@ -148,20 +144,16 @@ set root=(hd0,1)
 
 If the system is using an alternate boot loader on removable media, and documentation does not exist approving the alternate configuration, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Remove alternate methods of booting the system from removable media or document the configuration to boot from removable media with the ISSO.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000318
 
 The organization audits and reviews activities associated with configuration controlled changes to the system.
@@ -212,7 +204,6 @@ NIST SP 800-53 Revision 4 :: CM-5 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

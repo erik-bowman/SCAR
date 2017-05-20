@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38636';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-999999';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38636';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50437r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000159';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-999999';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must retain enough rotated audit logs to cover the required log retention period.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50437r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000159';
+}
+
+sub get_rule_title {
+    return
+        'The system must retain enough rotated audit logs to cover the required log retention period.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The total storage for audit log files must be large enough to retain log information over the period required. This is a function of the maximum log file size and the number of logs retained.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Inspect ""/etc/audit/auditd.conf"" and locate the following line to determine how many logs the system is configured to retain after rotation: ""# grep num_logs /etc/audit/auditd.conf""
 
 
@@ -122,12 +118,10 @@ num_logs = 5
 
 If the overall system log file(s) retention hasn't been properly set up, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Determine how many log files ""auditd"" should retain when it rotates logs. Edit the file ""/etc/audit/auditd.conf"". Add or modify the following line, substituting [NUMLOGS] with the correct value:
 
 
@@ -138,12 +132,10 @@ num_logs = [NUMLOGS]
 
 Set the value to 5 for general-purpose systems. Note that values less than 2 result in no log rotation.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000366
 
 The organization implements the security configuration settings.
@@ -158,7 +150,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

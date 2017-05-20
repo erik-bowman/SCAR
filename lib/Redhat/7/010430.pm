@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71951';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000480-GPOS-00226';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71951';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86575r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010430';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000480-GPOS-00226';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The delay between logon prompts following a failed console logon attempt must be at least four seconds.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86575r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010430';
+}
+
+sub get_rule_title {
+    return
+        'The delay between logon prompts following a failed console logon attempt must be at least four seconds.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Configuring the operating system to implement organization-wide security implementation guides and security checklists verifies compliance with federal standards and establishes a common security baseline across DoD that reflects the most restrictive security posture consistent with operational requirements.
 
 
 
 Configuration settings are the set of parameters that can be changed in hardware, software, or firmware components of the system that affect the security posture and/or functionality of the system. Security-related parameters are those parameters impacting the security state of the system, including the parameters required to satisfy other security control requirements. Security-related parameters include, for example, registry settings; account, file, and directory permission settings; and settings for functions, ports, protocols, services, and remote connections.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system enforces a delay of at least four seconds between console logon prompts following a failed logon attempt.
 
 
@@ -130,12 +126,10 @@ FAIL_DELAY 4
 
 If the value of ""FAIL_DELAY"" is not set to ""4"" or greater, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to enforce a delay of at least four seconds between logon prompts following a failed console logon attempt.
 
 
@@ -146,12 +140,10 @@ Modify the ""/etc/login.defs"" file to set the ""FAIL_DELAY"" parameter to ""4""
 
 FAIL_DELAY 4
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000366
 
 The organization implements the security configuration settings.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

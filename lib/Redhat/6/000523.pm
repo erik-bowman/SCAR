@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38444';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000231';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38444';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50244r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000523';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000231';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The systems local IPv6 firewall must implement a deny-all, allow-by-exception policy for inbound packets.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50244r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000523';
+}
+
+sub get_rule_title {
+    return
+        'The systems local IPv6 firewall must implement a deny-all, allow-by-exception policy for inbound packets.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 In ""ip6tables"" the default policy is applied only after all the applicable rules in the table are examined for a match. Setting the default policy to ""DROP"" implements proper design for a firewall, i.e., any packets which are not explicitly permitted should not be accepted.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If IPv6 is disabled, this is not applicable.
 
 
@@ -124,12 +120,10 @@ Inspect the file ""/etc/sysconfig/ip6tables"" to determine the default policy fo
 
 If the default policy for the INPUT chain is not set to DROP, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To set the default policy to DROP (instead of ACCEPT) for the built-in INPUT chain which processes incoming packets, add or correct the following line in ""/etc/sysconfig/ip6tables"":
 
 
@@ -144,12 +138,10 @@ Restart the IPv6 firewall:
 
 # service ip6tables restart
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000066
 
 The organization enforces requirements for remote connections to the information system.
@@ -162,7 +154,6 @@ NIST SP 800-53A :: AC-17.1 (v)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

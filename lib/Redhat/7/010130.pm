@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71905';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000070-GPOS-00038';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71905';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86529r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010130';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000070-GPOS-00038';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'When passwords are changed or new passwords are established, the new password must contain at least one lower-case character.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86529r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010130';
+}
+
+sub get_rule_title {
+    return
+        'When passwords are changed or new passwords are established, the new password must contain at least one lower-case character.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
 
 
 
 Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Note: The value to require a number of lower-case characters to be set is expressed as a negative number in ""/etc/security/pwquality.conf"".
 
 
@@ -130,12 +126,10 @@ lcredit = -1
 
 If the value of ""lcredit"" is not set to a negative value, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to lock an account for the maximum period when three unsuccessful logon attempts in 15 minutes are made.
 
 
@@ -158,12 +152,10 @@ auth        [default=die]  pam_faillock.so authfail audit deny=3 even_deny_root 
 
 and run the ""authconfig"" command.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000193
 
 The information system enforces password complexity by the minimum number of lower case characters used.
@@ -178,7 +170,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (a)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

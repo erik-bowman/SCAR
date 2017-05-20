@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38700';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000196';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38700';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50501r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000305';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000196';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must provide a near real-time alert when any of the organization defined list of compromise or potential compromise indicators occurs. ';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50501r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000305';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must provide a near real-time alert when any of the organization defined list of compromise or potential compromise indicators occurs. ';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 By default, AIDE does not install itself for periodic execution. Periodically running AIDE may reveal unexpected changes in installed files.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To determine that periodic AIDE execution has been scheduled, run the following command:
 
 
@@ -120,12 +116,10 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 
 If there is no output, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 AIDE should be executed on a periodic basis to check for changes. To implement a daily execution of AIDE at 4:05am using cron, add the following line to /etc/crontab:
 
 
@@ -136,12 +130,10 @@ AIDE should be executed on a periodic basis to check for changes. To implement a
 
 AIDE can be executed periodically through other means; this is merely one example.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001263
 
 The information system provides near real-time alerts when any of the  organization defined list of compromise or potential compromise indicators occurs.
@@ -154,7 +146,6 @@ NIST SP 800-53A :: SI-4 (5).1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

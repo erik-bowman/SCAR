@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38578';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000064';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38578';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50379r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000201';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000064';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The audit system must be configured to audit changes to the /etc/sudoers file.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50379r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000201';
+}
+
+sub get_rule_title {
+    return
+        'The audit system must be configured to audit changes to the /etc/sudoers file.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The actions taken by system administrators should be audited to keep a record of what was executed on the system, as well as, for accountability purposes.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To verify that auditing is configured for system administrator actions, run the following command:
 
 
@@ -124,24 +120,20 @@ If the system is configured to watch for changes to its sudoers configuration, a
 
 If there is no output, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 At a minimum, the audit system should collect administrator actions for all users and root. Add the following to ""/etc/audit/audit.rules"":
 
 
 
 -w /etc/sudoers -p wa -k actions
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000172
 
 The information system generates audit records for the events defined in AU-2 d with the content defined in AU-3.
@@ -156,7 +148,6 @@ NIST SP 800-53 Revision 4 :: AU-12 c
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

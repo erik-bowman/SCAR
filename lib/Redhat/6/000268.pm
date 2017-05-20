@@ -62,53 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38650';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000096';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38650';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50451r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000268';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000096';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE} = 'The rdisc service must not be running.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50451r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000268';
+}
+
+sub get_rule_title {
+    return 'The rdisc service must not be running.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 General-purpose systems typically have their network and routing information configured statically by a system administrator. Workstations or some special-purpose systems often use DHCP (instead of IRDP) to retrieve dynamic network configuration information.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To check that the ""rdisc"" service is disabled in system boot configuration, run the following command:
 
 
@@ -147,12 +143,10 @@ rdisc is stopped
 
 If the service is running, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""rdisc"" service implements the client side of the ICMP Internet Router Discovery Protocol (IRDP), which allows discovery of routers on the local subnet. If a router is discovered then the local routing table is updated with a corresponding default route. By default this daemon is disabled. The ""rdisc"" service can be disabled with the following commands:
 
 
@@ -161,12 +155,10 @@ The ""rdisc"" service implements the client side of the ICMP Internet Router Dis
 
 # service rdisc stop
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000382
 
 The organization configures the information system to prohibit or restrict the use of organization defined functions, ports, protocols, and/or services.
@@ -181,7 +173,6 @@ NIST SP 800-53 Revision 4 :: CM-7 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

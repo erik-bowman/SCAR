@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71961';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000080-GPOS-00048';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71961';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86585r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010480';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000080-GPOS-00048';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Systems with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86585r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010480';
+}
+
+sub get_rule_title {
+    return
+        'Systems with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 If the system does not require valid root authentication before it boots into single-user or maintenance mode, anyone who invokes single-user or maintenance mode is granted privileged access to all files on the system. GRUB 2 is the default boot loader for RHEL 7 and is designed to require a password to boot into single-user mode or make modifications to the boot menu.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Check to see if an encrypted root password is set. On systems that use a BIOS, use the following command:
 
 
@@ -122,12 +118,10 @@ password_pbkdf2 superusers-account password-hash
 
 If the root password entry does not begin with ""password_pbkdf2"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the system to encrypt the boot password for root.
 
 
@@ -170,12 +164,10 @@ Generate a new ""grub.conf"" file with the new password with the following comma
 
 # mv /tmp/grub2.cfg /boot/grub2/grub.cfg
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000213
 
 The information system enforces approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
@@ -190,7 +182,6 @@ NIST SP 800-53 Revision 4 :: AC-3
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

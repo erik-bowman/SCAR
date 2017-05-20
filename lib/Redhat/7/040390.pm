@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72251';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000074-GPOS-00042';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72251';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86875r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-040390';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000074-GPOS-00042';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The SSH daemon must be configured to only use the SSHv2 protocol.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86875r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-040390';
+}
+
+sub get_rule_title {
+    return
+        'The SSH daemon must be configured to only use the SSHv2 protocol.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 SSHv1 is an insecure implementation of the SSH protocol and has many well-known vulnerability exploits. Exploits of the SSH daemon could provide immediate root access to the system.
 
 
 
 Satisfies: SRG-OS-000074-GPOS-00042, SRG-OS-000480-GPOS-00227
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the SSH daemon is configured to only use the SSHv2 protocol.
 
 
@@ -132,12 +128,10 @@ Protocol 2
 
 If any protocol line other than ""Protocol 2"" is uncommented, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Remove all Protocol lines that reference version ""1"" in ""/etc/ssh/sshd_config"" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor). The ""Protocol"" line must be as follows:
 
 
@@ -148,12 +142,10 @@ Protocol 2
 
 The SSH service must be restarted for changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000197
 
 The information system, for password-based authentication, transmits only encrypted representations of passwords.
@@ -180,7 +172,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

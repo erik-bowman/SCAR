@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38599';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000023';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38599';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50400r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000348';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000023';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The FTPS/FTP service on the system must be configured with the Department of Defense (DoD) login banner.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50400r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000348';
+}
+
+sub get_rule_title {
+    return
+        'The FTPS/FTP service on the system must be configured with the Department of Defense (DoD) login banner.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 This setting will cause the system greeting banner to be used for FTP connections as well.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To verify this configuration, run the following command:
 
 
@@ -132,12 +128,10 @@ banner_file=/etc/issue
 
 If it does not, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Edit the vsftpd configuration file, which resides at ""/etc/vsftpd/vsftpd.conf"" by default. Add or correct the following configuration options.
 
 
@@ -152,12 +146,10 @@ Restart the vsftpd daemon.
 
 # service vsftpd restart
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000048
 
 The information system displays an organization-defined system use notification message or banner before granting access to the system that provides privacy and security notices consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
@@ -172,7 +164,6 @@ NIST SP 800-53 Revision 4 :: AC-8 a
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

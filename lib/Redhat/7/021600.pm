@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72069';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000480-GPOS-00227';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72069';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86693r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-021600';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The file integrity tool must be configured to verify Access Control Lists (ACLs).';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86693r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-021600';
+}
+
+sub get_rule_title {
+    return
+        'The file integrity tool must be configured to verify Access Control Lists (ACLs).';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 ACLs can provide permissions beyond those permitted through the file mode and must be verified by file integrity tools.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the file integrity tool is configured to verify ACLs.
 
 
@@ -160,24 +156,20 @@ All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
 
 If the ""acl"" rule is not being used on all selection lines in the ""/etc/aide.conf"" file, or ACLs are not being checked by another file integrity tool, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the file integrity tool to check file and directory ACLs.
 
 
 
 If AIDE is installed, ensure the ""acl"" rule is present on all file and directory selection lists.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000366
 
 The organization implements the security configuration settings.
@@ -192,7 +184,6 @@ NIST SP 800-53 Revision 4 :: CM-6 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

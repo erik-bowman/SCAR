@@ -3,6 +3,7 @@
     <words>
       <w>auid</w>
       <w>chown</w>
+      <w>devel</w>
       <w>fchmod</w>
       <w>fchmodat</w>
       <w>fchown</w>
@@ -13,7 +14,12 @@
       <w>lchown</w>
       <w>lremovexattr</w>
       <w>lsetxattr</w>
+      <w>nolq</w>
+      <w>npro</w>
+      <w>nsfs</w>
+      <w>perlcriticrc</w>
       <w>perltidyrc</w>
+      <w>pluggable</w>
       <w>postdrop</w>
       <w>postqueue</w>
       <w>removexattr</w>

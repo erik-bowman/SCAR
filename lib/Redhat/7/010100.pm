@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71899';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000029-GPOS-00010';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71899';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86523r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010100';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000029-GPOS-00010';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86523r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010100';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, operating systems need to be able to identify when a user's session has idled and take action to initiate the session lock.
 
 
 
 The session lock is implemented at the point where session activity can be determined and/or controlled.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system initiates a session lock after a 15-minute period of inactivity for graphical user interfaces. The screen program must be installed to lock sessions on the console.
 
 
@@ -130,12 +126,10 @@ If it is installed, GNOME must be configured to enforce a session lock after a 1
 
 If ""idle-activation-enabled"" is not set to ""true"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to initiate a session lock after a 15-minute period of inactivity for graphical user interfaces.
 
 
@@ -158,12 +152,10 @@ Add the setting to enable screensaver locking after 15 minutes of inactivity:
 
 idle-activation-enabled=true
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000057
 
 The information system initiates a session lock after the organization-defined time period of inactivity.
@@ -178,7 +170,6 @@ NIST SP 800-53 Revision 4 :: AC-11 a
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

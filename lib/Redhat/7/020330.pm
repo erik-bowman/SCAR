@@ -62,54 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72009';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000480-GPOS-00227';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72009';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86633r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-020330';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'All files and directories must have a valid group owner.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86633r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-020330';
+}
+
+sub get_rule_title {
+    return 'All files and directories must have a valid group owner.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Files without a valid group owner may be unintentionally inherited if a group is assigned the same Group Identifier (GID) as the GID of the files without a valid group owner.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify all files and directories on the system have a valid group.
 
 
@@ -128,24 +123,20 @@ Note: The value after -fstype must be replaced with the filesystem type. XFS is 
 
 If any files on the system do not have an assigned group, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Either remove all files and directories from the system that do not have a valid group, or assign a valid group to all files and directories on the system with the ""chgrp"" command:
 
 
 
 # chgrp <group> <file>
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-002165
 
 The information system enforces organization-defined discretionary access control policies over defined subjects and objects.
@@ -156,7 +147,6 @@ NIST SP 800-53 Revision 4 :: AC-3 (4)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

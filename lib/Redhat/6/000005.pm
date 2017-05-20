@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38470';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000045';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38470';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50270r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000005';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000045';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The audit system must alert designated staff members when the audit storage volume approaches capacity.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50270r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000005';
+}
+
+sub get_rule_title {
+    return
+        'The audit system must alert designated staff members when the audit storage volume approaches capacity.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Notifying administrators of an impending disk space problem may allow them to take corrective action prior to any disruption.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Inspect ""/etc/audit/auditd.conf"" and locate the following line to determine if the system is configured to email the administrator when disk space is starting to run low:
 
 
@@ -124,12 +120,10 @@ space_left_action = email
 
 If the system is not configured to send an email to the system administrator when disk space is starting to run low, this is a finding.  The ""syslog"" option is acceptable when it can be demonstrated that the local log management infrastructure notifies an appropriate administrator in a timely manner.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""auditd"" service can be configured to take an action when disk space starts to run low. Edit the file ""/etc/audit/auditd.conf"". Modify the following line, substituting [ACTION] appropriately:
 
 
@@ -166,12 +160,10 @@ Set this to ""email"" (instead of the default, which is ""suspend"") as it is mo
 
 RHEL-06-000521 ensures that the email generated through the operation ""space_left_action"" will be sent to an administrator.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000138
 
 The organization configures auditing to reduce the likelihood of storage capacity being exceeded.
@@ -184,7 +176,6 @@ NIST SP 800-53A :: AU-4.1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

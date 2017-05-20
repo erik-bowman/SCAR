@@ -62,54 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38460';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000104';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38460';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50260r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000515';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000104';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The NFS server must not have the all_squash option enabled.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50260r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000515';
+}
+
+sub get_rule_title {
+    return 'The NFS server must not have the all_squash option enabled.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The ""all_squash"" option maps all client requests to a single anonymous uid/gid on the NFS server, negating the ability to track file access by user ID.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If the NFS server is read-only, in support of unrestricted access to organizational content, this is not applicable.
 
 
@@ -130,24 +125,20 @@ To verify the ""all_squash"" option has been disabled, run the following command
 
 If there is output, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Remove any instances of the ""all_squash"" option from the file ""/etc/exports"".  Restart the NFS daemon for the changes to take effect.
 
 
 
 # service nfs restart
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000764
 
 The information system uniquely identifies and authenticates organizational users (or processes acting on behalf of organizational users).
@@ -162,7 +153,6 @@ NIST SP 800-53 Revision 4 :: IA-2
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71943';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000329-GPOS-00128';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71943';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86567r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010320';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000329-GPOS-00128';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Accounts subject to three unsuccessful logon attempts within 15 minutes must be locked for the maximum configurable period.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86567r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010320';
+}
+
+sub get_rule_title {
+    return
+        'Accounts subject to three unsuccessful logon attempts within 15 minutes must be locked for the maximum configurable period.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
 
 
 
 Satisfies: SRG-OS-000329-GPOS-00128, SRG-OS-000021-GPOS-00005
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system automatically locks an account for the maximum period for which the system can be configured.
 
 
@@ -132,12 +128,10 @@ auth        [default=die]  pam_faillock.so authfail audit deny=3 even_deny_root 
 
 If the ""unlock_time"" setting is greater than ""604800"" on both lines with the ""pam_faillock.so"" module name or is missing from a line, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to lock an account for the maximum period when three unsuccessful logon attempts in 15 minutes are made.
 
 
@@ -156,12 +150,10 @@ auth        [default=die]  pam_faillock.so authfail audit deny=3 even_deny_root 
 
 and run the ""authconfig"" command.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-002238
 
 The information system automatically locks the account or node for either an organization-defined time period, until the locked account or node is released by an administrator, or delays the next login prompt according to the organization-defined delay algorithm when the maximum number of unsuccessful attempts is exceeded.
@@ -172,7 +164,6 @@ NIST SP 800-53 Revision 4 :: AC-7 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

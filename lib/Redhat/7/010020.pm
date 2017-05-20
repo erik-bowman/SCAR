@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71855';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000480-GPOS-00227';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71855';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86479r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010020';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The cryptographic hash of system files and commands must match vendor values.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86479r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010020';
+}
+
+sub get_rule_title {
+    return
+        'The cryptographic hash of system files and commands must match vendor values.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Without cryptographic integrity protections, system command and files can be altered by unauthorized users without detection.
 
 
 
 Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the key used to generate the hash.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the cryptographic hash of system files and commands match the vendor values.
 
 
@@ -132,12 +128,10 @@ Note: System configuration files (indicated by a ""c"" in the second column) are
 
 If there is any output from the command for system binaries, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Run the following command to determine which package owns the file:
 
 
@@ -160,12 +154,10 @@ Alternatively, the package can be reinstalled from trusted media using the comma
 
 # sudo rpm -Uvh <packagename>
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000663
 
 The organization (or information system) enforces explicit rules governing the installation of software by users.
@@ -178,7 +170,6 @@ NIST SP 800-53A :: SA-7.1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

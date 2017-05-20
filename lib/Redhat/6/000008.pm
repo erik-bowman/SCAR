@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38476';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000090';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38476';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50276r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000008';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000090';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Vendor-provided cryptographic certificates must be installed to verify the integrity of system software.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50276r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000008';
+}
+
+sub get_rule_title {
+    return
+        'Vendor-provided cryptographic certificates must be installed to verify the integrity of system software.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The Red Hat GPG keys are necessary to cryptographically verify packages are from Red Hat.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To ensure that the GPG keys are installed, run:
 
 
@@ -130,12 +126,10 @@ gpg-pubkey-2fa658e0-45700c69
 
 If the Red Hat GPG Keys are not installed, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To ensure the system can cryptographically verify base software packages come from Red Hat (and to connect to the Red Hat Network to receive them), the Red Hat GPG keys must be installed properly. To install the Red Hat GPG keys, run:
 
 
@@ -150,12 +144,10 @@ If the system is not connected to the Internet or an RHN Satellite, then install
 
 # rpm --import /media/cdrom/RPM-GPG-KEY
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000352
 
 The information system prevents the installation of organization defined critical software programs that are not signed with a certificate that is recognized and approved by the organization.
@@ -168,7 +160,6 @@ NIST SP 800-53A :: CM-5 (3).1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

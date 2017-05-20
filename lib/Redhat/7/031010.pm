@@ -62,56 +62,52 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72211';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000480-GPOS-00227';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72211';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86835r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-031010';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The rsyslog daemon must not accept log messages from other servers unless the server is being used for log aggregation.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86835r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-031010';
+}
+
+sub get_rule_title {
+    return
+        'The rsyslog daemon must not accept log messages from other servers unless the server is being used for log aggregation.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information in to the system's logs, or could fill the system's storage leading to a Denial of Service.
 
 If the system is intended to be a log aggregation server its use must be documented with the ISSO.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify that the system is not accepting ""rsyslog"" messages from other systems unless it is documented as a log aggregation server.
 
 
@@ -132,20 +128,16 @@ If the ""imtcp"" module is being loaded in the ""/etc/rsyslog.conf"" file, ask t
 
 If the documentation does not exist, or does not specify the server as a log aggregation system, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Modify the ""/etc/rsyslog.conf"" file to remove the ""ModLoad imtcp"" configuration line, or document the system as being used for log aggregation.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000318
 
 The organization audits and reviews activities associated with configuration controlled changes to the system.
@@ -196,7 +188,6 @@ NIST SP 800-53 Revision 4 :: CM-5 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

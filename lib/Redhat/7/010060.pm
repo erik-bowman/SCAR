@@ -62,46 +62,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71891';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000028-GPOS-00009';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71891';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86515r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010060';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000028-GPOS-00009';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must enable a user session lock until that user re-establishes access using established identification and authentication procedures.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86515r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010060';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must enable a user session lock until that user re-establishes access using established identification and authentication procedures.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
 
 
@@ -116,12 +114,10 @@ Regardless of where the session lock is determined and implemented, once invoked
 
 Satisfies: SRG-OS-000028-GPOS-00009, SRG-OS-000030-GPOS-00011
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system enables a user's session lock until that user re-establishes access using established identification and authentication procedures. The screen program must be installed to lock sessions on the console.
 
 
@@ -142,12 +138,10 @@ lock-enabled=true
 
 If the ""lock-enabled"" setting is missing or is not set to ""true"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to enable a user's session lock until that user re-establishes access using established identification and authentication procedures.
 
 
@@ -212,12 +206,10 @@ Update the system databases:
 
 Users must log out and back in again before the system-wide settings take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000056
 
 The information system retains the session lock until the user reestablishes access using established identification and authentication procedures.
@@ -232,7 +224,6 @@ NIST SP 800-53 Revision 4 :: AC-11 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

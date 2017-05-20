@@ -62,53 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38644';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000096';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38644';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50445r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000265';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000096';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE} = 'The ntpdate service must not be running.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50445r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000265';
+}
+
+sub get_rule_title {
+    return 'The ntpdate service must not be running.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The ""ntpdate"" service may only be suitable for systems which are rebooted frequently enough that clock drift does not cause problems between reboots. In any event, the functionality of the ntpdate service is now available in the ntpd program and should be considered deprecated.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To check that the ""ntpdate"" service is disabled in system boot configuration, run the following command:
 
 
@@ -147,12 +143,10 @@ ntpdate is stopped
 
 If the service is running, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ntpdate service sets the local hardware clock by polling NTP servers when the system boots. It synchronizes to the NTP servers listed in ""/etc/ntp/step-tickers"" or ""/etc/ntp.conf"" and then sets the local hardware clock to the newly synchronized system time. The ""ntpdate"" service can be disabled with the following commands:
 
 
@@ -161,12 +155,10 @@ The ntpdate service sets the local hardware clock by polling NTP servers when th
 
 # service ntpdate stop
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000382
 
 The organization configures the information system to prohibit or restrict the use of organization defined functions, ports, protocols, and/or services.
@@ -181,7 +173,6 @@ NIST SP 800-53 Revision 4 :: CM-7 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

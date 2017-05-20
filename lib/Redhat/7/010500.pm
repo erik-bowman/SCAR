@@ -62,46 +62,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71965';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000104-GPOS-00051';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71965';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86589r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010500';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000104-GPOS-00051';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86589r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010500';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
 
 
@@ -124,12 +122,10 @@ and
 
 Satisfies: SRG-OS-000104-GPOS-00051, SRG-OS-000106-GPOS-00053, SRG-OS-000107-GPOS-00054, SRG-OS-000109-GPOS-00056, SRG-OS-000108-GPOS-00055, SRG-OS-000108-GPOS-00057, SRG-OS-000108-GPOS-00058
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system requires multifactor authentication to uniquely identify organizational users using multifactor authentication.
 
 
@@ -148,12 +144,10 @@ The entry for use only smartcard for logon may be enabled, and the smartcard mod
 
 If smartcard authentication is disabled or the smartcard and smartcard removal actions are blank, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to require individuals to be authenticated with a multifactor authenticator.
 
 
@@ -178,12 +172,10 @@ Modify the ""/etc/pam_pkcs11/pkcs11_eventmgr.conf"" file to uncomment the follow
 
 Modify the ""/etc/pam_pkcs11/pam_pkcs11.conf"" file to use the cackey module if required.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000766
 
 The information system implements multifactor authentication for network access to non-privileged accounts.
@@ -198,7 +190,6 @@ NIST SP 800-53 Revision 4 :: IA-2 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

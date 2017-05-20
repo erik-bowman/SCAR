@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38530';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000062';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38530';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50331r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000173';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000062';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The audit system must be configured to audit all attempts to alter system time through /etc/localtime.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50331r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000173';
+}
+
+sub get_rule_title {
+    return
+        'The audit system must be configured to audit all attempts to alter system time through /etc/localtime.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Arbitrary changes to the system time can be used to obfuscate nefarious activities in log files, as well as to confuse network services that are highly dependent upon an accurate system time (such as sshd). All changes to the system time should be audited.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To determine if the system is configured to audit attempts to alter time via the /etc/localtime file, run the following command:
 
 
@@ -124,12 +120,10 @@ If the system is configured to audit this activity, it will return a line.
 
 If the system is not configured to audit time changes, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Add the following to ""/etc/audit/audit.rules"":
 
 
@@ -140,12 +134,10 @@ Add the following to ""/etc/audit/audit.rules"":
 
 The -k option allows for the specification of a key in string form that can be used for better reporting capability through ausearch and aureport and should always be used.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000169
 
 The information system provides audit record generation capability for the auditable events defined in AU-2 a at organization-defined information system components.
@@ -160,7 +152,6 @@ NIST SP 800-53 Revision 4 :: AU-12 a
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

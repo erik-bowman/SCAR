@@ -62,54 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38585';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000080';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38585';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50386r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000068';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000080';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system boot loader must require authentication.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50386r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000068';
+}
+
+sub get_rule_title {
+    return 'The system boot loader must require authentication.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Password protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To verify the boot loader password has been set and encrypted, run the following command:
 
 
@@ -128,12 +123,10 @@ password --encrypted $6$[rest-of-the-password-hash]
 
 If it does not, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The grub boot loader should have password protection enabled to protect boot-time settings. To do so, select a password and then generate a hash from it by running the following command:
 
 
@@ -148,12 +141,10 @@ When prompted to enter a password, insert the following line into ""/boot/grub/g
 
 password --encrypted [password-hash]
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000213
 
 The information system enforces approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
@@ -168,7 +159,6 @@ NIST SP 800-53 Revision 4 :: AC-3
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

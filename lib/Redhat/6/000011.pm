@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38481';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000191';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38481';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50281r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000011';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000191';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'System security patches and updates must be installed and up-to-date.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50281r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000011';
+}
+
+sub get_rule_title {
+    return
+        'System security patches and updates must be installed and up-to-date.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Installing software updates is a fundamental mitigation against the exploitation of publicly-known vulnerabilities.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or a yum server which provides updates, invoking the following command will indicate if updates are available:
 
 
@@ -130,12 +126,10 @@ Compare this to Red Hat Security Advisories (RHSA) listed at https://access.redh
 
 If updates are not installed, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or a yum server, run the following command to install updates:
 
 
@@ -146,12 +140,10 @@ If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or a
 
 If the system is not configured to use one of these sources, updates (in the form of RPM packages) can be manually downloaded from the Red Hat Network and installed using ""rpm"".
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001233
 
 The organization employs automated mechanisms on an organization-defined frequency to determine the state of information system components with regard to flaw remediation.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: SI-2 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38639';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000031';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38639';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50440r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000260';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000031';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must display a publicly-viewable pattern during a graphical desktop environment session lock.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50440r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000260';
+}
+
+sub get_rule_title {
+    return
+        'The system must display a publicly-viewable pattern during a graphical desktop environment session lock.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Setting the screensaver mode to blank-only conceals the contents of the display from passersby.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If the GConf2 package is not installed, this is not applicable.
 
 
@@ -126,12 +122,10 @@ If properly configured, the output should be ""blank-only"".
 
 If it is not, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Run the following command to set the screensaver mode in the GNOME desktop to a blank screen:
 
 
@@ -146,12 +140,10 @@ Run the following command to set the screensaver mode in the GNOME desktop to a 
 
 --set /apps/gnome-screensaver/mode blank-only
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000060
 
 The information system conceals, via the session lock, information previously visible on the display with a publicly viewable image.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: AC-11 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

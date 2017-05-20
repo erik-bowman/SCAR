@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38520';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000215';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38520';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50321r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000136';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000215';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must back up audit records on an organization defined frequency onto a different system or media than the system being audited.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50321r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000136';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must back up audit records on an organization defined frequency onto a different system or media than the system being audited.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 A log server (loghost) receives syslog messages from one or more systems. This data can be used as an additional log source in the event a system is compromised and its local logs are suspect. Forwarding log messages to a remote loghost also provides system administrators with a centralized place to view the status of multiple hosts within the enterprise.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To ensure logs are sent to a remote host, examine the file ""/etc/rsyslog.conf"". If using UDP, a line similar to the following should be present:
 
 
@@ -138,12 +134,10 @@ If using RELP, a line similar to the following should be present:
 
 If none of these are present, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To configure rsyslog to send logs to a remote log server, open ""/etc/rsyslog.conf"" and read and understand the last section of the file, which describes the multiple directives necessary to activate remote logging. Along with these other directives, the system can be configured to forward its logs to a particular log server by adding or correcting one of the following lines, substituting ""[loghost.example.com]"" appropriately. The choice of protocol depends on the environment of the system; although TCP and RELP provide more reliable message delivery, they may not be supported in all environments.
 
 To use UDP for log message delivery:
@@ -172,12 +166,10 @@ To use RELP for log message delivery:
 
 *.* :omrelp:[loghost.example.com]
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001348
 
 The information system backs up audit records on an organization-defined frequency onto a different system or system component than the system or component being audited.
@@ -192,7 +184,6 @@ NIST SP 800-53 Revision 4 :: AU-9 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

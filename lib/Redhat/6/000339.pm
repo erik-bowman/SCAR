@@ -62,54 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38702';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000037';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38702';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50503r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000339';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000037';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The FTP daemon must be configured for logging or verbose mode.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50503r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000339';
+}
+
+sub get_rule_title {
+    return 'The FTP daemon must be configured for logging or verbose mode.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to the ftp server are logged using the verbose vsftpd log format. The default vsftpd log file is /var/log/vsftpd.log.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Find if logging is applied to the ftp daemon.
 
 
@@ -146,12 +141,10 @@ This will indicate the vsftpd config file used when starting through xinetd. If 
 
 If xferlog_enable is missing, or is not set to yes, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Add or correct the following configuration options within the ""vsftpd"" configuration file, located at ""/etc/vsftpd/vsftpd.conf"".
 
 
@@ -162,12 +155,10 @@ xferlog_std_format=NO
 
 log_ftp_protocol=YES
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000130
 
 The information system generates audit records containing information that establishes what type of event occurred.
@@ -182,7 +173,6 @@ NIST SP 800-53 Revision 4 :: AU-3
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

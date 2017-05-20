@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38590';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000030';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38590';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50391r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000071';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000030';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must allow locking of the console screen in text mode.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50391r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000071';
+}
+
+sub get_rule_title {
+    return
+        'The system must allow locking of the console screen in text mode.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Installing ""screen"" ensures a console locking capability is available for users who may need to suspend console logins.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Run the following command to determine if the ""screen"" package is installed:
 
 
@@ -122,12 +118,10 @@ Run the following command to determine if the ""screen"" package is installed:
 
 If the package is not installed, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To enable console screen locking when in text mode, install the ""screen"" package:
 
 
@@ -150,12 +144,10 @@ The console can now be locked with the following key combination:
 
 ctrl+a x
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000058
 
 The information system provides the capability for users to directly initiate session lock mechanisms.
@@ -170,7 +162,6 @@ NIST SP 800-53 Revision 4 :: AC-11 a
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

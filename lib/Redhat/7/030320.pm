@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72087';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000342-GPOS-00133';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72087';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86711r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-030320';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000342-GPOS-00133';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The audit system must take appropriate action when the audit storage volume is full.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86711r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-030320';
+}
+
+sub get_rule_title {
+    return
+        'The audit system must take appropriate action when the audit storage volume is full.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Taking appropriate action in case of a filled audit storage volume will minimize the possibility of losing audit records.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the action the operating system takes if the disk the audit records are written to becomes full.
 
 
@@ -140,12 +136,10 @@ If the value of the ""network_failure_action"" option is not ""syslog"", ""singl
 
 If the value of the ""disk_full_action"" option is not ""syslog"", ""single"", or ""halt"", or the line is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the action the operating system takes if the disk the audit records are written to becomes full.
 
 
@@ -160,12 +154,10 @@ disk_full_action = single
 
 Uncomment the ""network_failure_action"" option in ""/etc/audisp/audisp-remote.conf"" and set it to ""syslog"", ""single"", or ""halt"".
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001851
 
 The information system off-loads audit records per organization-defined frequency onto a different system or media than the system being audited.
@@ -176,7 +168,6 @@ NIST SP 800-53 Revision 4 :: AU-4 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

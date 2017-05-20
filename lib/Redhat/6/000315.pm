@@ -62,53 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38682';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000034';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38682';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50483r4_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000315';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000034';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE} = 'The Bluetooth kernel module must be disabled.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50483r4_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000315';
+}
+
+sub get_rule_title {
+    return 'The Bluetooth kernel module must be disabled.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 If Bluetooth functionality must be disabled, preventing the kernel from loading the kernel module provides an additional safeguard against its activation.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If the system is configured to prevent the loading of the ""bluetooth"" kernel module, it will contain lines inside any file in ""/etc/modprobe.d"" or the deprecated""/etc/modprobe.conf"". These lines instruct the module loading system to run another program (such as ""/bin/true"") upon a module ""install"" event. Run the following command to search for such lines in all files in ""/etc/modprobe.d"" and the deprecated ""/etc/modprobe.conf"":
 
 
@@ -131,12 +127,10 @@ $ grep -r net-pf-31 /etc/modprobe.conf /etc/modprobe.d | grep -i ""/bin/true""
 
 If no line is returned, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The kernel's module loading system can be configured to prevent loading of the Bluetooth module. Add the following to the appropriate ""/etc/modprobe.d"" configuration file to prevent the loading of the Bluetooth module:
 
 
@@ -145,12 +139,10 @@ install net-pf-31 /bin/true
 
 install bluetooth /bin/true
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000085
 
 The organization monitors for unauthorized connections of mobile devices to organizational information systems.
@@ -163,7 +155,6 @@ NIST SP 800-53A :: AC-19.1 (iii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

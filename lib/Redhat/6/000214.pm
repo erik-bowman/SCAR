@@ -62,53 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38594';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000033';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38594';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50395r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000214';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000033';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE} = 'The rshd service must not be running.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50395r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000214';
+}
+
+sub get_rule_title {
+    return 'The rshd service must not be running.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The rsh service uses unencrypted network communications, which means that data from the login session, including passwords and all other information transmitted during the session, can be stolen by eavesdroppers on the network.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To check that the ""rsh"" service is disabled in system boot configuration, run the following command:
 
 
@@ -135,24 +131,20 @@ error reading information on service rsh: No such file or directory
 
 If the service is running, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""rsh"" service, which is available with the ""rsh-server"" package and runs as a service through xinetd, should be disabled. The ""rsh"" service can be disabled with the following command:
 
 
 
 # chkconfig rsh off
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000068
 
 The information system implements cryptographic mechanisms to protect the confidentiality of remote access sessions.
@@ -167,7 +159,6 @@ NIST SP 800-53 Revision 4 :: AC-17 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

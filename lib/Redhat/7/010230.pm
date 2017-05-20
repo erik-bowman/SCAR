@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71925';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000075-GPOS-00043';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71925';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86549r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010230';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000075-GPOS-00043';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Passwords for new users must be restricted to a 24 hours/1 day minimum lifetime.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86549r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010230';
+}
+
+sub get_rule_title {
+    return
+        'Passwords for new users must be restricted to a 24 hours/1 day minimum lifetime.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Enforcing a minimum password lifetime helps to prevent repeated password changes to defeat the password reuse or history enforcement requirement. If users are allowed to immediately and continually change their password, the password could be repeatedly changed in a short period of time to defeat the organization's policy regarding password reuse.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system enforces 24 hours/1 day as the minimum password lifetime for new user accounts.
 
 
@@ -126,12 +122,10 @@ PASS_MIN_DAYS     1
 
 If the ""PASS_MIN_DAYS"" parameter value is not ""1"" or greater, or is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to enforce 24 hours/1 day as the minimum password lifetime.
 
 
@@ -142,12 +136,10 @@ Add the following line in ""/etc/login.defs"" (or modify the line to have the re
 
 PASS_MIN_DAYS     1
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000198
 
 The information system enforces minimum password lifetime restrictions.
@@ -162,7 +154,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (d)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

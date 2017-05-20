@@ -63,46 +63,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72079';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000038-GPOS-00016';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72079';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86703r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-030000';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000038-GPOS-00016';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Auditing must be configured to produce records containing information to establish what type of events occurred, where the events occurred, the source of the events, and the outcome of the events. These audit records must also identify individual identities of group account users.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86703r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-030000';
+}
+
+sub get_rule_title {
+    return
+        'Auditing must be configured to produce records containing information to establish what type of events occurred, where the events occurred, the source of the events, and the outcome of the events. These audit records must also identify individual identities of group account users.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Without establishing what type of events occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
 
 
@@ -117,12 +115,10 @@ Associating event types with detected events in the operating system audit logs 
 
 Satisfies: SRG-OS-000038-GPOS-00016, SRG-OS-000039-GPOS-00017, SRG-OS-000042-GPOS-00021, SRG-OS-000254-GPOS-00095, SRG-OS-000255-GPOS-00096
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system produces audit records containing information to establish when (date and time) the events occurred.
 
 
@@ -139,12 +135,10 @@ Active: active (running) since Tue 2015-01-27 19:41:23 EST; 22h ago
 
 If the ""auditd"" status is not active, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to produce audit records containing information to establish when (date and time) the events occurred.
 
 
@@ -155,12 +149,10 @@ Enable the auditd service with the following command:
 
 # chkconfig auditd on
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000126
 
 The organization determines that the organization-defined subset of the auditable events defined in AU-2 are to be audited within the information system.
@@ -187,7 +179,6 @@ NIST SP 800-53 Revision 4 :: AU-3
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

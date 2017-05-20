@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-73159';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000069-GPOS-00037';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-73159';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-87811r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010119';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000069-GPOS-00037';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'When passwords are changed or new passwords are established, pwquality must be used.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-87811r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010119';
+}
+
+sub get_rule_title {
+    return
+        'When passwords are changed or new passwords are established, pwquality must be used.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. ""Pwquality"" enforces complex password construction configuration on the system.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system uses ""pwquality"" to enforce the password complexity rules.
 
 
@@ -128,12 +124,10 @@ password    required    pam_pwquality.so retry=3
 
 If the command does not return a line containing the value ""pam_pwquality.so"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to use ""pwquality"" to enforce password complexity rules.
 
 
@@ -144,12 +138,10 @@ Add the following line to ""/etc/pam.d/passwd"" (or modify the line to have the 
 
 password    required    pam_pwquality.so retry=3
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000192
 
 The information system enforces password complexity by the minimum number of upper case characters used.
@@ -164,7 +156,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (a)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

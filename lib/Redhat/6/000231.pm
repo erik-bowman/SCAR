@@ -51,11 +51,11 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( parse_file( '^ClientAliveCountMax\W+0$', '/etc/ssh/sshd_config' ) ) {
-        $self->{STATUS} = 'NF';
+    if ( ingest_file( '/etc/ssh/sshd_config', '^ClientAliveCountMax\W+0$' ) ) {
+        $self->_set_finding_status('NF');
     }
     else {
-        $self->{STATUS} = 'O';
+        $self->_set_finding_status('O');
     }
     return $self;
 }
@@ -66,54 +66,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38610';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000126';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38610';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50411r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000231';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000126';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The SSH daemon must set a timeout count on idle sessions.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50411r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000231';
+}
+
+sub get_rule_title {
+    return 'The SSH daemon must set a timeout count on idle sessions.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 This ensures a user login will be terminated as soon as the ""ClientAliveCountMax"" is reached.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To ensure the SSH idle timeout will occur when the ""ClientAliveCountMax"" is set, run the following command:
 
 
@@ -134,24 +129,20 @@ ClientAliveCountMax 0
 
 If it is not, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To ensure the SSH idle timeout occurs precisely when the ""ClientAliveCountMax"" is set, edit ""/etc/ssh/sshd_config"" as follows:
 
 
 
 ClientAliveCountMax 0
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000879
 
 The organization terminates sessions and network connections when nonlocal maintenance is completed.
@@ -166,7 +157,6 @@ NIST SP 800-53 Revision 4 :: MA-4 e
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

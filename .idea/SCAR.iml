@@ -737,7 +737,37 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Perl5 library: C:/Users/Administrator/Documents/SCAR/SCAR/lib">
+      <library>
+        <CLASSES>
+          <root url="file://C:/Dwimperl/perl/site/lib" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://C:/Dwimperl/perl/site/lib" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://C:/Dwimperl/perl/vendor/lib" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://C:/Dwimperl/perl/vendor/lib" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://C:/Dwimperl/perl/lib" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://C:/Dwimperl/perl/lib" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Perl5 library: D:/Documents/SCAR/SCAR/lib">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
         </CLASSES>
@@ -749,30 +779,30 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://C:/Dwimperl/perl/site/lib" />
+          <root url="file://D:/Dwimperl/perl/site/lib" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/Dwimperl/perl/site/lib" />
+          <root url="file://D:/Dwimperl/perl/site/lib" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://C:/Dwimperl/perl/vendor/lib" />
+          <root url="file://D:/Dwimperl/perl/vendor/lib" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/Dwimperl/perl/vendor/lib" />
+          <root url="file://D:/Dwimperl/perl/vendor/lib" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://C:/Dwimperl/perl/lib" />
+          <root url="file://D:/Dwimperl/perl/lib" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/Dwimperl/perl/lib" />
+          <root url="file://D:/Dwimperl/perl/lib" />
         </SOURCES>
       </library>
     </orderEntry>

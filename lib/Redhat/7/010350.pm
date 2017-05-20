@@ -62,46 +62,43 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71949';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000373-GPOS-00156';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71949';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86573r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010350';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000373-GPOS-00156';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Users must re-authenticate for privilege escalation.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86573r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010350';
+}
+
+sub get_rule_title {
+    return 'Users must re-authenticate for privilege escalation.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Without re-authentication, users may access resources or perform tasks for which they do not have authorization.
 
 
@@ -112,12 +109,10 @@ When operating systems provide the capability to escalate a functional capabilit
 
 Satisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000373-GPOS-00157, SRG-OS-000373-GPOS-00158
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system requires users to reauthenticate for privilege escalation.
 
 
@@ -132,12 +127,10 @@ Check the configuration of the ""/etc/sudoers"" and ""/etc/sudoers.d/*"" files w
 
 If any line is found with a ""!authenticate"" tag, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to require users to reauthenticate for privilege escalation.
 
 
@@ -148,12 +141,10 @@ Check the configuration of the ""/etc/sudoers"" and ""/etc/sudoers.d/*"" files w
 
 Remove any occurrences of ""!authenticate"" tags in the file.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-002038
 
 The organization requires users to reauthenticate when organization-defined circumstances or situations requiring reauthentication.
@@ -164,7 +155,6 @@ NIST SP 800-53 Revision 4 :: IA-11
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

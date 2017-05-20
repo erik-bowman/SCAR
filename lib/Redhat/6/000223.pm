@@ -52,16 +52,16 @@ sub new {
 sub check {
     my ($self) = @_;
     if ( !defined $self->{parent}->{service}->{'tftp-server'} ) {
-        $self->{STATUS} = 'NF';
+        $self->_set_finding_status('NF');
     }
     else {
         if ( $self->{parent}->{service}->{'tftp-server'}->{status}
             =~ /^tftp-server\sis\sstopped/msx )
         {
-            $self->{STATUS} = 'NF';
+            $self->_set_finding_status('NF');
         }
         else {
-            $self->{STATUS} = 'O';
+            $self->_set_finding_status('O');
         }
     }
     return $self;
@@ -73,53 +73,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38609';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000248';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38609';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50410r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000223';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000248';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE} = 'The TFTP service must not be running.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50410r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000223';
+}
+
+sub get_rule_title {
+    return 'The TFTP service must not be running.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Disabling the ""tftp"" service ensures the system is not acting as a tftp server, which does not provide encryption or authentication.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To check that the ""tftp"" service is disabled in system boot configuration, run the following command:
 
 
@@ -146,24 +142,20 @@ error reading information on service tftp: No such file or directory
 
 If the service is running, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""tftp"" service should be disabled. The ""tftp"" service can be disabled with the following command:
 
 
 
 # chkconfig tftp off
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001436
 
 The organization disables organization defined networking protocols within the information system deemed to be nonsecure except for explicitly identified components in support of specific operational requirements.
@@ -176,7 +168,6 @@ NIST SP 800-53A :: AC-17 (8).1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 1;

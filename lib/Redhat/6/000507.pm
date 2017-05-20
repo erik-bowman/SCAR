@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38484';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000025';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38484';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50285r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000507';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000025';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system, upon successful logon, must display to the user the date and time of the last logon or access via ssh.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50285r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000507';
+}
+
+sub get_rule_title {
+    return
+        'The operating system, upon successful logon, must display to the user the date and time of the last logon or access via ssh.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Users need to be aware of activity that occurs regarding their account. Providing users with information regarding the date and time of their last successful login allows the user to determine if any unauthorized activity has occurred and gives them an opportunity to notify administrators.
 
 
 
 At ssh login, a user must be presented with the last successful login date and time.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the value associated with the ""PrintLastLog"" keyword in /etc/ssh/sshd_config:
 
 
@@ -124,12 +120,10 @@ Verify the value associated with the ""PrintLastLog"" keyword in /etc/ssh/sshd_c
 
 If the ""PrintLastLog"" keyword is not present, this is not a finding.  If the value is not set to ""yes"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Update the ""PrintLastLog"" keyword to ""yes"" in /etc/ssh/sshd_config:
 
 
@@ -140,12 +134,10 @@ PrintLastLog yes
 
 While it is acceptable to remove the keyword entirely since the default action for the SSH daemon is to print the last logon date and time, it is preferred to have the value explicitly documented.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000052
 
 The information system notifies the user, upon successful logon (access) to the system, of the date and time of the last logon (access).
@@ -160,7 +152,6 @@ NIST SP 800-53 Revision 4 :: AC-9
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

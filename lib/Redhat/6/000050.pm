@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38475';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000078';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38475';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50275r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000050';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000078';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must require passwords to contain a minimum of 15 characters.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50275r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000050';
+}
+
+sub get_rule_title {
+    return
+        'The system must require passwords to contain a minimum of 15 characters.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Requiring a minimum password length makes password cracking attacks more difficult by ensuring a larger search space. However, any security benefit from an onerous requirement must be carefully weighed against usability problems, support costs, or counterproductive behavior that may result.
 
 
 
 While it does not negate the password length requirement, it is preferable to migrate from a password-based authentication scheme to a stronger one based on PKI (public key infrastructure).
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To check the minimum password length, run the command:
 
 
@@ -142,12 +138,10 @@ If any results are returned and are not set to ""15"" or greater, this is a find
 
 
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To specify password length requirements for new accounts, edit the file ""/etc/login.defs"" and add or correct the following lines:
 
 
@@ -158,12 +152,10 @@ PASS_MIN_LEN 15
 
 The DoD requirement is ""15"". If a program consults ""/etc/login.defs"" and also another PAM module (such as ""pam_cracklib"") during a password change operation, then the most restrictive must be satisfied.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000205
 
 The information system enforces minimum password length.
@@ -178,7 +170,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (a)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

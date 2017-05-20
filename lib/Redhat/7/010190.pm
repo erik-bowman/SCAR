@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71917';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000072-GPOS-00040';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71917';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86541r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010190';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000072-GPOS-00040';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'When passwords are changed the number of repeating characters of the same character class must not be more than four characters.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86541r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010190';
+}
+
+sub get_rule_title {
+    return
+        'When passwords are changed the number of repeating characters of the same character class must not be more than four characters.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
 
 
 
 Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 The ""maxclassrepeat"" option sets the maximum number of allowed same consecutive characters in the same class in the new password.
 
 
@@ -130,12 +126,10 @@ maxclassrepeat = 4
 
 If the value of ""maxclassrepeat"" is set to more than ""4"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to require the change of the number of repeating characters of the same character class when passwords are changed by setting the ""maxclassrepeat"" option.
 
 
@@ -146,12 +140,10 @@ Add the following line to ""/etc/security/pwquality.conf"" conf (or modify the l
 
 maxclassrepeat = 4
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000195
 
 The information system, for password-based authentication, when new passwords are created, enforces that at least an organization-defined number of characters are changed.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (b)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

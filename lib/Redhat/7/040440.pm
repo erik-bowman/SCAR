@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72261';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000364-GPOS-00151';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72261';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86885r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-040440';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000364-GPOS-00151';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The SSH daemon must not permit Kerberos authentication unless needed.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86885r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-040440';
+}
+
+sub get_rule_title {
+    return
+        'The SSH daemon must not permit Kerberos authentication unless needed.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Kerberos authentication for SSH is often implemented using Generic Security Service Application Program Interface (GSSAPI). If Kerberos is enabled through SSH, the SSH daemon provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled for systems not using this capability.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the SSH daemon does not permit Kerberos to authenticate passwords unless approved.
 
 
@@ -126,12 +122,10 @@ KerberosAuthentication no
 
 If the ""KerberosAuthentication"" keyword is missing, or is set to ""yes"" and is not documented with the Information System Security Officer (ISSO), or the returned line is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Uncomment the ""KerberosAuthentication"" keyword in ""/etc/ssh/sshd_config"" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor) and set the value to ""no"":
 
 
@@ -146,12 +140,10 @@ The SSH service must be restarted for changes to take effect.
 
 If Kerberos authentication is required, it must be documented, to include the location of the configuration file, with the ISSO.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000318
 
 The organization audits and reviews activities associated with configuration controlled changes to the system.
@@ -202,7 +194,6 @@ NIST SP 800-53 Revision 4 :: CM-5 (1)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

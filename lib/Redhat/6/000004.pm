@@ -52,10 +52,10 @@ sub new {
 sub check {
     my ($self) = @_;
     if ( defined $self->{parent}->{fstab}->{'/var/log/audit'} ) {
-        $self->{STATUS} = 'NF';
+        $self->_set_finding_status('NF');
     }
     else {
-        $self->{STATUS} = 'O';
+        $self->_set_finding_status('O');
     }
     return $self;
 }
@@ -66,54 +66,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38467';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000044';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38467';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50267r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000004';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000044';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must use a separate file system for the system audit data path.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50267r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000004';
+}
+
+sub get_rule_title {
+    return
+        'The system must use a separate file system for the system audit data path.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Placing ""/var/log/audit"" in its own partition enables better separation between audit files and other files, and helps ensure that auditing cannot be halted due to the partition running out of space.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Run the following command to determine if ""/var/log/audit"" is on its own partition or logical volume:
 
 
@@ -126,20 +122,16 @@ If ""/var/log/audit"" has its own partition or volume group, a line will be retu
 
 If no line is returned, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Audit logs are stored in the ""/var/log/audit"" directory. Ensure that it has its own partition or logical volume at installation time, or migrate it later using LVM. Make absolutely certain that it is large enough to store all audit logs that will be created by the auditing daemon.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000137
 
 The organization allocates audit record storage capacity.
@@ -152,7 +144,6 @@ NIST SP 800-53A :: AU-4.1 (i)
 
 
 CCI
-    return $self->{CCI};
 }
 
 1;

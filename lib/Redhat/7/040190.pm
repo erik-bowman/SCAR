@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72229';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000250-GPOS-00093';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72229';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86853r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-040190';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000250-GPOS-00093';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86853r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-040190';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
 
 
 
 Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the key used to generate the hash.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system implements cryptography to protect the integrity of remote LDAP access sessions.
 
 
@@ -148,12 +144,10 @@ Verify the directory set with the ""tls_cacertdir"" option exists.
 
 If the directory does not exist or the option is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to implement cryptography to protect the integrity of LDAP remote access sessions.
 
 
@@ -164,12 +158,10 @@ Set the ""tls_cacertdir"" option in ""/etc/pam_ldap.conf"" to point to the direc
 
 Set the ""tls_cacertfile"" option in ""/etc/pam_ldap.conf"" to point to the path for the X.509 certificates used for peer authentication.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001453
 
 The information system implements cryptographic mechanisms to protect the integrity of remote access sessions.
@@ -184,7 +176,6 @@ NIST SP 800-53 Revision 4 :: AC-17 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

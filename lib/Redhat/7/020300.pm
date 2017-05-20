@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72003';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000104-GPOS-00051';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72003';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86627r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-020300';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000104-GPOS-00051';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'All Group Identifiers (GIDs) referenced in the /etc/passwd file must be defined in the /etc/group file.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86627r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-020300';
+}
+
+sub get_rule_title {
+    return
+        'All Group Identifiers (GIDs) referenced in the /etc/passwd file must be defined in the /etc/group file.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 If a user is assigned the GID of a group not existing on the system, and a group with the GID is subsequently created, the user may have unintended rights to any files associated with the group.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify all GIDs referenced in the ""/etc/passwd"" file are defined in the ""/etc/group"" file.
 
 
@@ -124,20 +120,16 @@ Check that all referenced GIDs exist with the following command:
 
 If GIDs referenced in ""/etc/passwd"" file are returned as not defined in ""/etc/group"" file, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the system to define all GIDs found in the ""/etc/passwd"" file by modifying the ""/etc/group"" file to add any non-existent group referenced in the ""/etc/passwd"" file, or change the GIDs referenced in the ""/etc/passwd"" file to a group that exists in ""/etc/group"".
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000764
 
 The information system uniquely identifies and authenticates organizational users (or processes acting on behalf of organizational users).
@@ -152,7 +144,6 @@ NIST SP 800-53 Revision 4 :: IA-2
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

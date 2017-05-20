@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72253';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000250-GPOS-00093';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72253';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86877r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-040400';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000250-GPOS-00093';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The SSH daemon must be configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86877r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-040400';
+}
+
+sub get_rule_title {
+    return
+        'The SSH daemon must be configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 DoD information systems are required to use FIPS 140-2 approved cryptographic hash functions. The only SSHv2 hash algorithm meeting this requirement is SHA.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the SSH daemon is configured to only use MACs employing FIPS 140-2-approved ciphers.
 
 
@@ -130,12 +126,10 @@ MACs hmac-sha2-256,hmac-sha2-512
 
 If any ciphers other than ""hmac-sha2-256"" or ""hmac-sha2-512"" are listed or the retuned line is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Edit the ""/etc/ssh/sshd_config"" file to uncomment or add the line for the ""MACs"" keyword and set its value to ""hmac-sha2-256"" and/or ""hmac-sha2-512"" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor):
 
 
@@ -146,12 +140,10 @@ MACs hmac-sha2-256,hmac-sha2-512
 
 The SSH service must be restarted for changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001453
 
 The information system implements cryptographic mechanisms to protect the integrity of remote access sessions.
@@ -166,7 +158,6 @@ NIST SP 800-53 Revision 4 :: AC-17 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

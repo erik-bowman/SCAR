@@ -62,46 +62,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72237';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000163-GPOS-00072';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72237';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86861r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-040320';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000163-GPOS-00072';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'All network connections associated with SSH traffic must terminate at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86861r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-040320';
+}
+
+sub get_rule_title {
+    return
+        'All network connections associated with SSH traffic must terminate at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Terminating an idle SSH session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle SSH session will also free up resources committed by the managed network element.
 
 
@@ -112,12 +110,10 @@ Terminating network connections associated with communications sessions includes
 
 Satisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system automatically terminates a user session after inactivity time-outs have expired.
 
 
@@ -136,12 +132,10 @@ ClientAliveInterval 600
 
 If ""ClientAliveInterval"" is not set to ""600"" in ""/etc/ ssh/sshd_config"", and a lower value is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to automatically terminate a user session after inactivity time-outs have expired or at shutdown.
 
 
@@ -156,12 +150,10 @@ ClientAliveInterval 600
 
 The SSH service must be restarted for changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001133
 
 The information system terminates the network connection associated with a communications session at the end of the session or after an organization-defined time period of inactivity.
@@ -184,7 +176,6 @@ NIST SP 800-53 Revision 4 :: AC-12
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

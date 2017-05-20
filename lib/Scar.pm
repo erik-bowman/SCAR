@@ -9,14 +9,19 @@ use warnings FATAL => 'all';
 use Carp qw( croak );
 use base qw( Exporter );
 use POSIX qw( strftime );
+use English qw( -no_match_vars );
 use File::Spec::Functions;
 
 # Module version
 our $VERSION = 0.01;
 
 # Exportables
-our @EXPORT_OK
-    = qw( run_awk run_grep parse_file run_service run_chkconfig implode_path explode_path get_strftime get_strfdate );
+our @EXPORT_OK = qw(
+    run_awk run_grep run_service run_chkconfig
+    implode_path explode_path make_path_absolute
+    get_strftime get_strfdate read_file
+    get_current_directory get_file_owner get_file_group
+);
 
 sub implode_path {
     my @path_components = @_;
@@ -26,6 +31,15 @@ sub implode_path {
 sub explode_path {
     my @directories = @_;
     return File::Spec::Functions::splitpath(@directories);
+}
+
+sub make_path_absolute {
+    my ( $file, $base ) = @_;
+    return File::Spec::Functions::abs2rel( $file, $base );
+}
+
+sub get_current_directory {
+    return File::Spec::Functions::curdir();
 }
 
 sub get_strftime {
@@ -40,7 +54,7 @@ sub _run_system_bin {
     my ( $bin, $args ) = @_;
     my @results;
 
-    open my $bin_handler, q<|->, qq|$bin $args 2>&1|
+    open my $bin_handler, q<-|>, qq{$bin $args 2>&1}
         or croak "Could not run $bin\n";
     {
         while ( my $response_line = <$bin_handler> ) {
@@ -72,22 +86,39 @@ sub run_chkconfig {
     return _run_system_bin( '/sbin/chkconfig', $args );
 }
 
-sub parse_file {
-    my ( $regex, $file ) = @_;
+sub read_file {
+    my ( $file ) = @_;
     my @results;
 
     open my $file_hanlder, '<:encoding(utf8)', $file
-        or croak 'Could not parse file';
+        or croak "Could not parse file '$file': $OS_ERROR";
     {
         while ( my $line_in_file = <$file_hanlder> ) {
-            if ( $line_in_file =~ /$regex/msx ) {
-                push @results, $line_in_file;
-            }
+            chomp $line_in_file;
+            push @results, $line_in_file;
         }
     }
     close $file_hanlder;
 
     return @results;
+}
+
+sub get_file_owner {
+    my ($file) = @_;
+    if (!-f $file) {
+        croak "Unable to get the owner uid for file '$file': file does not exist";
+    }
+    my @file_stats = stat $file;
+    return $file_stats[4];
+}
+
+sub get_file_group {
+    my ($file) = @_;
+    if (!-f $file) {
+        croak "Unable to get the owner gid for file '$file': file does not exist";
+    }
+    my @file_stats = stat $file;
+    return $file_stats[5];
 }
 
 1;

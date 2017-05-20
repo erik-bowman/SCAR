@@ -62,46 +62,44 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72197';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000004-GPOS-00004';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72197';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86821r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-030870';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000004-GPOS-00004';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86821r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-030870';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
 
 
@@ -112,12 +110,10 @@ Audit records can be generated from various components within the information sy
 
 Satisfies: SRG-OS-000004-GPOS-00004, SRG-OS-000239-GPOS-00089, SRG-OS-000240-GPOS-00090, SRG-OS-000241-GPOS-00091, SRG-OS-000303-GPOS-00120, SRG-OS-000476-GPOS-00221
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect ""/etc/passwd"".
 
 
@@ -136,12 +132,10 @@ Check the auditing rules in ""/etc/audit/audit.rules"" with the following comman
 
 If the command does not return a line, or the line is commented out, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to generate audit records for all account creations, modifications, disabling, and termination events that affect ""/etc/passwd"".
 
 
@@ -156,12 +150,10 @@ Add or update the following rule ""/etc/audit/rules.d/audit.rules"":
 
 The audit daemon must be restarted for the changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000018
 
 The information system automatically audits account creation actions.
@@ -208,7 +200,6 @@ NIST SP 800-53 Revision 4 :: AC-2 (4)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

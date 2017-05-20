@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71941';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000118-GPOS-00060';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71941';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86565r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010310';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000118-GPOS-00060';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86565r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010310';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system. Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.
 
 
 
 Operating systems need to track periods of inactivity and disable application identifiers after zero days of inactivity.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system disables account identifiers (individuals, groups, roles, and devices) after the password expires with the following command:
 
 
@@ -126,12 +122,10 @@ INACTIVE=0
 
 If the value is not set to ""0"", is commented out, or is not defined, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to disable account identifiers (individuals, groups, roles, and devices) after the password expires.
 
 
@@ -142,12 +136,10 @@ Add the following line to ""/etc/default/useradd"" (or modify the line to have t
 
 INACTIVE=0
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000795
 
 The organization manages information system identifiers by disabling the identifier after an organization defined time period of inactivity.
@@ -162,7 +154,6 @@ NIST SP 800-53 Revision 4 :: IA-4 e
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

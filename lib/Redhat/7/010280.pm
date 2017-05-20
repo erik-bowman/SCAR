@@ -62,58 +62,53 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71935';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000078-GPOS-00046';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71935';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86559r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010280';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000078-GPOS-00046';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'Passwords must be a minimum of 15 characters in length.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86559r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010280';
+}
+
+sub get_rule_title {
+    return 'Passwords must be a minimum of 15 characters in length.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 The shorter the password, the lower the number of possible combinations that need to be tested before the password is compromised.
 
 
 
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. Password length is one factor of several that helps to determine strength and how long it takes to crack a password. Use of more characters in a password helps to exponentially increase the time and/or resources required to compromise the password.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system enforces a minimum 15-character password length. The ""minlen"" option sets the minimum number of characters in a new password.
 
 
@@ -130,12 +125,10 @@ minlen = 15
 
 If the command does not return a ""minlen"" value of 15 or greater, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure operating system to enforce a minimum 15-character password length.
 
 
@@ -146,12 +139,10 @@ Add the following line to ""/etc/security/pwquality.conf"" (or modify the line t
 
 minlen = 15
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000205
 
 The information system enforces minimum password length.
@@ -166,7 +157,6 @@ NIST SP 800-53 Revision 4 :: IA-5 (1) (a)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

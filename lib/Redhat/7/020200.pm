@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71987';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000437-GPOS-00194';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71987';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86611r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-020200';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000437-GPOS-00194';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The operating system must remove all software components after updated versions have been installed.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86611r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-020200';
+}
+
+sub get_rule_title {
+    return
+        'The operating system must remove all software components after updated versions have been installed.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Previous versions of software components that are not removed from the information system after updates have been installed may be exploited by adversaries. Some information technology products may remove older versions of software automatically from the information system.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system removes all software components after updated versions have been installed.
 
 
@@ -126,12 +122,10 @@ clean_requirements_on_remove=1
 
 If ""clean_requirements_on_remove"" is not set to ""1"", ""True"", or ""yes"", or is not set in ""/etc/yum.conf"", this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to remove all software components after updated versions have been installed.
 
 
@@ -142,12 +136,10 @@ Set the ""clean_requirements_on_remove"" option to ""1"" in the ""/etc/yum.conf"
 
 clean_requirements_on_remove=1
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-002617
 
 The organization removes organization-defined software components (e.g., previous versions) after updated versions have been installed.
@@ -158,7 +150,6 @@ NIST SP 800-53 Revision 4 :: SI-2 (6)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

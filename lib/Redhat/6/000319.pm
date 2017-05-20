@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38684';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000027';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38684';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50485r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000319';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000027';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system must limit users to 10 simultaneous system logins, or a site-defined number, in accordance with operational requirements.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50485r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000319';
+}
+
+sub get_rule_title {
+    return
+        'The system must limit users to 10 simultaneous system logins, or a site-defined number, in accordance with operational requirements.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Limiting simultaneous user logins can insulate the system from denial of service problems caused by excessive logins. Automated login processes operating improperly or maliciously may result in an exceptional number of simultaneous login sessions.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Run the following command to ensure the ""maxlogins"" value is configured for all users on the system:
 
 
@@ -128,12 +124,10 @@ You should receive output similar to the following:
 
 If it is not similar, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Limiting the number of allowed users and sessions per user can limit risks related to denial of service attacks. This addresses concurrent sessions for a single account and does not address concurrent sessions by a single user via multiple accounts. To set the number of concurrent sessions per user add the following line in ""/etc/security/limits.conf"":
 
 
@@ -144,12 +138,10 @@ Limiting the number of allowed users and sessions per user can limit risks relat
 
 A documented site-defined number may be substituted for 10 in the above.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000054
 
 The information system limits the number of concurrent sessions for each organization-defined account and/or account type to an organization-defined number of sessions.
@@ -164,7 +156,6 @@ NIST SP 800-53 Revision 4 :: AC-10
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

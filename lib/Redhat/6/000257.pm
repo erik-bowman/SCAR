@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38629';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000029';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38629';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50430r3_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000257';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000029';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The graphical desktop environment must set the idle timeout to no more than 15 minutes.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50430r3_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000257';
+}
+
+sub get_rule_title {
+    return
+        'The graphical desktop environment must set the idle timeout to no more than 15 minutes.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Setting the idle delay controls when the screensaver will start, and can be combined with screen locking to prevent access from passersby.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If the GConf2 package is not installed, this is not applicable.
 
 
@@ -128,12 +124,10 @@ If properly configured, the output should be ""15"".
 
 If it is not, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Run the following command to set the idle time-out value for inactivity in the GNOME desktop to 15 minutes:
 
 
@@ -148,12 +142,10 @@ Run the following command to set the idle time-out value for inactivity in the G
 
 --set /apps/gnome-screensaver/idle_delay 15
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000057
 
 The information system initiates a session lock after the organization-defined time period of inactivity.
@@ -168,7 +160,6 @@ NIST SP 800-53 Revision 4 :: AC-11 a
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -62,46 +62,43 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72179';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000042-GPOS-00020';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72179';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86803r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-030780';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000042-GPOS-00020';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'All uses of the ssh-keysign command must be audited.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86803r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-030780';
+}
+
+sub get_rule_title {
+    return 'All uses of the ssh-keysign command must be audited.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.
 
 
@@ -112,12 +109,10 @@ At a minimum, the organization must audit the full-text recording of privileged 
 
 Satisfies: SRG-OS-000042-GPOS-00020, SRG-OS-000392-GPOS-00172, SRG-OS-000471-GPOS-00215
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system generates audit records when successful/unsuccessful attempts to use the ""ssh-keysign"" command occur.
 
 
@@ -136,12 +131,10 @@ Check for the following system call being audited by performing the following co
 
 If the command does not return any output, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to generate audit records when successful/unsuccessful attempts to use the ""ssh-keysign"" command occur.
 
 
@@ -156,12 +149,10 @@ Add or update the following rule in ""/etc/audit/rules.d/audit.rules"":
 
 The audit daemon must be restarted for the changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000135
 
 The information system generates audit records containing the organization-defined additional, more detailed information that is to be included in the audit records.
@@ -196,7 +187,6 @@ NIST SP 800-53 Revision 4 :: MA-4 (1) (a)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

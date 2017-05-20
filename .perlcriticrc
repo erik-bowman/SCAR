@@ -3,3 +3,6 @@ exclude     = Miscellanea::RequireRcsKeywords
 
 [CodeLayout::RequireTidyCode]
 perltidyrc = .perltidyrc
+
+[TestingAndDebugging::ProhibitNoStrict]
+allow = refs

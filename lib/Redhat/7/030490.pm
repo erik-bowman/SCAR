@@ -62,46 +62,43 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-72121';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000458-GPOS-00203';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-72121';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86745r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-030490';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000458-GPOS-00203';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'All uses of the lremovexattr command must be audited.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86745r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-030490';
+}
+
+sub get_rule_title {
+    return 'All uses of the lremovexattr command must be audited.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
 
 
@@ -112,12 +109,10 @@ Audit records can be generated from various components within the information sy
 
 Satisfies: SRG-OS-000458-GPOS-00203, SRG-OS-000392-GPOS-00172, SRG-OS-000064-GPOS-00033
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system generates audit records when successful/unsuccessful attempts to use the ""lremovexattr"" command occur.
 
 
@@ -144,12 +139,10 @@ Note: The output lines of the command are duplicated to cover both 32-bit and 64
 
 If the command does not return any output, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the operating system to generate audit records when successful/unsuccessful attempts to use the ""lremovexattr"" command occur.
 
 
@@ -168,12 +161,10 @@ Add or update the following rule in ""/etc/audit/rules.d/audit.rules"" (removing
 
 The audit daemon must be restarted for the changes to take effect.
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000172
 
 The information system generates audit records for the events defined in AU-2 d with the content defined in AU-3.
@@ -188,7 +179,6 @@ NIST SP 800-53 Revision 4 :: AU-12 c
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

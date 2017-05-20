@@ -35,7 +35,7 @@ use warnings FATAL => 'all';
 # Scar Modules
 use Scar::Util::Log;
 use Scar::Util::Backup;
-use Scar qw ( IMPLODEPATH );
+use Scar;
 use Redhat::6;
 
 # Version
@@ -62,24 +62,24 @@ sub start_scar {
     );
 
     run_checks();
-    run_remediations();
+#    run_remediations();
 
     return 1;
 }
 
 sub run_checks {
 
-    foreach my $PLUGIN ( $RHEL6->get_redhat6_plugins() ) {
-        my $LOADEDPLUGIN = $PLUGIN->new($RHEL6);
+    foreach my $plugin ( $RHEL6->get_redhat6_plugins() ) {
+        my $initialized_plugin = $plugin->new($RHEL6);
 
-        if ( !$LOADEDPLUGIN->can('check') ) {
+        if ( !$initialized_plugin->can('check') ) {
             next;
         }
 
-        print "Starting " . $LOADEDPLUGIN->STIG_ID() . "\n";
-        $LOADEDPLUGIN->check();
-        if (defined $LOADEDPLUGIN->{STATUS}) {
-            print "$LOADEDPLUGIN->{STATUS}\n";
+        print "Starting " . $initialized_plugin->get_stig_id() . "\n";
+        $initialized_plugin->check();
+        if (defined $initialized_plugin->get_finding_status()) {
+            print $initialized_plugin->get_finding_status()."\n";
         }
     }
 

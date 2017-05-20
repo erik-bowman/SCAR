@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38468';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000047';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38468';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50268r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000510';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000047';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The audit system must take appropriate action when the audit storage volume is full.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50268r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000510';
+}
+
+sub get_rule_title {
+    return
+        'The audit system must take appropriate action when the audit storage volume is full.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Taking appropriate action in case of a filled audit storage volume will minimize the possibility of losing audit records.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Inspect ""/etc/audit/auditd.conf"" and locate the following line to determine if the system is configured to take appropriate action when the audit storage volume is full:
 
 
@@ -124,12 +120,10 @@ disk_full_action = [ACTION]
 
 If the system is configured to ""suspend"" when the volume is full or ""ignore"" that it is full, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""auditd"" service can be configured to take an action when disk space starts to run low. Edit the file ""/etc/audit/auditd.conf"". Modify the following line, substituting [ACTION] appropriately:
 
 
@@ -160,12 +154,10 @@ Possible values for [ACTION] are described in the ""auditd.conf"" man page. Thes
 
 Set this to ""syslog"", ""exec"", ""single"", or ""halt"".
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000140
 
 The information system takes organization-defined actions upon audit failure (e.g., shut down information system, overwrite oldest audit records, stop generating audit records).
@@ -180,7 +172,6 @@ NIST SP 800-53 Revision 4 :: AU-5 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

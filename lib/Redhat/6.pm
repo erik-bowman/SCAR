@@ -25,6 +25,8 @@ sub new {
     my @fstab_entries = run_awk(q<'/^[^#]/ { print $ 0}' /etc/fstab>);
     $self->filesystem_table(@fstab_entries);
 
+    $self->_ingest_sshd_config();
+
     return $self;
 }
 
@@ -76,6 +78,12 @@ sub filesystem_table {
     }
 
     return $self;
+}
+
+sub _ingest_file {
+    my ($self, $file, $regex) = @_;
+    $self->{files}->{"$file"} = ingest_file($file, $regex);
+    return $self->{files}->{"$file"};
 }
 
 1;

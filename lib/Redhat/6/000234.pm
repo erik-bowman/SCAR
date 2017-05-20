@@ -62,53 +62,49 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38611';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000106';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38611';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50412r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000234';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000106';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE} = 'The SSH daemon must ignore .rhosts files.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50412r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000234';
+}
+
+sub get_rule_title {
+    return 'The SSH daemon must ignore .rhosts files.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To determine how the SSH daemon's ""IgnoreRhosts"" option is set, run the following command:
 
 
@@ -121,12 +117,10 @@ If no line, a commented line, or a line indicating the value ""yes"" is returned
 
 If the required value is not set, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 SSH can emulate the behavior of the obsolete rsh command in allowing users to enable insecure access to their accounts via "".rhosts"" files.
 
 
@@ -137,12 +131,10 @@ To ensure this behavior is disabled, add or correct the following line in ""/etc
 
 IgnoreRhosts yes
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000766
 
 The information system implements multifactor authentication for network access to non-privileged accounts.
@@ -157,7 +149,6 @@ NIST SP 800-53 Revision 4 :: IA-2 (2)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71973';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'medium';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000363-GPOS-00150';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71973';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86597r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'medium';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-020030';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000363-GPOS-00150';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'A file integrity tool must verify the baseline operating system configuration at least weekly.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86597r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-020030';
+}
+
+sub get_rule_title {
+    return
+        'A file integrity tool must verify the baseline operating system configuration at least weekly.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Unauthorized changes to the baseline configuration could make the system vulnerable to various attacks or allow unauthorized access to the operating system. Changes to operating system configurations can have unintended side effects, some of which may be relevant to security.
 
 
 
 Detecting such changes and providing an automated response can help avoid unintended, negative consequences that could ultimately affect the security state of the operating system. The operating system's Information Management Officer (IMO)/Information System Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or monitoring system trap when there is an unauthorized modification of a configuration item.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the operating system routinely checks the baseline configuration for unauthorized changes.
 
 
@@ -150,12 +146,10 @@ Check the ""/etc/cron.daily"" subdirectory for a ""crontab"" file controlling th
 
 If the file integrity application does not exist, or a ""crontab"" file does not exist in the ""/etc/cron.daily"" or ""/etc/cron.weekly"" subdirectories, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Configure the file integrity tool to automatically run on the system at least weekly. The following example output is generic. It will set cron to run AIDE daily, but other file integrity tools may be used:
 
 
@@ -164,12 +158,10 @@ Configure the file integrity tool to automatically run on the system at least we
 
 0 0 * * * /usr/sbin/aide --check | /bin/mail -s ""aide integrity check run for <system name>"" root@sysname.mil
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001744
 
 The information system implements organization-defined security responses automatically if baseline configurations are changed in an unauthorized manner.
@@ -180,7 +172,6 @@ NIST SP 800-53 Revision 4 :: CM-3 (5)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -62,58 +62,54 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-71849';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'high';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000257-GPOS-00098';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-71849';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-86473r2_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'high';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-07-010010';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000257-GPOS-00098';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The file permissions, ownership, and group membership of system files and commands must match the vendor values.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-86473r2_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-07-010010';
+}
+
+sub get_rule_title {
+    return
+        'The file permissions, ownership, and group membership of system files and commands must match the vendor values.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Discretionary access control is weakened if a user or group has access permissions to system files and directories greater than the default.
 
 
 
 Satisfies: SRG-OS-000257-GPOS-00098, SRG-OS-000278-GPOS-00108
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 Verify the file permissions, ownership, and group membership of system files and commands match the vendor values.
 
 
@@ -128,12 +124,10 @@ Check the file permissions, ownership, and group membership of system files and 
 
 If there is any output from the command indicating that the ownership or group of a system file or command, or a system file, has permissions less restrictive than the default, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 Run the following command to determine which package owns the file:
 
 
@@ -156,12 +150,10 @@ Reset the user and group ownership of files within a package with the following 
 
 #rpm --setugids <packagename>
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-001494
 
 The information system protects audit tools from unauthorized modification.
@@ -188,7 +180,6 @@ NIST SP 800-53 Revision 4 :: AU-9 (3)
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

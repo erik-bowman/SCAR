@@ -62,54 +62,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38584';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000096';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38584';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50385r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000204';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000096';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The xinetd service must be uninstalled if no network services utilizing it are enabled.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50385r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000204';
+}
+
+sub get_rule_title {
+    return
+        'The xinetd service must be uninstalled if no network services utilizing it are enabled.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Removing the ""xinetd"" package decreases the risk of the xinetd service's accidental (or intentional) activation.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 If network services are using the xinetd service, this is not applicable.
 
 
@@ -126,24 +122,20 @@ Run the following command to determine if the ""xinetd"" package is installed:
 
 If the package is installed, this is a finding.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 The ""xinetd"" package can be uninstalled with the following command:
 
 
 
 # yum erase xinetd
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000382
 
 The organization configures the information system to prohibit or restrict the use of organization defined functions, ports, protocols, and/or services.
@@ -158,7 +150,6 @@ NIST SP 800-53 Revision 4 :: CM-7 b
 
 
 CCI
-    return $self->{CCI};
 }
 
 # ------------------------------------------------------------------------------

@@ -52,10 +52,10 @@ sub new {
 sub check {
     my ($self) = @_;
     if ( run_grep('"gpgcheck=0" /etc/yum.repos.d/*') ) {
-        $self->{STATUS} = 'O';
+        $self->_set_finding_status('O');
     }
     else {
-        $self->{STATUS} = 'NF';
+        $self->_set_finding_status('NF');
     }
     return $self;
 }
@@ -66,54 +66,50 @@ sub remediate {
     return $self;
 }
 
-sub VULN_ID {
-    my ($self) = @_;
-    $self->{VULN_ID} = 'V-38487';
-    return $self->{VULN_ID};
+sub _set_finding_status {
+    my ( $self, $finding_status ) = @_;
+    $self->{finding_status} = $finding_status;
+    return $self->{finding_status};
 }
 
-sub SEVERITY {
+sub get_finding_status {
     my ($self) = @_;
-    $self->{SEVERITY} = 'low';
-    return $self->{SEVERITY};
+    return defined $self->{finding_status} ? $self->{finding_status} : undef;
 }
 
-sub GROUP_TITLE {
-    my ($self) = @_;
-    $self->{GROUP_TITLE} = 'SRG-OS-000103';
-    return $self->{GROUP_TITLE};
+sub get_vuln_id {
+    return 'V-38487';
 }
 
-sub RULE_ID {
-    my ($self) = @_;
-    $self->{RULE_ID} = 'SV-50288r1_rule';
-    return $self->{RULE_ID};
+sub get_severity {
+    return 'low';
 }
 
-sub STIG_ID {
-    my ($self) = @_;
-    $self->{STIG_ID} = 'RHEL-06-000015';
-    return $self->{STIG_ID};
+sub get_group_title {
+    return 'SRG-OS-000103';
 }
 
-sub RULE_TITLE {
-    my ($self) = @_;
-    $self->{RULE_TITLE}
-        = 'The system package management tool must cryptographically verify the authenticity of all software packages during installation.';
-    return $self->{RULE_TITLE};
+sub get_rule_id {
+    return 'SV-50288r1_rule';
 }
 
-sub DISCUSSION {
-    my ($self) = @_;
-    $self->{DISCUSSION} = <<'DISCUSSION';
+sub get_stig_id {
+    return 'RHEL-06-000015';
+}
+
+sub get_rule_title {
+    return
+        'The system package management tool must cryptographically verify the authenticity of all software packages during installation.';
+}
+
+sub get_discussion {
+    return <<'DISCUSSION';
 Ensuring all packages' cryptographic signatures are valid prior to installation ensures the provenance of the software and protects against malicious tampering.
 DISCUSSION
-    return $self->{DISCUSSION};
 }
 
-sub CHECK_CONTENT {
-    my ($self) = @_;
-    $self->{CHECK_CONTENT} = <<'CHECK_CONTENT';
+sub get_check_content {
+    return <<'CHECK_CONTENT';
 To determine whether ""yum"" has been configured to disable ""gpgcheck"" for any repos, inspect all files in ""/etc/yum.repos.d"" and ensure the following does not appear in any sections:
 
 
@@ -130,24 +126,20 @@ If GPG checking is disabled, this is a finding.
 
 If the ""yum"" system package management tool is not used to update the system, verify with the SA that installed packages are cryptographically signed.
 CHECK_CONTENT
-    return $self->{CHECK_CONTENT};
 }
 
-sub FIX_CONTENT {
-    my ($self) = @_;
-    $self->{FIX_CONTENT} = <<'FIX_CONTENT';
+sub get_fix_content {
+    return <<'FIX_CONTENT';
 To ensure signature checking is not disabled for any repos, remove any lines from files in ""/etc/yum.repos.d"" of the form:
 
 
 
 gpgcheck=0
 FIX_CONTENT
-    return $self->{FIX_CONTENT};
 }
 
-sub CCI {
-    my ($self) = @_;
-    $self->{CCI} = <<'CCI';
+sub get_cci {
+    return <<'CCI';
 CCI-000663
 
 The organization (or information system) enforces explicit rules governing the installation of software by users.
@@ -160,7 +152,6 @@ NIST SP 800-53A :: SA-7.1 (ii)
 
 
 CCI
-    return $self->{CCI};
 }
 
 1;
