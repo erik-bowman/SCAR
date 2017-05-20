@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The Datagram Congestion Control Protocol (DCCP) must be disabled unless required.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -36,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
+use Scar qw{ run_modprobe };
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
@@ -52,7 +51,17 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    my @modprobe_results = run_modprobe('-n -v dccp');
+    if ( !defined $modprobe_results[1] ) {
+        if ( defined $modprobe_results[0] ) {
+            if ( $modprobe_results[0] eq q{install /bin/true} ) {
+                $self->_set_finding_status('NF');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
