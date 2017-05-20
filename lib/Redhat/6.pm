@@ -27,6 +27,7 @@ sub new {
 
     $self->_get_lib_permissions();
     $self->_get_bin_permissions();
+    $self->_ingest_yum_conf();
     $self->_ingest_auditd_conf();
     $self->_ingest_auditsp_syslog_conf();
     $self->_ingest_sshd_config();

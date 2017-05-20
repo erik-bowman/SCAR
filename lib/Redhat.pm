@@ -8,9 +8,12 @@ use warnings FATAL => 'all';
 # Standard modules
 use File::Find;
 
-# Module version
-our $VERSION = 0.01;
-
+# Scar modules
+use Scar qw{
+    read_file get_file_permissions get_file_owner
+    get_file_group run_find run_rpm
+};
+use Scar::Config;
 use Scar::Loader
     require     => 1,
     search_path => ['Redhat::6'],
@@ -20,8 +23,8 @@ use Scar::Loader
     search_path => ['Redhat::7'],
     sub_name    => 'get_redhat7_plugins';
 
-use Scar
-    qw{ read_file get_file_permissions get_file_owner get_file_group run_find run_rpm };
+# Module version
+our $VERSION = 0.01;
 
 sub _ingest_sshd_config {
     my ($self) = @_;
@@ -124,6 +127,14 @@ sub _ingest_auditsp_syslog_conf {
     }
 
     return $self->{files}->{'/etc/audisp/plugins.d/syslog.conf'};
+}
+
+sub _ingest_yum_conf {
+    my ($self) = @_;
+    $self->{files}->{'/etc/yum.conf'} = Scar::Config->new();
+    $self->{files}->{'/etc/yum.conf'}
+        ->open_config_file( '/etc/yum.conf', 'utf8' );
+    return $self->{'/etc/yum.conf'};
 }
 
 sub _get_lib_permissions {
