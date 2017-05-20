@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The /etc/passwd file must not contain password hashes.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -30,7 +29,7 @@
 
 package Redhat::6::000031;
 
-# Standard modules
+# Standard pragmas
 use utf8;
 use strict;
 use warnings FATAL => 'all';
@@ -52,7 +51,15 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    foreach my $passwd_entry ( keys %{ $self->{parent}->{users} } ) {
+        if ( $self->{parent}->{users}->{$passwd_entry}->{etc_passwd} ne 'x' )
+        {
+            $self->_set_finding_status('O');
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 
