@@ -51,7 +51,7 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( get_file_permissions('/etc/passwd') =~ /^\d\d[04]{2}$/msx ) {
+    if ( get_file_permissions('/etc/passwd') =~ /^06[04]{2}$/msx ) {
         $self->_set_finding_status('NF');
     }
     else {
