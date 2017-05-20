@@ -51,12 +51,14 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( $self->{parent}->{service}->{crond}->{status}
-        =~ /^crond\s+[(]pid\s+\d+[)]\s+is\srunning[.]{3}$/msx )
-    {
-        $self->_set_finding_status('NF');
+    if ( defined $self->{parent}->{service}->{crond} ) {
+        if ( $self->{parent}->{service}->{crond}->{status}
+            =~ /^crond\s+[(]pid\s+\d+[)]\s+is\srunning[.]{3}$/msx )
+        {
+            $self->_set_finding_status('NF');
+        }
     }
-    else {
+    if ( !defined $self->get_finding_status() ) {
         $self->_set_finding_status('O');
     }
     return $self;
