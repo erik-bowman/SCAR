@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The /etc/passwd file must be group-owned by root.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -36,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
+use Scar qw{ get_file_group };
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
@@ -52,7 +51,12 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( get_file_group('/etc/passwd') eq '0' ) {
+        $self->_set_finding_status('NF');
+    }
+    else {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
