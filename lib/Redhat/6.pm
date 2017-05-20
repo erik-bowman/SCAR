@@ -28,6 +28,7 @@ sub new {
     $self->_get_lib_permissions();
     $self->_get_bin_permissions();
     $self->_ingest_auditd_conf();
+    $self->_ingest_auditsp_syslog_conf();
     $self->_ingest_sshd_config();
     $self->_check_rpm_integrity();
 
@@ -82,12 +83,6 @@ sub filesystem_table {
     }
 
     return $self;
-}
-
-sub _ingest_file {
-    my ( $self, $file, $regex ) = @_;
-    $self->{files}->{"$file"} = ingest_file( $file, $regex );
-    return $self->{files}->{"$file"};
 }
 
 1;

@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The system must forward audit records to the syslog service.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,23 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( !defined $self->{parent}->{files}
+        ->{'/etc/audisp/plugins.d/syslog.conf'}->{active}[1] )
+    {
+        if (defined $self->{parent}->{files}
+            ->{'/etc/audisp/plugins.d/syslog.conf'}->{active}[0] )
+        {
+            if ( $self->{parent}->{files}
+                ->{'/etc/audisp/plugins.d/syslog.conf'}->{active}[0] eq
+                'yes' )
+            {
+                $self->_set_finding_status('NF');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 

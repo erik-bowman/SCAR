@@ -58,7 +58,7 @@ sub _ingest_sshd_config {
     foreach my $keyword (@keywords) {
 
         foreach my $sshd_config_entry (@sshd_config_entries) {
-
+            chomp $sshd_config_entry;
             if ( $sshd_config_entry =~ /^($keyword)\W+(.*)$/imxsg ) {
                 push @{ $self->{files}->{'/etc/ssh/sshd_config'}->{$1} }, $2;
             }
@@ -86,7 +86,7 @@ sub _ingest_auditd_conf {
     foreach my $keyword (@keywords) {
 
         foreach my $auditd_conf_entry (@auditd_conf_entries) {
-
+            chomp $auditd_conf_entry;
             if ( $auditd_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx ) {
                 push @{ $self->{files}->{'/etc/audit/auditd.conf'}->{$1} },
                     $2;
@@ -97,6 +97,33 @@ sub _ingest_auditd_conf {
     }
 
     return $self->{files}->{'/etc/audit/auditd.conf'};
+}
+
+sub _ingest_auditsp_syslog_conf {
+    my ($self) = @_;
+    my @keywords = qw{
+        active direction path type args
+    };
+
+    my @auditsp_syslog_conf_entries
+        = read_file('/etc/audisp/plugins.d/syslog.conf');
+
+    foreach my $keyword (@keywords) {
+
+        foreach my $auditsp_syslog_conf_entry (@auditsp_syslog_conf_entries) {
+            chomp $auditsp_syslog_conf_entry;
+            if ($auditsp_syslog_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx )
+            {
+                push @{ $self->{files}->{'/etc/audisp/plugins.d/syslog.conf'}
+                        ->{$1} },
+                    $2;
+            }
+
+        }
+
+    }
+
+    return $self->{files}->{'/etc/audisp/plugins.d/syslog.conf'};
 }
 
 sub _get_lib_permissions {
@@ -121,7 +148,8 @@ sub _get_lib_permissions {
 
 sub _get_bin_permissions {
     my ($self) = @_;
-    my @bin_dirs = qw{ /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin };
+    my @bin_dirs
+        = qw{ /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin };
 
     foreach my $bin_dir (@bin_dirs) {
         my @dir_contents = run_find("-L $bin_dir -type f");
