@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The /etc/shadow file must be owned by root.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -36,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
+use Scar qw{ get_file_owner };
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
@@ -52,7 +51,12 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( get_file_owner('/etc/shadow') eq '0') {
+        $self->_set_finding_status('NF');
+    }
+    if (!defined $self->get_finding_status()) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
