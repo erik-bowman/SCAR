@@ -38,7 +38,6 @@ use warnings FATAL => 'all';
 use Scar;
 use Scar::Util::Log;
 use Scar::Util::Backup;
-use Data::Dumper;
 
 # Plugin version
 our $VERSION = 0.01;
