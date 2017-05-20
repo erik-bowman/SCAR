@@ -129,25 +129,35 @@ sub _ingest_auditsp_syslog_conf {
     return $self->{files}->{'/etc/audisp/plugins.d/syslog.conf'};
 }
 
-sub _ingest_etc_passwd {
-    my ($self) = @_;
-    my $entry_counter = 0;
+sub _get_users {
+    my ($self)              = @_;
+    my $entry_counter       = 0;
+    my @passwd_file_entries = read_file('/etc/passwd');
     while (
         my ( $name, $passwd, $uid, $gid, $quota, $comment, $gcos, $dir,
             $shell ) = getpwent )
     {
         $entry_counter++;
-        $self->{passwd}->{$entry_counter}->{name}     = $name;
-        $self->{passwd}->{$entry_counter}->{password} = $passwd;
-        $self->{passwd}->{$entry_counter}->{uid}      = $uid;
-        $self->{passwd}->{$entry_counter}->{gid}      = $gid;
-        $self->{passwd}->{$entry_counter}->{quota}    = $quota;
-        $self->{passwd}->{$entry_counter}->{comment}  = $comment;
-        $self->{passwd}->{$entry_counter}->{gcos}     = $gcos;
-        $self->{passwd}->{$entry_counter}->{home}     = $dir;
-        $self->{passwd}->{$entry_counter}->{shell}    = $shell;
+        $self->{users}->{$entry_counter}->{name}    = $name;
+        $self->{users}->{$entry_counter}->{passwd}  = $passwd;
+        $self->{users}->{$entry_counter}->{uid}     = $uid;
+        $self->{users}->{$entry_counter}->{gid}     = $gid;
+        $self->{users}->{$entry_counter}->{quota}   = $quota;
+        $self->{users}->{$entry_counter}->{comment} = $comment;
+        $self->{users}->{$entry_counter}->{gcos}    = $gcos;
+        $self->{users}->{$entry_counter}->{dir}     = $dir;
+        $self->{users}->{$entry_counter}->{shell}   = $shell;
+
+        foreach my $passwd_file_entry (@passwd_file_entries) {
+            if ( $passwd_file_entry
+                =~ /^$name:(.*):$uid:$gid:(.*):$dir:$shell$/msx )
+            {
+                $self->{users}->{$entry_counter}->{etc_passwd}  = $1;
+                $self->{users}->{$entry_counter}->{etc_comment} = $2;
+            }
+        }
     }
-    return $self->{passwd};
+    return $self->{users};
 }
 
 sub _ingest_yum_conf {

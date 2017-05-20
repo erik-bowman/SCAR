@@ -38,6 +38,7 @@ use warnings FATAL => 'all';
 use Scar;
 use Scar::Util::Log;
 use Scar::Util::Backup;
+use Data::Dumper;
 
 # Plugin version
 our $VERSION = 0.01;
@@ -51,9 +52,9 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    foreach my $passwd_entry ( keys %{ $self->{parent}->{passwd} } ) {
-        if ( $self->{parent}->{passwd}->{$passwd_entry}->{name} ne 'root' ) {
-            if ( $self->{parent}->{passwd}->{$passwd_entry}->{uid} eq '0' ) {
+    foreach my $passwd_entry ( keys %{ $self->{parent}->{users} } ) {
+        if ( $self->{parent}->{users}->{$passwd_entry}->{name} ne 'root' ) {
+            if ( $self->{parent}->{users}->{$passwd_entry}->{uid} eq '0' ) {
                 $self->_set_finding_status('O');
             }
         }
