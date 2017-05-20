@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The Red Hat Network Service (rhnsd) service must not be running, unless using RHN or an RHN Satellite.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,21 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( defined $self->{parent}->{service}->{rhnsd} ) {
+        if ( $self->{parent}->{service}->{rhnsd}->{status}
+            =~ /^rhnsd\s+[(]pid\s+\d+[)]\s+is\srunning[.]{3}$/msx )
+        {
+            $self->_set_finding_status('O');
+        }
+        for my $n ( 1 .. 6 ) {
+            if ( $self->{parent}->{service}->{rhnsd}->{$n} eq 'yes' ) {
+                $self->_set_finding_status('O');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 
