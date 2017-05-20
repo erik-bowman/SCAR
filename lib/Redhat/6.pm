@@ -25,6 +25,7 @@ sub new {
     my @fstab_entries = run_awk(q<'/^[^#]/ { print $ 0}' /etc/fstab>);
     $self->filesystem_table(@fstab_entries);
 
+    $self->_ingest_etc_passwd();
     $self->_get_lib_permissions();
     $self->_get_bin_permissions();
     $self->_ingest_yum_conf();

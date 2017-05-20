@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The root account must be the only account having a UID of 0.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,16 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    foreach my $passwd_entry ( keys %{ $self->{parent}->{passwd} } ) {
+        if ( $self->{parent}->{passwd}->{$passwd_entry}->{name} ne 'root' ) {
+            if ( $self->{parent}->{passwd}->{$passwd_entry}->{uid} eq '0' ) {
+                $self->_set_finding_status('O');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 
