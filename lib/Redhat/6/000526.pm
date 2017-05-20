@@ -20,7 +20,6 @@
 # RULE TITLE
 #   Automated file system mounting tools must not be enabled unless needed.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
