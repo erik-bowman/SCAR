@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The /etc/group file must have mode 0644 or less permissive.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -36,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar;
+use Scar qw{ get_file_permissions };
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
@@ -52,7 +51,12 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if (get_file_permissions('/etc/group') =~ /^06[04]{2}$/msx) {
+        $self->_set_finding_status('NF');
+    }
+    else {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
