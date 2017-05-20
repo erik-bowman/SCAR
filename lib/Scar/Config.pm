@@ -14,7 +14,8 @@ our $VERSION = '2.23';
 
 sub new {
     my ($class) = @_;
-    return bless {}, $class;
+    my $self = bless {}, $class;
+    return $self;
 }
 
 sub open_config_file {

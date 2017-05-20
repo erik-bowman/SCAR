@@ -52,12 +52,8 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if (defined $self->{parent}->{files}->{'/etc/yum.conf'}->{main}
-        ->{gpgcheck} )
-    {
-        if ($self->{parent}->{files}->{'/etc/yum.conf'}->{main}->{gpgcheck} eq
-            '1' )
-        {
+    if ( defined $self->{parent}->{'/etc/yum.conf'}->{main}->{gpgcheck} ) {
+        if ( $self->{parent}->{'/etc/yum.conf'}->{main}->{gpgcheck} eq '1' ) {
             $self->_set_finding_status('NF');
         }
     }

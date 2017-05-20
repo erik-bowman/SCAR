@@ -5,9 +5,6 @@ use utf8;
 use strict;
 use warnings FATAL => 'all';
 
-# Standard modules
-use File::Find;
-
 # Scar modules
 use Scar qw{
     read_file get_file_permissions get_file_owner
@@ -26,7 +23,7 @@ use Scar::Loader
 # Module version
 our $VERSION = 0.01;
 
-sub _ingest_sshd_config {
+sub _read_sshd_config {
     my ($self) = @_;
     my @keywords = qw{
         AcceptEnv AddressFamily AllowAgentForwarding
@@ -56,24 +53,24 @@ sub _ingest_sshd_config {
         XAuthLocation
     };
 
-    my @sshd_config_entries = read_file('/etc/ssh/sshd_config');
+    my @file_entries = read_file('/etc/ssh/sshd_config');
 
     foreach my $keyword (@keywords) {
 
-        foreach my $sshd_config_entry (@sshd_config_entries) {
-            chomp $sshd_config_entry;
-            if ( $sshd_config_entry =~ /^($keyword)\W+(.*)$/imxsg ) {
-                push @{ $self->{files}->{'/etc/ssh/sshd_config'}->{$1} }, $2;
+        foreach my $file_entry (@file_entries) {
+            chomp $file_entry;
+            if ( $file_entry =~ /^($keyword)\W+(.*)$/imxsg ) {
+                push @{ $self->{'/etc/ssh/sshd_config'}->{$1} }, $2;
             }
 
         }
 
     }
 
-    return $self->{files}->{'/etc/ssh/sshd_config'};
+    return $self->{'/etc/ssh/sshd_config'};
 }
 
-sub _ingest_auditd_conf {
+sub _read_auditd_conf {
     my ($self) = @_;
     my @keywords = qw{
         log_file log_format flush
@@ -84,41 +81,37 @@ sub _ingest_auditd_conf {
         disk_full_action disk_error_action
     };
 
-    my @auditd_conf_entries = read_file('/etc/audit/auditd.conf');
+    my @file_entries = read_file('/etc/audit/auditd.conf');
 
     foreach my $keyword (@keywords) {
 
-        foreach my $auditd_conf_entry (@auditd_conf_entries) {
-            chomp $auditd_conf_entry;
-            if ( $auditd_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx ) {
-                push @{ $self->{files}->{'/etc/audit/auditd.conf'}->{$1} },
-                    $2;
+        foreach my $file_entry (@file_entries) {
+            chomp $file_entry;
+            if ( $file_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx ) {
+                push @{ $self->{'/etc/audit/auditd.conf'}->{$1} }, $2;
             }
 
         }
 
     }
 
-    return $self->{files}->{'/etc/audit/auditd.conf'};
+    return $self->{'/etc/audit/auditd.conf'};
 }
 
-sub _ingest_auditsp_syslog_conf {
+sub _read_audisp_syslog_conf {
     my ($self) = @_;
     my @keywords = qw{
         active direction path type args
     };
 
-    my @auditsp_syslog_conf_entries
-        = read_file('/etc/audisp/plugins.d/syslog.conf');
+    my @file_entries = read_file('/etc/audisp/plugins.d/syslog.conf');
 
     foreach my $keyword (@keywords) {
 
-        foreach my $auditsp_syslog_conf_entry (@auditsp_syslog_conf_entries) {
-            chomp $auditsp_syslog_conf_entry;
-            if ($auditsp_syslog_conf_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx )
-            {
-                push @{ $self->{files}->{'/etc/audisp/plugins.d/syslog.conf'}
-                        ->{$1} },
+        foreach my $file_entry (@file_entries) {
+            chomp $file_entry;
+            if ( $file_entry =~ /^($keyword)[= ]{1,3}(.*)$/msx ) {
+                push @{ $self->{'/etc/audisp/plugins.d/syslog.conf'}->{$1} },
                     $2;
             }
 
@@ -126,13 +119,12 @@ sub _ingest_auditsp_syslog_conf {
 
     }
 
-    return $self->{files}->{'/etc/audisp/plugins.d/syslog.conf'};
+    return $self->{'/etc/audisp/plugins.d/syslog.conf'};
 }
 
 sub _get_users {
-    my ($self)              = @_;
-    my $entry_counter       = 0;
-    my @passwd_file_entries = read_file('/etc/passwd');
+    my ($self) = @_;
+    my $entry_counter = 0;
     while (
         my ( $name, $passwd, $uid, $gid, $quota, $comment, $gcos, $dir,
             $shell ) = getpwent )
@@ -147,24 +139,20 @@ sub _get_users {
         $self->{users}->{$entry_counter}->{gcos}    = $gcos;
         $self->{users}->{$entry_counter}->{dir}     = $dir;
         $self->{users}->{$entry_counter}->{shell}   = $shell;
-
-        foreach my $passwd_file_entry (@passwd_file_entries) {
-            if ( $passwd_file_entry
-                =~ /^$name:(.*):$uid:$gid:(.*):$dir:$shell$/msx )
-            {
-                $self->{users}->{$entry_counter}->{etc_passwd}  = $1;
-                $self->{users}->{$entry_counter}->{etc_comment} = $2;
-            }
-        }
     }
     return $self->{users};
 }
 
-sub _ingest_yum_conf {
+sub _read_yum_config {
     my ($self) = @_;
-    $self->{files}->{'/etc/yum.conf'} = Scar::Config->new();
-    $self->{files}->{'/etc/yum.conf'}
-        ->open_config_file( '/etc/yum.conf', 'utf8' );
+    my $yum_config = Scar::Config->new();
+    $yum_config->open_config_file( '/etc/yum.conf', 'utf8' );
+    foreach my $block ( keys %{$yum_config} ) {
+        foreach my $keyword ( %{ $yum_config->{$block} } ) {
+            $self->{'/etc/yum.conf'}->{$block}->{$keyword}
+                = $yum_config->{$block}->{$keyword};
+        }
+    }
     return $self->{'/etc/yum.conf'};
 }
 

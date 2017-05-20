@@ -51,14 +51,11 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( !defined $self->{parent}->{files}->{'/etc/ssh/sshd_config'}
-        ->{Protocol}[1] )
-    {
-        if (defined $self->{parent}->{files}->{'/etc/ssh/sshd_config'}
-            ->{Protocol}[0] )
+    if ( !defined $self->{parent}->{'/etc/ssh/sshd_config'}->{Protocol}[1] ) {
+        if (defined $self->{parent}->{'/etc/ssh/sshd_config'}->{Protocol}[0] )
         {
-            if ( $self->{parent}->{files}->{'/etc/ssh/sshd_config'}
-                ->{Protocol}[0] eq '2' )
+            if ( $self->{parent}->{'/etc/ssh/sshd_config'}->{Protocol}[0] eq
+                '2' )
             {
                 $self->_set_finding_status('NF');
             }

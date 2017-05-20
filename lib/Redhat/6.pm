@@ -28,10 +28,10 @@ sub new {
     $self->_get_users();
     $self->_get_lib_permissions();
     $self->_get_bin_permissions();
-    $self->_ingest_yum_conf();
-    $self->_ingest_auditd_conf();
-    $self->_ingest_auditsp_syslog_conf();
-    $self->_ingest_sshd_config();
+    $self->_read_yum_config();
+    $self->_read_auditd_conf();
+    $self->_read_audisp_syslog_conf();
+    $self->_read_sshd_config();
     $self->_check_rpm_integrity();
 
     return $self;

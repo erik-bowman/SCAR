@@ -51,15 +51,21 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if (!defined $self->{parent}->{files}->{'/etc/audit/auditd.conf'}->{disk_error_action}[1]) {
-        if ($self->{parent}->{files}->{'/etc/audit/auditd.conf'}->{disk_error_action}[0] =~ /^(?:syslog|exec|single|halt)$/imsx) {
-            $self->_set_finding_status('NF');
-        }
-        else {
-            $self->_set_finding_status('O');
+    if ( !defined $self->{parent}->{'/etc/audit/auditd.conf'}
+        ->{disk_error_action}[1] )
+    {
+        if (defined $self->{parent}->{'/etc/audit/auditd.conf'}
+            ->{disk_error_action}[0] )
+        {
+            if ( $self->{parent}->{'/etc/audit/auditd.conf'}
+                ->{disk_error_action}[0]
+                =~ /^(?:syslog|exec|single|halt)$/imsx )
+            {
+                $self->_set_finding_status('NF');
+            }
         }
     }
-    else {
+    if ( !defined $self->get_finding_status() ) {
         $self->_set_finding_status('O');
     }
     return $self;

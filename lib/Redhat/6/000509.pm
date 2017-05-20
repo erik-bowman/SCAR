@@ -51,15 +51,14 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( !defined $self->{parent}->{files}
-        ->{'/etc/audisp/plugins.d/syslog.conf'}->{active}[1] )
+    if ( !defined $self->{parent}->{'/etc/audisp/plugins.d/syslog.conf'}
+        ->{active}[1] )
     {
-        if (defined $self->{parent}->{files}
-            ->{'/etc/audisp/plugins.d/syslog.conf'}->{active}[0] )
+        if (defined $self->{parent}->{'/etc/audisp/plugins.d/syslog.conf'}
+            ->{active}[0] )
         {
-            if ( $self->{parent}->{files}
-                ->{'/etc/audisp/plugins.d/syslog.conf'}->{active}[0] eq
-                'yes' )
+            if ( $self->{parent}->{'/etc/audisp/plugins.d/syslog.conf'}
+                ->{active}[0] eq 'yes' )
             {
                 $self->_set_finding_status('NF');
             }
