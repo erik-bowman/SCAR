@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The operating system, upon successful logon, must display to the user the date and time of the last logon or access via ssh.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,22 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( !defined $self->{parent}->{'/etc/ssh/sshd_config'}->{PrintLastLog}[1]
+        )
+    {
+        if (defined $self->{parent}->{'/etc/ssh/sshd_config'}
+            ->{PrintLastLog}[0] )
+        {
+            if ( $self->{parent}->{'/etc/ssh/sshd_config'}->{PrintLastLog}[0]
+                eq 'yes' )
+            {
+                $self->_set_finding_status('NF');
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
