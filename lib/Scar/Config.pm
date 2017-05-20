@@ -58,7 +58,7 @@ sub _convert_from_string {
             next;
         }
 
-        $config_entry = !s/\s\;\s.+$//msxg;
+        $config_entry =~ s/\s\;\s.+$//msxg;
 
         if ( $config_entry =~ /^\s*\[\s*(.+?)\s*\]\s*$/msx ) {
             $self->{ $ns = $1 } ||= {};
