@@ -18,7 +18,7 @@ our $VERSION = 0.01;
 
 # Exportables
 our @EXPORT_OK = qw{
-    run_awk run_grep run_service run_chkconfig run_find
+    run_awk run_grep run_service run_chkconfig run_find run_rpm
     implode_path explode_path make_path_absolute
     get_strftime get_strfdate read_file
     get_current_directory
@@ -91,6 +91,11 @@ sub run_chkconfig {
 sub run_find {
     my ($args) = @_;
     return _run_system_bin( '/bin/find', $args );
+}
+
+sub run_rpm {
+    my ($args) = @_;
+    return _run_system_bin( '/bin/rpm', $args );
 }
 
 sub read_file {

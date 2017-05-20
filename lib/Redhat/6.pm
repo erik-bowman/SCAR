@@ -28,6 +28,7 @@ sub new {
     $self->_get_lib_permissions();
     $self->_ingest_auditd_conf();
     $self->_ingest_sshd_config();
+    $self->_check_rpm_integrity();
 
     return $self;
 }

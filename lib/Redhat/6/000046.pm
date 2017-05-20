@@ -20,7 +20,6 @@
 # RULE TITLE
 #   Library files must be owned by a system account.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,20 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    foreach my $lib_file ( keys %{ $self->{parent}->{lib_files} } ) {
+        if ( $self->{parent}->{lib_files}->{$lib_file}->{owner} ne 'root' ) {
+            if ( defined $self->{parent}->{rpm_integrity}->{$lib_file} ) {
+                if ( $self->{parent}->{rpm_integrity}->{$lib_file}->{owner} eq
+                    'fail' )
+                {
+                    $self->_set_finding_status('O');
+                }
+            }
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('NF');
+    }
     return $self;
 }
 

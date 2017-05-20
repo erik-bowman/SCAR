@@ -20,7 +20,8 @@ use Scar::Loader
     search_path => ['Redhat::7'],
     sub_name    => 'get_redhat7_plugins';
 
-use Scar qw{ read_file get_file_permissions get_file_owner get_file_group run_find };
+use Scar
+    qw{ read_file get_file_permissions get_file_owner get_file_group run_find run_rpm };
 
 sub _ingest_sshd_config {
     my ($self) = @_;
@@ -108,14 +109,40 @@ sub _get_lib_permissions {
         foreach my $content (@dir_contents) {
             chomp $content;
             $self->{lib_files}->{$content}->{permissions}
-                = get_file_permissions( $content );
+                = get_file_permissions($content);
             $self->{lib_files}->{$content}->{owner}
-                = get_file_owner( $content );
+                = get_file_owner($content);
             $self->{lib_files}->{$content}->{group}
-                = get_file_group( $content );
+                = get_file_group($content);
         }
     }
     return $self->{lib_files};
+}
+
+sub _check_rpm_integrity {
+    my ($self) = @_;
+    my @failed_integrity_files = run_rpm('-Va');
+    foreach my $failed_integrity_file (@failed_integrity_files) {
+        chomp $failed_integrity_file;
+        my @results = split /\s+/msx, $failed_integrity_file;
+        my $result  = shift @results;
+        my $file    = pop @results;
+        if ( $result
+            =~ /^([.S])([.M])([.5])([.D])([.L])([.U])([.G])([.T])/msx )
+        {
+            $self->{rpm_integrity}->{$file} = {
+                size    => $1 eq 'S' ? 'fail' : 'pass',
+                mode    => $2 eq 'M' ? 'fail' : 'pass',
+                md5sum  => $3 eq '5' ? 'fail' : 'pass',
+                version => $4 eq 'D' ? 'fail' : 'pass',
+                link    => $5 eq 'L' ? 'fail' : 'pass',
+                owner   => $6 eq 'U' ? 'fail' : 'pass',
+                group   => $7 eq 'G' ? 'fail' : 'pass',
+                mtime   => $8 eq 'T' ? 'fail' : 'pass',
+            };
+        }
+    }
+    return $self->{rpm_integrity};
 }
 
 1;
