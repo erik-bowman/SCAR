@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The audit system must take appropriate action when the audit storage volume is full.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,21 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if ( !defined $self->{parent}->{files}->{'/etc/audit/auditd.conf'}
+        ->{disk_full_action}[1] )
+    {
+        if ( $self->{parent}->{files}->{'/etc/audit/auditd.conf'}
+            ->{disk_full_action}[0] =~ /^(?:syslog|exec|single|halt)$/imsx )
+        {
+            $self->_set_finding_status('NF');
+        }
+        else {
+            $self->_set_finding_status('O');
+        }
+    }
+    else {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
