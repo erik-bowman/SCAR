@@ -35,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar qw( parse_file );
+use Scar;
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
@@ -51,11 +51,20 @@ sub new {
 
 sub check {
     my ($self) = @_;
-    if ( ingest_file( '/etc/ssh/sshd_config', '^ClientAliveInterval\W+900$' ) )
+    if ( !defined $self->{parent}->{files}->{'/etc/ssh/sshd_config'}
+        ->{ClientAliveInterval}[1] )
     {
-        $self->_set_finding_status('NF');
+        if (defined $self->{parent}->{files}->{'/etc/ssh/sshd_config'}
+            ->{ClientAliveInterval}[0] )
+        {
+            if (defined $self->{parent}->{files}->{'/etc/ssh/sshd_config'}
+                ->{ClientAliveInterval}[0] eq '900' )
+            {
+                $self->_set_finding_status('NF');
+            }
+        }
     }
-    else {
+    if ( !defined $self->get_finding_status() ) {
         $self->_set_finding_status('O');
     }
     return $self;
