@@ -1,15 +1,18 @@
 package Redhat::6;
 
-# Standard modules
+# Standard pragmas
 use utf8;
 use strict;
-use FindBin;
-use Carp qw( croak );
 use base qw( Redhat );
 use warnings FATAL => 'all';
 
+# Standard modules
+use FindBin;
+use Carp qw( croak );
+
 # Scar modules
 use Scar qw( run_awk run_service run_chkconfig );
+use Scar::File::Sshd_config;
 use Scar::Util::Log;
 
 # Module version
@@ -31,8 +34,9 @@ sub new {
     $self->_read_yum_config();
     $self->_read_auditd_conf();
     $self->_read_audisp_syslog_conf();
-    $self->_read_sshd_config();
     $self->_check_rpm_integrity();
+
+    $self->{sshd_config} = Scar::File::Sshd_config->new();
 
     return $self;
 }

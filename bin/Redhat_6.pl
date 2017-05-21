@@ -1,36 +1,17 @@
 #!/bin/env perl
-# ------------------------------------------------------------------------------
-# NAME
-#
-#
-# SYNOPSIS
-#
-#
-# DESCRIPTION
-#
-#
-# OPTIONS
-#
-#
-# ARGUMENTS
-#
-#
-# SEE ALSO
-#
-#
-# AUTHOR
-#   Erik Bowman (erik.bowman@icsinc.com)
-# ------------------------------------------------------------------------------
 
-# Standard modules
+# Standard pragmas
 use utf8;
 use strict;
+
+use warnings FATAL => 'all';
+
+# Standard modules
 use FindBin;
 use Getopt::Long;
 use Carp qw( croak );
 use lib "$FindBin::Bin/../lib";
 use File::Spec::Functions;
-use warnings FATAL => 'all';
 
 # Scar Modules
 use Scar::Util::Log;
@@ -42,13 +23,16 @@ use Redhat::6;
 our $VERSION = 0.01;
 
 my @PLUGINS;
-my $RHEL6  = Redhat::6->new();
+
+#@returns Redhat::6
+my $RHEL6 = Redhat::6->new();
 
 # Start
 start_scar();
 
 sub start_scar {
     my $self = {};
+
     Getopt::Long::GetOptions(
         'base=s'         => \$self->{directories}->{base},
         'logs=s'         => \$self->{directories}->{logs},
@@ -64,7 +48,8 @@ sub start_scar {
     );
 
     run_checks($self);
-#    run_remediations();
+
+    #    run_remediations();
 
     return 1;
 }
@@ -73,8 +58,8 @@ sub run_checks {
     my ($self) = @_;
     foreach my $plugin ( $RHEL6->get_redhat6_plugins() ) {
 
-        if (defined $self->{test_check}) {
-            if ($plugin->get_stig_id ne $self->{test_check}) {
+        if ( defined $self->{test_check} ) {
+            if ( $plugin->get_stig_id ne $self->{test_check} ) {
                 next;
             }
         }
@@ -84,13 +69,12 @@ sub run_checks {
         }
         print "Starting " . $initialized_plugin->get_stig_id() . "\n";
         $initialized_plugin->check();
-        if (defined $initialized_plugin->get_finding_status()) {
-            print $initialized_plugin->get_finding_status()."\n";
+        if ( defined $initialized_plugin->get_finding_status() ) {
+            print $initialized_plugin->get_finding_status() . "\n";
         }
     }
 
     return 1;
 }
-
 
 __END__

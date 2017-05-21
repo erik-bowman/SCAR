@@ -106,51 +106,6 @@ sub run_rpm {
     return _run_system_bin( '/bin/rpm', $args );
 }
 
-sub read_file {
-    my ($file) = @_;
-    my @results;
-
-    open my $file_hanlder, '<:encoding(utf8)', $file
-        or croak "Could not parse file '$file': $OS_ERROR";
-    {
-        while ( my $line_in_file = <$file_hanlder> ) {
-            chomp $line_in_file;
-            push @results, $line_in_file;
-        }
-    }
-    close $file_hanlder;
-
-    return @results;
-}
-
-sub get_file_owner {
-    my ($file) = @_;
-    if ( !-f $file ) {
-        croak
-            "Unable to get the owner uid for file '$file': file does not exist";
-    }
-    return ( stat $file )[4];
-}
-
-sub get_file_group {
-    my ($file) = @_;
-    if ( !-f $file ) {
-        croak
-            "Unable to get the owner gid for file '$file': file does not exist";
-    }
-    return ( stat $file )[5];
-}
-
-sub get_file_permissions {
-    my ($file) = @_;
-    if ( !-f $file ) {
-        croak
-            "Unable to get permissions for file '$file': file does not exist";
-    }
-    my $file_permissions = ( stat $file )[2];
-    return sprintf '%04o', Fcntl::S_IMODE($file_permissions);
-}
-
 1;
 
 __END__

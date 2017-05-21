@@ -1,33 +1,241 @@
 <component name="ProjectDictionaryState">
   <dictionary name="bowman">
     <words>
+      <w>abqoo</w>
+      <w>acasscan</w>
+      <w>accomodate</w>
+      <w>accts</w>
+      <w>aente</w>
+      <w>afee</w>
+      <w>ajsr</w>
+      <w>appletalk</w>
+      <w>asxx</w>
+      <w>audisp</w>
+      <w>auditconfig</w>
+      <w>auditd</w>
+      <w>audnames</w>
       <w>auid</w>
+      <w>auoz</w>
+      <w>autologin</w>
+      <w>axtkf</w>
+      <w>blub</w>
+      <w>bluetooth</w>
+      <w>bsmconv</w>
+      <w>bzkn</w>
+      <w>cgrq</w>
       <w>chown</w>
+      <w>ckrzus</w>
+      <w>cmdb</w>
+      <w>cmhome</w>
+      <w>conguration</w>
+      <w>coniguration</w>
+      <w>coqd</w>
+      <w>coreadm</w>
+      <w>crontab</w>
+      <w>crontabs</w>
+      <w>crowellm</w>
+      <w>cshrc</w>
+      <w>datea</w>
+      <w>dateb</w>
+      <w>dccp</w>
+      <w>defs</w>
+      <w>deleteme</w>
+      <w>dest</w>
       <w>devel</w>
+      <w>dhclient</w>
+      <w>dictionminwordlength</w>
+      <w>direcoties</w>
+      <w>disa</w>
+      <w>disasa</w>
+      <w>doloop</w>
+      <w>driftfile</w>
+      <w>egrep</w>
+      <w>expirations</w>
       <w>fchmod</w>
       <w>fchmodat</w>
       <w>fchown</w>
       <w>fchownat</w>
+      <w>fdyq</w>
+      <w>foomatic</w>
+      <w>foyu</w>
       <w>fremovexattr</w>
       <w>fsetxattr</w>
+      <w>fsiun</w>
+      <w>fstab</w>
+      <w>ftpd</w>
+      <w>ftpusers</w>
+      <w>gadr</w>
+      <w>gatm</w>
+      <w>gbao</w>
       <w>gpos</w>
+      <w>gtwz</w>
+      <w>gtyhc</w>
+      <w>gwyr</w>
+      <w>hgjn</w>
+      <w>hostfile</w>
+      <w>hpux</w>
+      <w>hqbp</w>
+      <w>hqsy</w>
+      <w>hqxyg</w>
+      <w>hweav</w>
+      <w>iavm</w>
+      <w>ieee</w>
+      <w>igox</w>
+      <w>ihsadmin</w>
+      <w>ihtk</w>
+      <w>iihndr</w>
+      <w>ilpi</w>
+      <w>inet</w>
+      <w>inetd</w>
+      <w>inetinit</w>
+      <w>inittab</w>
+      <w>iocadmin</w>
+      <w>itbt</w>
+      <w>jodl</w>
+      <w>kdcip</w>
+      <w>keyserv</w>
+      <w>kghe</w>
+      <w>kheht</w>
+      <w>kickstart</w>
+      <w>kjffn</w>
       <w>lchown</w>
+      <w>lgmvwcv</w>
+      <w>libuser</w>
+      <w>lknm</w>
+      <w>llqp</w>
+      <w>localdir</w>
+      <w>lockdown</w>
+      <w>logrotate</w>
+      <w>lovelyd</w>
       <w>lremovexattr</w>
       <w>lsetxattr</w>
+      <w>macct</w>
+      <w>mailx</w>
+      <w>mgroup</w>
+      <w>mibs</w>
+      <w>minfree</w>
+      <w>modprobe</w>
+      <w>mprobe</w>
+      <w>naflags</w>
+      <w>ncase</w>
+      <w>nchooser</w>
+      <w>ncommand</w>
+      <w>nddconfig</w>
+      <w>nead</w>
+      <w>nessus</w>
+      <w>nflexible</w>
+      <w>nhandled</w>
+      <w>nipr</w>
+      <w>nname</w>
+      <w>nntp</w>
+      <w>noglogin</w>
+      <w>nolimit</w>
       <w>nolq</w>
+      <w>noncompliant</w>
+      <w>npriority</w>
       <w>npro</w>
       <w>nsfs</w>
+      <w>nsswitch</w>
+      <w>ntpd</w>
+      <w>ntpdate</w>
+      <w>oglxws</w>
+      <w>openldap</w>
+      <w>orxld</w>
+      <w>ossrr</w>
+      <w>ouvo</w>
+      <w>oxfx</w>
+      <w>passwd</w>
       <w>perlcriticrc</w>
       <w>perltidyrc</w>
+      <w>perzone</w>
+      <w>pfxnc</w>
+      <w>pkcs</w>
+      <w>ploo</w>
       <w>pluggable</w>
+      <w>poam</w>
       <w>postdrop</w>
       <w>postqueue</w>
+      <w>poweroff</w>
+      <w>proftpd</w>
+      <w>pvaord</w>
+      <w>pwquality</w>
+      <w>qcus</w>
+      <w>qibaakcaqe</w>
+      <w>qsrb</w>
+      <w>qziz</w>
+      <w>redhat</w>
+      <w>reinstalls</w>
+      <w>remediate</w>
       <w>removexattr</w>
+      <w>resolv</w>
+      <w>retreive</w>
+      <w>retval</w>
       <w>rhel</w>
+      <w>richarda</w>
+      <w>rsyslog</w>
+      <w>sadm</w>
       <w>sbin</w>
+      <w>scpok</w>
+      <w>sctp</w>
+      <w>secon</w>
+      <w>securcert</w>
+      <w>securetty</w>
+      <w>selfhealing</w>
+      <w>selinux</w>
+      <w>sendmail</w>
+      <w>setpolicy</w>
       <w>setxattr</w>
+      <w>sfnrk</w>
+      <w>sguid</w>
+      <w>skel</w>
+      <w>smithja</w>
+      <w>smithm</w>
+      <w>snmp</w>
+      <w>snmpd</w>
+      <w>solaris</w>
+      <w>sparc</w>
+      <w>srev</w>
+      <w>sshd</w>
+      <w>sshdir</w>
+      <w>ssjlvz</w>
       <w>stig</w>
+      <w>stqi</w>
+      <w>stype</w>
+      <w>subapp</w>
+      <w>suid</w>
+      <w>sysctl</w>
+      <w>syslog</w>
+      <w>syslogd</w>
+      <w>tannerd</w>
+      <w>tipc</w>
+      <w>tivoli</w>
+      <w>tlsu</w>
+      <w>toolkits</w>
+      <w>touzk</w>
+      <w>tsgwy</w>
+      <w>tzone</w>
+      <w>ucet</w>
+      <w>unixdir</w>
+      <w>uvscan</w>
+      <w>uxbl</w>
+      <w>uykpj</w>
+      <w>vdmdkwus</w>
+      <w>vmxms</w>
       <w>vuln</w>
+      <w>vwdrx</w>
+      <w>wasadmin</w>
+      <w>wgnmusmbb</w>
+      <w>woodq</w>
+      <w>xfer</w>
+      <w>xinetd</w>
+      <w>xorg</w>
+      <w>xrbl</w>
+      <w>ydwj</w>
+      <w>yoiva</w>
+      <w>yzlgm</w>
+      <w>zbnnq</w>
+      <w>zhnw</w>
+      <w>zonename</w>
     </words>
   </dictionary>
 </component>

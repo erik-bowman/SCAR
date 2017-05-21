@@ -35,7 +35,7 @@ use strict;
 use warnings FATAL => 'all';
 
 # Scar modules
-use Scar qw{ get_file_permissions };
+use Scar::File qw{ get_file_permissions };
 use Scar::Util::Log;
 use Scar::Util::Backup;
 
