@@ -44,19 +44,19 @@ our $VERSION = 0.01;
 
 sub new {
     my ( $class, $parent ) = @_;
-    my $self = bless { parent => $parent }, $class;
+    my $self = bless \%{$parent}, $class;
 
     return $self;
 }
 
 sub check {
     my ($self) = @_;
-    if (defined $self->{sshd_config}->{HostbasedAuthentication}) {
-        if ($self->{sshd_config}->{HostbasedAuthentication} eq 'yes') {
+    if ( defined $self->{sshd_config}->{HostbasedAuthentication} ) {
+        if ( $self->{sshd_config}->{HostbasedAuthentication} eq 'yes' ) {
             $self->_set_finding_status('NF');
         }
     }
-    if (!defined $self->get_finding_status()) {
+    if ( !defined $self->get_finding_status() ) {
         $self->_set_finding_status('O');
     }
     return $self;
