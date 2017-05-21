@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The SSH daemon must not allow host-based authentication.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -52,7 +51,14 @@ sub new {
 
 sub check {
     my ($self) = @_;
-
+    if (defined $self->{sshd_config}->{HostbasedAuthentication}) {
+        if ($self->{sshd_config}->{HostbasedAuthentication} eq 'yes') {
+            $self->_set_finding_status('NF');
+        }
+    }
+    if (!defined $self->get_finding_status()) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
