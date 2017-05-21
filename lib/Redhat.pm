@@ -7,8 +7,11 @@ use warnings FATAL => 'all';
 
 # Scar modules
 use Scar qw{
+    run_find run_rpm
+};
+use Scar::File qw{
     read_file get_file_permissions get_file_owner
-    get_file_group run_find run_rpm
+    get_file_group
 };
 use Scar::Config;
 use Scar::Loader
@@ -22,53 +25,6 @@ use Scar::Loader
 
 # Module version
 our $VERSION = 0.01;
-
-sub _read_sshd_config {
-    my ($self) = @_;
-    my @keywords = qw{
-        AcceptEnv AddressFamily AllowAgentForwarding
-        AllowGroups AllowTcpForwarding AllowUsers
-        AuthorizedKeysFile AuthorizedKeysFile Banner
-        ChallengeResponseAuthentication ChrootDirectory Ciphers
-        ClientAliveCountMax ClientAliveInterval Compression
-        DenyGroups DenyUsers ForceCommand
-        GatewayPorts GSSAPIAuthentication GSSAPIKeyExchange
-        GSSAPICleanupCredentials GSSAPIStrictAcceptorCheck GSSAPIStoreCredentialsOnRekey
-        HostbasedAuthentication HostbasedUsesNameFromPacketOnly HostKey
-        IgnoreRhosts IgnoreUserKnownHosts KerberosAuthentication
-        KerberosGetAFSToken KerberosOrLocalPasswd KerberosTicketCleanup
-        KerberosUseKuserok KeyRegenerationInterval ListenAddress
-        LoginGraceTime LogLevel MACs
-        MaxAuthTries MaxSessions MaxStartups
-        PasswordAuthentication PermitEmptyPasswords PermitOpen
-        PermitRootLogin PermitTunnel PermitUserEnvironment
-        PidFile Port PrintLastLog
-        PrintMotd Protocol PubkeyAuthentication
-        AuthorizedKeysCommand AuthorizedKeysCommandRunAs RequiredAuthentications1
-        RequiredAuthentications2 RSAAuthentication ServerKeyBits
-        ShowPatchLevel StrictModes Subsystem
-        SyslogFacility TCPKeepAlive UseDNS
-        UseLogin UsePAM UsePrivilegeSeparation
-        X11DisplayOffset X11Forwarding X11UseLocalhost
-        XAuthLocation
-    };
-
-    my @file_entries = read_file('/etc/ssh/sshd_config');
-
-    foreach my $keyword (@keywords) {
-
-        foreach my $file_entry (@file_entries) {
-            chomp $file_entry;
-            if ( $file_entry =~ /^($keyword)\W+(.*)$/imxsg ) {
-                push @{ $self->{'/etc/ssh/sshd_config'}->{$1} }, $2;
-            }
-
-        }
-
-    }
-
-    return $self->{'/etc/ssh/sshd_config'};
-}
 
 sub _read_auditd_conf {
     my ($self) = @_;
