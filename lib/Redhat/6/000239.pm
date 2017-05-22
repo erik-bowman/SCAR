@@ -20,7 +20,6 @@
 # RULE TITLE
 #   The SSH daemon must not allow authentication using an empty password.
 #
-# TODO: Create Check
 # TODO: Create Remediation
 #
 # AUTHOR
@@ -45,14 +44,21 @@ our $VERSION = 0.01;
 
 sub new {
     my ( $class, $parent ) = @_;
-    my $self = bless { parent => $parent }, $class;
+    my $self = bless \%{$parent}, $class;
 
     return $self;
 }
 
 sub check {
     my ($self) = @_;
-
+    if ( defined $self->{sshd_config}->{PermitEmptyPasswords} ) {
+        if ( $self->{sshd_config}->{PermitEmptyPasswords} eq 'no' ) {
+            $self->_set_finding_status('NF');
+        }
+    }
+    if ( !defined $self->get_finding_status() ) {
+        $self->_set_finding_status('O');
+    }
     return $self;
 }
 
