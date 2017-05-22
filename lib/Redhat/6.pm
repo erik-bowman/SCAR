@@ -36,6 +36,7 @@ sub new {
     $self->_read_audisp_syslog_conf();
     $self->_check_rpm_integrity();
 
+    #@type Scar::File::Sshd_config
     $self->{sshd_config} = Scar::File::Sshd_config->new();
 
     return $self;

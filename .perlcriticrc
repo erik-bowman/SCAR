@@ -1,5 +1,5 @@
 theme       = (pbp || security) && bugs
-exclude     = Miscellanea::RequireRcsKeywords
+exclude     = Miscellanea::RequireRcsKeywords && NamingConventions::Capitalization
 
 [CodeLayout::RequireTidyCode]
 perltidyrc = .perltidyrc

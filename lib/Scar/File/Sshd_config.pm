@@ -9,6 +9,7 @@ use English qw{ -no_match_vars };
 
 our $VERSION = 0.01;
 
+#@method
 sub new {
     my ($class) = @ARG;
     my $self = bless {
@@ -38,37 +39,37 @@ sub new {
 
     foreach my $line (@file_contents) {
         if ( $line =~ /^Ciphers\s+(.*)$/imsx ) {
-            $self->ciphers($1);
+            $self->Ciphers($1);
         }
         if ( $line =~ /^Banner\s+(.*)$/imsx ) {
-            $self->banner($1);
+            $self->Banner($1);
         }
         if ( $line =~ /^Protocol\s+(.*)$/imsx ) {
-            $self->protocol($1);
+            $self->Protocol($1);
         }
         if ( $line =~ /^IgnoreRhosts\s+(.*)$/imsx ) {
-            $self->ignore_rhosts($1);
+            $self->IgnoreRhosts($1);
         }
         if ( $line =~ /^PrintLastlog\s+(.*)$/imsx ) {
-            $self->print_last_log($1);
+            $self->PrintLastlog($1);
         }
         if ( $line =~ /^PermitRootLogin\s+(.*)$/imsx ) {
-            $self->permit_root_login($1);
+            $self->PermitRootLogin($1);
         }
         if ( $line =~ /^ClientAliveInterval\s+(.*)$/imsx ) {
-            $self->client_alive_interval($1);
+            $self->ClientAliveInterval($1);
         }
         if ( $line =~ /^ClientAliveCountMax\s+(.*)$/imsx ) {
-            $self->client_alive_count_max($1);
+            $self->ClientAliveCountMax($1);
         }
         if ( $line =~ /^PermitEmptyPasswords\s+(.*)$/imsx ) {
-            $self->permit_empty_passwords($1);
+            $self->PermitEmptyPasswords($1);
         }
         if ( $line =~ /^PermitUserEnvironment\s+(.*)$/imsx ) {
-            $self->permit_user_environment($1);
+            $self->PermitUserEnvironment($1);
         }
         if ( $line =~ /^HostbasedAuthentication\s+(.*)$/imsx ) {
-            $self->hostbased_authentication($1);
+            $self->HostbasedAuthentication($1);
         }
 
     }
@@ -76,7 +77,8 @@ sub new {
     return $self;
 }
 
-sub ciphers {
+#@method
+sub Ciphers {
     my ( $self, @values ) = @ARG;
     if ( @ARG == 2 ) {
         foreach my $value (@values) {
@@ -86,7 +88,8 @@ sub ciphers {
     return $self->{Ciphers};
 }
 
-sub banner {
+#@method
+sub Banner {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{Banner} = $value;
@@ -94,7 +97,8 @@ sub banner {
     return $self->{Banner};
 }
 
-sub protocol {
+#@method
+sub Protocol {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{Protocol} = $value;
@@ -102,7 +106,8 @@ sub protocol {
     return $self->{Protocol};
 }
 
-sub ignore_rhosts {
+#@method
+sub IgnoreRhosts {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{IgnoreRhosts} = $value;
@@ -110,7 +115,8 @@ sub ignore_rhosts {
     return $self->{IgnoreRhosts};
 }
 
-sub print_last_log {
+#@method
+sub PrintLastlog {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{PrintLastlog} = $value;
@@ -118,7 +124,8 @@ sub print_last_log {
     return $self->{PrintLastlog};
 }
 
-sub permit_root_login {
+#@method
+sub PermitRootLogin {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{PermitRootLogin} = $value;
@@ -126,7 +133,8 @@ sub permit_root_login {
     return $self->{PermitRootLogin};
 }
 
-sub client_alive_interval {
+#@method
+sub ClientAliveInterval {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{ClientAliveInterval} = $value;
@@ -134,7 +142,8 @@ sub client_alive_interval {
     return $self->{ClientAliveInterval};
 }
 
-sub client_alive_count_max {
+#@method
+sub ClientAliveCountMax {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{ClientAliveCountMax} = $value;
@@ -142,7 +151,8 @@ sub client_alive_count_max {
     return $self->{ClientAliveCountMax};
 }
 
-sub permit_empty_passwords {
+#@method
+sub PermitEmptyPasswords {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{PermitEmptyPasswords} = $value;
@@ -150,7 +160,8 @@ sub permit_empty_passwords {
     return $self->{PermitEmptyPasswords};
 }
 
-sub permit_user_environment {
+#@method
+sub PermitUserEnvironment {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{PermitUserEnvironment} = $value;
@@ -158,7 +169,8 @@ sub permit_user_environment {
     return $self->{PermitUserEnvironment};
 }
 
-sub hostbased_authentication {
+#@method
+sub HostbasedAuthentication {
     my ( $self, $value ) = @ARG;
     if ( @ARG == 2 ) {
         $self->{HostbasedAuthentication} = $value;
