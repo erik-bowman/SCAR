@@ -54,9 +54,9 @@ sub new {
 sub check {
     my ($self) = @_;
 
-    #@type Scar::File::Sshd_config
+    #@type Scar::File::sshd_config
     my $sshd_config = $self->{sshd_config};
-    if ( $sshd_config->PermitEmptyPasswords() eq 'yes' ) {
+    if ( $sshd_config->set_PermitEmptyPasswords() eq 'yes' ) {
         $self->_set_finding_status('NF');
     }
     if ( !defined $self->get_finding_status() ) {

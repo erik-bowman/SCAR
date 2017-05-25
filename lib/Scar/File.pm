@@ -1,13 +1,18 @@
 package Scar::File;
 
+# Standard Pragmas
+use utf8;
 use strict;
-use base qw{ Exporter };
 use warnings FATAL => 'all';
 
+# Standard Modules
 use Carp qw{ croak };
 use English qw{ -no_match_vars };
 
-our $VERSION = 0.001;
+# Modules Hierarchy
+use base qw{ Exporter };
+
+our $VERSION = 1.40;
 
 our @EXPORT = qw{
     read_file get_file_owner get_file_group get_file_permissions

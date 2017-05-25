@@ -3,7 +3,7 @@ package Scar::Loader::Plugin;
 use strict;
 use File::Find ();
 use File::Basename;
-use Devel::InnerPackage;
+use Scar::Loader::InnerPlugin;
 use File::Spec::Functions;
 use vars qw($VERSION $MR);
 use warnings FATAL => 'all';
@@ -44,7 +44,7 @@ sub plugins {
     my $self = shift;
     my @args = @ARG;
 
-    if ($self->{'inner'}) {
+    if ( $self->{'inner'} ) {
         $self->{'require'} = 1;
     }
 
@@ -54,7 +54,7 @@ sub plugins {
     $self->_setup_exceptions;
 
     for (qw(search_path search_dirs)) {
-        if (exists $self->{$ARG} && !ref( $self->{$ARG} )) {
+        if ( exists $self->{$ARG} && !ref( $self->{$ARG} ) ) {
             $self->{$ARG} = [ $self->{$ARG} ];
         }
     }
@@ -72,7 +72,7 @@ sub plugins {
         return 0;
     };
 
-    unless (exists $self->{'follow_symlinks'}) {
+    unless ( exists $self->{'follow_symlinks'} ) {
         $self->{'follow_symlinks'} = 1;
     }
 
@@ -87,16 +87,16 @@ sub plugins {
 
     my @tmp = @INC;
     unshift @tmp, @{ $self->{'search_dirs'} || [] };
-    if (defined $self->{'search_dirs'}) {
+    if ( defined $self->{'search_dirs'} ) {
         local @INC = @tmp;
     }
 
     my @plugins = $self->search_directories(@SEARCHDIR);
 
-    for (@{ $self->{'search_path'} }) {
+    for ( @{ $self->{'search_path'} } ) {
         push @plugins, $self->handle_inc_hooks( $ARG, @SEARCHDIR );
     }
-    for (@{ $self->{'search_path'} }) {
+    for ( @{ $self->{'search_path'} } ) {
         push @plugins, $self->handle_innerpackages($ARG);
     }
 
@@ -106,7 +106,7 @@ sub plugins {
 
     my %plugins;
     for (@plugins) {
-        unless ($self->_is_legit($ARG)) {
+        unless ( $self->_is_legit($ARG) ) {
             next;
         }
         $plugins{$ARG} = 1;
@@ -115,7 +115,7 @@ sub plugins {
         my $method = $self->{'instantiate'};
         my @objs   = ();
         foreach my $package ( sort keys %plugins ) {
-            unless ($package->can($method)) {
+            unless ( $package->can($method) ) {
                 next;
             }
             my $obj = eval { $package->$method(@ARG) };
@@ -183,12 +183,12 @@ sub _is_legit {
     my $except = $self->{_exceptions}->{except};
     my $depth  = () = split /::/msx, $plugin, -1;
 
-    if (keys %only && !$only{$plugin}) {
+    if ( keys %only && !$only{$plugin} ) {
         return 0;
     }
-     unless (!defined $only || $plugin =~ m{$only}msx) {
-         return 0;
-     }
+    unless ( !defined $only || $plugin =~ m{$only}msx ) {
+        return 0;
+    }
 
     return 0 if keys %except && $except{$plugin};
     return 0 if defined $except && $plugin =~ m{$except}msx;
@@ -257,7 +257,7 @@ sub search_paths {
                     $in_pod = 0 if $line =~ /^=cut/msx;
                     next if $in_pod || $line =~ /^=cut/msx;
                     next if $line =~ /^\s*#/msx;
-                    if ($line =~ m/^\s*package\s+(.*::)?($name)\s*;/imsx) {
+                    if ( $line =~ m/^\s*package\s+(.*::)?($name)\s*;/imsx ) {
                         @pkg_dirs = split /::/msx, $1 if defined $1;
                         $name = $2;
                         last;
@@ -265,7 +265,8 @@ sub search_paths {
                 }
             }
 
-            $directory =~ s/^[[:lower:]]://imsx if $OSNAME =~ /MSWin32|dos/msx;
+            $directory =~ s/^[[:lower:]]://imsx
+                if $OSNAME =~ /MSWin32|dos/msx;
             my @dirs = ();
             if ($directory) {
                 ($directory) = ( $directory =~ /(.*)/msx );
@@ -392,7 +393,7 @@ sub handle_innerpackages {
     my $path = shift;
     my @plugins;
 
-    foreach my $plugin ( Devel::InnerPackage::list_packages($path) ) {
+    foreach my $plugin (Scar::Loader::InnerPlugin::list_packages($path) ) {
         $self->handle_finding_plugin( $plugin, \@plugins, 1 );
     }
     return @plugins;

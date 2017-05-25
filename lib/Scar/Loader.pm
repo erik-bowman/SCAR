@@ -21,6 +21,7 @@ sub import {
     $opts{force_search_all_paths} = $FORCE_SEARCH_ALL_PATHS
         unless exists $opts{force_search_all_paths};
 
+    #@type Scar::Loader::Plugin
     my $finder     = Scar::Loader::Plugin->new(%opts);
     my $subroutine = sub {
         my $self = shift;

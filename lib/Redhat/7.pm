@@ -1,21 +1,29 @@
 package Redhat::7;
 
-# Standard modules
+# Standard Pragmas
 use utf8;
 use strict;
-use Carp qw( croak );
-use base qw( Redhat );
 use warnings FATAL => 'all';
 
-# Scar modules
-use Scar;
+# Standard Modules
+use Carp qw( croak );
+use English qw{ -no_match_vars };
+
+# Local Modules
+use Scar::Loader
+    require     => 1,
+    search_path => [ 'Redhat::7' ],
+    sub_name    => 'get_redhat7_plugins';
 use Scar::Util::Log;
 
+# Module Hierarchy
+use base qw( Redhat );
+
 # Module version
-our $VERSION = 0.01;
+our $VERSION = 1.40;
 
 sub new {
-    my ($class) = @_;
+    my ($class) = @ARG;
     my $self = bless {}, $class;
     return $self;
 }

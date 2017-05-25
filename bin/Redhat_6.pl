@@ -1,80 +1,66 @@
 #!/bin/env perl
 
-# Standard pragmas
+# Standard Pragmas
 use utf8;
 use strict;
-
 use warnings FATAL => 'all';
 
-# Standard modules
+# Standard Modules
+use POSIX;
 use FindBin;
-use Getopt::Long;
 use Carp qw( croak );
-use lib "$FindBin::Bin/../lib";
 use File::Spec::Functions;
+use English qw{ -no_match_vars };
 
-# Scar Modules
-use Scar::Util::Log;
-use Scar::Util::Backup;
-use Scar;
+# Add Local Modules
+use lib File::Spec::Functions::catdir( $FindBin::Bin, '..', 'lib' );
+
+# Local modules
 use Redhat::6;
+use Scar::Util::Log;
 
 # Version
-our $VERSION = 0.01;
+our $VERSION = 1.40;
 
-my @PLUGINS;
-
-#@returns Redhat::6
-my $RHEL6 = Redhat::6->new();
-
-# Start
-start_scar();
-
-sub start_scar {
-    my $self = {};
-
-    Getopt::Long::GetOptions(
-        'base=s'         => \$self->{directories}->{base},
-        'logs=s'         => \$self->{directories}->{logs},
-        'backups=s'      => \$self->{directories}->{backups},
-        'reports=s'      => \$self->{directories}->{reports},
-        'plugins=s'      => \$self->{directories}->{plugins},
-        'templates=s'    => \$self->{directories}->{templates},
-        'enable-healing' => \$self->{healing}->{enabled},
-        'debug|d'        => \$self->{output}->{debug},
-        'quiet|q'        => \$self->{output}->{quiet},
-        'test-check=s'   => \$self->{test_check},
-        'test-heal=s'    => \$self->{test_heal},
-    );
-
-    run_checks($self);
-
-    #    run_remediations();
-
-    return 1;
+# Permissions self check
+if ( POSIX::getuid() ne '0' ) {
+    croak 'Permissions Error: Script not running as root';
 }
 
-sub run_checks {
-    my ($self) = @_;
-    foreach my $plugin ( $RHEL6->get_redhat6_plugins() ) {
-
-        if ( defined $self->{test_check} ) {
-            if ( $plugin->get_stig_id ne $self->{test_check} ) {
-                next;
-            }
-        }
-        my $initialized_plugin = $plugin->new($RHEL6);
-        if ( !$initialized_plugin->can('check') ) {
-            next;
-        }
-        print "Starting " . $initialized_plugin->get_stig_id() . "\n";
-        $initialized_plugin->check();
-        if ( defined $initialized_plugin->get_finding_status() ) {
-            print $initialized_plugin->get_finding_status() . "\n";
-        }
-    }
-
-    return 1;
+# Directory checks
+if ( !-d '/SCAR' ) {
+    print "Creating missing directory '/SCAR'\n";
+    mkdir '/SCAR', 0700;
 }
+
+if ( !-d '/SCAR/logs' ) {
+    print "Creating missing directory '/SCAR/logs'\n";
+    mkdir '/SCAR/logs', 0700;
+}
+
+if ( !-d '/SCAR/backups' ) {
+    print "Creating missing directory '/SCAR/backups'\n";
+    mkdir '/SCAR/backups', 0700;
+}
+
+if ( !-d '/SCAR/reports' ) {
+    print "Creating missing directory '/SCAR/reports'\n";
+    mkdir '/SCAR/reports', 0700;
+}
+
+# Set Defaults
+$main::Debug = 0;
+
+#@type Redhat::6;
+$main::Redhat_6 = Redhat::6->new();
+
+log_info('Loading plugins');
+my $plugin_count = 0;
+foreach my $plugin ( $main::Redhat_6->plugins() ) {
+    $plugin_count++;
+    log_debug( 'Loading pluigin ' . $plugin->get_stig_id() );
+}
+log_info('Done loading plugins');
+log_info("$plugin_count plugins loaded");
 
 __END__

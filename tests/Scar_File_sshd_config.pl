@@ -6,10 +6,10 @@ use FindBin;
 use File::Spec::Functions;
 use lib File::Spec::Functions::catdir( $FindBin::Bin, qw{.. lib} );
 
-use Scar::File::Sshd_config;
+use Scar::File::sshd_config;
 
 use Data::Dumper;
 
-my $sshd_config = Scar::File::Sshd_config->new();
+my $sshd_config = Scar::File::sshd_config->new();
 
 #print Data::Dumper::Dumper($sshd_config);
