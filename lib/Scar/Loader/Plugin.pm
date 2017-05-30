@@ -111,27 +111,21 @@ sub plugins {
         }
         $plugins{$ARG} = 1;
     }
-    if ( defined $self->{'instantiate'} ) {
-        my $method = $self->{'instantiate'};
-        my @objs   = ();
-        foreach my $package ( sort keys %plugins ) {
-            unless ( $package->can($method) ) {
-                next;
-            }
-            my $obj = eval { $package->$method(@ARG) };
-            if ($EVAL_ERROR) {
-                $self->{'on_instantiate_error'}->( $package, $EVAL_ERROR );
-            }
-            if ($obj) {
-                push @objs, $obj;
-            }
+    my $method = 'new';
+    my @objs   = ();
+    foreach my $package ( sort keys %plugins ) {
+        unless ( $package->can($method) ) {
+            next;
         }
-        return @objs;
+        my $obj = eval { $package->$method(@ARG) };
+        if ($EVAL_ERROR) {
+            $self->{'on_instantiate_error'}->( $package, $EVAL_ERROR );
+        }
+        if ($obj) {
+            push @objs, $obj;
+        }
     }
-    else {
-        my @objs = sort keys %plugins;
-        return @objs;
-    }
+    return @objs;
 }
 
 #@method
@@ -393,7 +387,7 @@ sub handle_innerpackages {
     my $path = shift;
     my @plugins;
 
-    foreach my $plugin (Scar::Loader::InnerPlugin::list_packages($path) ) {
+    foreach my $plugin ( Scar::Loader::InnerPlugin::list_packages($path) ) {
         $self->handle_finding_plugin( $plugin, \@plugins, 1 );
     }
     return @plugins;

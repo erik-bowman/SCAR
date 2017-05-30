@@ -44,12 +44,12 @@ sub run_awk {
 
 sub run_grep {
     my ($args) = @ARG;
-    return join "\n", _run_system_bin( '/bin/grep', $args );
+    return _run_system_bin( '/bin/grep', $args );
 }
 
 sub run_service {
     my ($args) = @ARG;
-    return join "\n", _run_system_bin( '/sbin/service', $args );
+    return _run_system_bin( '/sbin/service', $args );
 }
 
 sub run_chkconfig {

@@ -1,69 +1,97 @@
 package Scar::Util::Log;
 
-# Standard Pragmas
+=comment
+
+Perl Core Pragmas
+
+=cut
+
 use utf8;
 use strict;
+use base qw( Exporter );
 use warnings FATAL => 'all';
 
-# Standard Modules
-use Carp qw{ croak };
-use English qw{ -no_matches_vars };
+=comment
 
-# Local Modules
-use Scar qw( get_strftime get_strfdate implode_path );
+Perl Core Modules
 
-# Module Hierarchy
-use base qw{ Exporter };
+=cut
 
-# Module version
-our $VERSION = 1.40;
+use POSIX ();
+use Carp qw( croak );
+use File::Spec::Functions;
+use English qw{ -no_matched_vars };
 
-# Module Exports
-our @EXPORT = qw( log_info log_warn log_error log_debug );
+=comment
+
+Module Version
+
+=cut
+
+our $VERSION = 1.4.0;
+
+=comment
+
+Module Exports
+
+=cut
+
+our @EXPORT = qw{ log_info log_warn log_error log_debug log_change };
 
 sub log_error {
     my ($message) = @ARG;
     _write_to_logfile( 'error.log', $message );
-    print get_strftime() . " ERROR: $message\n";
+    print POSIX::strftime( '%H:%M:%S', gmtime() ) . " ERROR: $message\n";
     croak;
 }
 
 sub log_info {
     my ($message) = @ARG;
     _write_to_logfile( 'scar.log', $message );
-    print get_strftime() . "  INFO: $message\n";
-    return 1;
+    print POSIX::strftime( '%H:%M:%S', gmtime() ) . "  INFO: $message\n";
+    return;
 }
 
 sub log_warn {
     my ($message) = @ARG;
     _write_to_logfile( 'scar.log', "Warning: $message" );
-    print get_strftime() . "  WARN: $message\n";
-    return 1;
+    print POSIX::strftime( '%H:%M:%S', gmtime() ) . "  WARN: $message\n";
+    return;
 }
 
 sub log_debug {
     my ($message) = @ARG;
     _write_to_logfile( 'debug.log', $message );
-    if ($main::Debug) {
-        print get_strftime() . " DEBUG: $message\n";
+    if ($main::debug) {
+        print POSIX::strftime( '%H:%M:%S', gmtime() ) . " DEBUG: $message\n";
     }
-    return 1;
+    return;
+}
+
+sub log_change {
+    my ($message) = @ARG;
+    _write_to_logfile( 'change_list.log', $message );
+    return;
 }
 
 sub _write_to_logfile {
     my ( $logfile, $message ) = @ARG;
 
-    my $directory = '/SCAR/logs/' . get_strfdate();
+    my $directory = '/SCAR/logs/' . POSIX::strftime( '%Y-%m-%d', gmtime() );
     if ( !-d $directory ) {
         mkdir $directory;
     }
 
     open my $logfile_handler, '>>:encoding(utf8)', "$directory/$logfile"
         or croak "Could not open file '$directory/$logfile': $OS_ERROR";
-    print {$logfile_handler} get_strftime() . ": $message\n";
+    {
+
+        print {$logfile_handler} POSIX::strftime( '%H:%M:%S', gmtime() )
+            . ": $message\n";
+    }
     close $logfile_handler;
-    return 1;
+
+    return;
 }
 
 1;

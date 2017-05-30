@@ -29,52 +29,56 @@
 
 package Redhat::6::000015;
 
-# Standard modules
+# Standard Pragmas
 use utf8;
 use strict;
 use warnings FATAL => 'all';
 
-# Scar modules
-use Scar qw( run_grep );
-use Scar::Util::Log;
-use Scar::Util::Backup;
+# Standard Modules
+use Carp qw{ croak };
+use English qw{ -no_matched_vars };
 
-# Plugin version
+# Local Modules
+use Scar::Commands;
+
+# Plugin Version
 our $VERSION = 0.01;
 
 sub new {
-    my ( $class, $parent ) = @_;
-    my $self = bless { parent => $parent }, $class;
+    my ($class) = @ARG;
+    my $self = bless {}, $class;
 
     return $self;
 }
 
 sub check {
-    my ($self) = @_;
-    if ( run_grep('"gpgcheck=0" /etc/yum.repos.d/*') ) {
+    my ($self) = @ARG;
+    print run_grep('"gpgcheck=0" /etc/yum.repos.d/*') . "\n";
+    if ( run_grep('"gpgcheck=0" /etc/yum.repos.d/*') > 0 ) {
         $self->_set_finding_status('O');
     }
-    else {
+    if ( !defined $self->get_finding_status() ) {
         $self->_set_finding_status('NF');
     }
     return $self;
 }
 
 sub remediate {
-    my ($self) = @_;
+    my ($self) = @ARG;
 
     return $self;
 }
 
 sub _set_finding_status {
-    my ( $self, $finding_status ) = @_;
+    print @ARG;
+    my ( $self, $finding_status ) = @ARG;
     $self->{finding_status} = $finding_status;
     return $self->{finding_status};
 }
 
 sub get_finding_status {
-    my ($self) = @_;
-    return defined $self->{finding_status} ? $self->{finding_status} : undef;
+    my ($self) = @ARG;
+    return $self->{finding_status};
 }
 
 sub get_vuln_id {

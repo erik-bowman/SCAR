@@ -6,6 +6,7 @@
     <option name="PERL_CRITIC_PATH" value="C:\perl\perl\site\bin\perlcritic.bat" />
   </component>
   <component name="Perl5XSubsState">
+    <option name="isActual" value="false" />
     <option name="filesMap">
       <map>
         <entry key="C:/perl/perl/lib/auto/B/B.xs.dll" value="1484550218000" />

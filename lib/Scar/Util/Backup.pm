@@ -1,57 +1,102 @@
 package Scar::Util::Backup;
 
-# Standard pragmas
+=comment
+
+Perl Core Pragmas
+
+=cut
+
 use utf8;
 use strict;
 use base qw( Exporter );
 use warnings FATAL => 'all';
 
-# Standard modules
-use Carp qw( croak );
+=comment
 
-# Scar modules
-use Scar qw( get_strfdate explode_path implode_path );
+Perl Core Modules
+
+=cut
+
+use POSIX ();
+use Carp qw( croak );
+use File::Spec::Functions;
+use English qw{ -no_matched_vars };
+
+=comment
+
+Scar Local Modules
+
+=cut
+
 use Scar::Util::Log;
 
-# Module version
-our $VERSION = 0.01;
+=comment
 
-# Active backup directory
-our $DIRECTORY = get_strfdate();
+Module Version
 
-# Default exports
-our @EXPORT = qw( make_file_backup );
+=cut
 
-sub make_file_backup {
-    my ($source_file) = @_;
-    my @source_file_components = explode_path($source_file);
-    my $destination_file
-        = implode_path( $DIRECTORY, $source_file_components[2] );
-    if ( !-f $destination_file ) {
-        _copy_file( $source_file, $destination_file );
+our $VERSION = 1.4.0;
+
+=comment
+
+Module Exports
+
+=cut
+
+our @EXPORT = qw( create_backup );
+
+=comment
+
+Create file backup subroutine
+
+=cut
+
+sub create_backup {
+    my ($source) = @ARG;
+
+    my $directory
+        = '/SCAR/backups/' . POSIX::strftime( '%Y-%m-%d', gmtime() );
+
+    if ( not -d $directory ) {
+
+        log_debug("Creating backup directory '$directory'");
+
+        mkdir $directory
+            or croak "Unable to create directory '$directory': $OS_ERROR";
     }
-    return -f $destination_file;
-}
 
-sub _copy_file {
-    my ( $source_file, $destination_file ) = @_;
-    my @source_file_contents;
+    my @source_components = File::Spec::Functions::splitpath($source);
 
-    open my $input_handler, '<:raw', $source_file or croak;
+    my $destination_file
+        = File::Spec::Functions::catdir( $directory, $source_components[2] );
+
+    if ( -f $destination_file ) {
+
+        log_debug("A backup of '$source' already exists: $destination_file");
+
+        return 1;
+    }
+
+    log_info("Creating backup of '$source'");
+
+    open my $input_handler, '<:raw', $source
+        or croak "Unable to open file '$source' for reading: $OS_ERROR";
     {
-        while ( my $source_file_line = <$input_handler> ) {
-            push @source_file_contents, $source_file_line;
+
+        open my $output_handler, '>:raw', $destination_file
+            or croak "Unable to write to file '$destination_file': $OS_ERROR";
+        {
+            while ( my $source_file_line = <$input_handler> ) {
+                print {$output_handler} $source_file_line;
+            }
         }
+        close $output_handler;
+
     }
     close $input_handler;
 
-    open my $output_handler, '>:raw', $destination_file or croak;
-    {
-        for my $source_file_line (@source_file_contents) {
-            print {$output_handler} $source_file_line;
-        }
-    }
-    close $output_handler;
+    log_info("Backup created: $destination_file");
 
     return 1;
 }

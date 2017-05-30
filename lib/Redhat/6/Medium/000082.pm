@@ -1,76 +1,109 @@
-# ------------------------------------------------------------------------------
-# NAME
-#   Redhat::6::000082
-#
-# VULN ID
-#   V-38511
-#
-# SEVERITY
-#   medium
-#
-# GROUP TITLE
-#   SRG-OS-999999
-#
-# RULE ID
-#   SV-50312r2_rule
-#
-# STIG ID
-#   RHEL-06-000082
-#
-# RULE TITLE
-#   IP forwarding for IPv4 must not be enabled, unless the system is a router.
-#
-# TODO: Create Check
-# TODO: Create Remediation
-#
-# AUTHOR
-#   Erik Bowman (erik.bowman@icsinc.com)
-#
-# ------------------------------------------------------------------------------
 
-package Redhat::6::000082;
+=comment
 
-# Standard modules
+VULN ID
+V-38511
+
+SEVERITY
+medium
+
+GROUP TITLE
+SRG-OS-999999
+
+RULE ID
+SV-50312r2_rule
+
+STIG ID
+RHEL-06-000082
+
+RULE TITLE
+IP forwarding for IPv4 must not be enabled, unless the system is a router.
+
+=cut
+
+package Redhat::6::Medium::000082;
+
+=comment
+
+Perl Core Pragmas
+
+=cut
+
 use utf8;
 use strict;
 use warnings FATAL => 'all';
 
-# Scar modules
-use Scar;
-use Scar::Util::Log;
-use Scar::Util::Backup;
+=comment
 
-# Plugin version
-our $VERSION = 0.01;
+Perl Core Modules
+
+=cut
+
+use Carp qw{ croak };
+use English qw{ -no_matched_vars };
+
+=comment
+
+Scar Local Modules
+
+=cut
+
+use Scar::Util::Log;
+
+=comment
+
+Plugin Version
+
+=cut
+
+our $VERSION = 1.4.0;
+
+=comment
+
+Plugin Constructor
+
+=cut
 
 sub new {
-    my ( $class, $parent ) = @_;
-    my $self = bless { parent => $parent }, $class;
+    my ($class) = @ARG;
+
+    log_info("Initializing $class");
+
+    my $self = bless { status => undef, }, $class;
+
+    if ( not defined $Redhat::sysctl ) {
+        croak 'A dependant module \'Redhat::sysctl\' has not been loaded';
+    }
+
+    log_debug("$class initialized");
 
     return $self;
 }
 
 sub check {
-    my ($self) = @_;
+    my ($self) = @ARG;
 
+    if ( $Redhat::sysctl->{'net.ipv4.ip_forward'} == 0 ) {
+        $self->{status} = 'NF';
+    }
+
+    if ( not defined $self->{status} ) {
+        $self->{status} = 'O';
+    }
     return $self;
 }
 
 sub remediate {
-    my ($self) = @_;
+    my ($self) = @ARG;
 
-    return $self;
+    $Redhat::sysctl->set_parameter( 'net.ipv4.ip_forward', 0 );
+
+    return $self->check();
 }
 
-sub _set_finding_status {
-    my ( $self, $finding_status ) = @_;
-    $self->{finding_status} = $finding_status;
-    return $self->{finding_status};
-}
-
-sub get_finding_status {
-    my ($self) = @_;
-    return defined $self->{finding_status} ? $self->{finding_status} : undef;
+sub get_status {
+    my ($self) = @ARG;
+    return $self->{status};
 }
 
 sub get_vuln_id {
@@ -155,14 +188,8 @@ NIST SP 800-53 :: CM-6 b
 NIST SP 800-53A :: CM-6.1 (iv)
 
 NIST SP 800-53 Revision 4 :: CM-6 b
-
-
-
-
 CCI
 }
-
-# ------------------------------------------------------------------------------
 
 1;
 
