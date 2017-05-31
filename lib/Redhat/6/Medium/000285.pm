@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000285;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38667';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000196';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50468r3_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000285';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The system must have a host-based intrusion detection tool installed.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Adding host-based intrusion detection tools can provide the capability to automatically take actions in response to malicious behavior, which can provide additional agility in reacting to network threats. These tools also often include a reporting capability to provide network awareness of system, which may not otherwise exist in an organization's systems management regime.
 DISCUSSION
 }
 
@@ -170,15 +170,33 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Ask the SA or ISSO if a host-based intrusion detection application is loaded on the system. Per OPORD 16-0080 the preferred intrusion detection system is McAfee HBSS available through Cybercom.
 
-$ sysctl net.ipv4.ip_forward
+If another host-based intrusion detection application is in use, such as SELinux, this must be documented and approved by the local Authorizing Official.
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Procedure:
+Examine the system to see if the Host Intrusion Prevention System (HIPS) is installed:
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# rpm -qa | grep MFEhiplsm
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+Verify that the McAfee HIPS module is active on the system:
+
+# ps -ef | grep -i "hipclient"
+
+If the MFEhiplsm package is not installed, check for another intrusion detection system:
+
+# find / -name <daemon name>
+
+Where <daemon name> is the name of the primary application daemon to determine if the application is loaded on the system.
+
+Determine if the application is active on the system:
+
+# ps -ef | grep -i <daemon name>
+
+If the MFEhiplsm package is not installed and an alternate host-based intrusion detection application has not been documented for use, this is a finding.
+
+If no host-based intrusion detection system is installed and running on the system, this is a finding.
+
 CHECK_CONTENT
 }
 
@@ -190,13 +208,10 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Install and enable the latest McAfee HIPS package, available from Cybercom.
 
-# sysctl -w net.ipv4.ip_forward=0
+If the system does not support the McAfee HIPS package, install and enable a supported intrusion detection system application and document its use with the Authorizing Official.
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
 FIX_TEXT
 }
 
@@ -208,11 +223,10 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-001263
+The information system provides near real-time alerts when any of the  organization defined list of compromise or potential compromise indicators occurs.
+NIST SP 800-53 :: SI-4 (5)
+NIST SP 800-53A :: SI-4 (5).1 (ii)
 
 
 CCI
@@ -226,18 +240,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000285> – C<RHEL-06-000285> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000285> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000285;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000285->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +271,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000285> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000285->new();
 
 The plugin object constructor.
 

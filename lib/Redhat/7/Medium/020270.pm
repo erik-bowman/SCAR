@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::020270;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72001';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86625r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-020270';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'The system must not have unnecessary accounts.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Accounts providing no operational purpose provide additional opportunities for system compromise. Unnecessary accounts include user accounts for individuals not requiring access to the system and application accounts for applications not installed on the system.
 DISCUSSION
 }
 
@@ -170,15 +169,25 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify all accounts on the system are assigned to an active system, application, or user account.
 
-$ sysctl net.ipv4.ip_forward
+Obtain the list of authorized system accounts from the Information System Security Officer (ISSO).
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Check the system accounts on the system with the following command:
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# more /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+games:x:12:100:games:/usr/games:/sbin/nologin
+gopher:x:13:30:gopher:/var/gopher:/sbin/nologin
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+Accounts such as "games" and "gopher" are not authorized accounts as they do not support authorized system functions. 
+
+If the accounts on the system do not match the provided documentation, or accounts that do not support an authorized system function are present, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +199,11 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the system so all accounts on the system are assigned to an active system, application, or user account. 
 
-# sysctl -w net.ipv4.ip_forward=0
+Remove accounts that do not support approved system activities or that allow for a normal user to perform administrative-level actions. 
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+Document all authorized accounts on the system.
 FIX_TEXT
 }
 
@@ -226,18 +233,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::020270> – C<RHEL-07-020270> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::020270> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::020270;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::020270->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +264,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-020270> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::020270->new();
 
 The plugin object constructor.
 

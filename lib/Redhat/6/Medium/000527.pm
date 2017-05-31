@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000527;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-43150';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-55880r2_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000527';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'The login user list must be disabled.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Leaving the user list enabled is a security risk since it allows anyone with physical access to the system to quickly enumerate known user accounts without logging in.
 DISCUSSION
 }
 
@@ -170,15 +169,15 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+If the GConf2 package is not installed, this is not applicable.
 
-$ sysctl net.ipv4.ip_forward
+To ensure the user list is disabled, run the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+$ gconftool-2 --direct \
+--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+--get /apps/gdm/simple-greeter/disable_user_list
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
-
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+The output should be "true". If it is not, this is a finding. 
 CHECK_CONTENT
 }
 
@@ -190,13 +189,13 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+In the default graphical environment, users logging directly into the system are greeted with a login screen that displays all known users. This functionality should be disabled.
 
-# sysctl -w net.ipv4.ip_forward=0
+Run the following command to disable the user list:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+$ sudo gconftool-2 --direct \
+--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+--type bool --set /apps/gdm/simple-greeter/disable_user_list true
 FIX_TEXT
 }
 
@@ -226,18 +225,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000527> – C<RHEL-06-000527> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000527> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000527;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000527->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +256,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000527> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000527->new();
 
 The plugin object constructor.
 

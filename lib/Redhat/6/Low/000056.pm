@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Low::000056;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38482';
 }
 
 =for comment
@@ -106,7 +106,7 @@ Plugin Severity getter
 =cut
 
 sub get_severity {
-    return 'medium';
+    return 'low';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000071';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50282r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000056';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The system must require passwords to contain at least one numeric character.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Requiring digits makes password guessing attacks more difficult by ensuring a larger search space.
 DISCUSSION
 }
 
@@ -170,15 +170,12 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+To check how many digits are required in a password, run the following command: 
 
-$ sysctl net.ipv4.ip_forward
+$ grep pam_cracklib /etc/pam.d/system-auth
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
-
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
-
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+The "dcredit" parameter (as a negative number) will indicate how many digits are required. The DoD requires at least one digit in a password. This would appear as "dcredit=-1". 
+If dcredit is not found or not set to the required value, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +187,7 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
-
-# sysctl -w net.ipv4.ip_forward=0
-
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+The pam_cracklib module's "dcredit" parameter controls requirements for usage of digits in a password. When set to a negative number, any password will be required to contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional length credit for each digit. Add "dcredit=-1" after pam_cracklib.so to require use of a digit in passwords.
 FIX_TEXT
 }
 
@@ -208,11 +199,11 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000194
+The information system enforces password complexity by the minimum number of numeric characters used.
+NIST SP 800-53 :: IA-5 (1) (a)
+NIST SP 800-53A :: IA-5 (1).1 (v)
+NIST SP 800-53 Revision 4 :: IA-5 (1) (a)
 
 
 CCI
@@ -226,18 +217,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Low::000056> – C<RHEL-06-000056> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Low::000056> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Low::000056;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Low::000056->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +248,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000056> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Low::000056->new();
 
 The plugin object constructor.
 

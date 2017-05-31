@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::010270;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-71933';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000077-GPOS-00045';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86557r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-010270';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'Passwords must be prohibited from reuse for a minimum of five generations.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed per policy requirements.
 DISCUSSION
 }
 
@@ -170,15 +170,14 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the operating system prohibits password reuse for a minimum of five generations.
 
-$ sysctl net.ipv4.ip_forward
+Check for the value of the "remember" argument in "/etc/pam.d/system-auth-ac" with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# grep -i remember /etc/pam.d/system-auth-ac
+password sufficient pam_unix.so use_authtok sha512 shadow remember=5
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
-
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If the line containing the "pam_unix.so" line does not have the "remember" module argument set, or the value of the "remember" module argument is set to less than "5", this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +189,13 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to prohibit password reuse for a minimum of five generations.
 
-# sysctl -w net.ipv4.ip_forward=0
+Add the following line in "/etc/pam.d/system-auth-ac" (or modify the line to have the required value):
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+password sufficient pam_unix.so use_authtok sha512 shadow remember=5
 
-net.ipv4.ip_forward = 0
+and run the "authconfig" command.
 FIX_TEXT
 }
 
@@ -208,11 +207,11 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000200
+The information system prohibits password reuse for the organization defined number of generations.
+NIST SP 800-53 :: IA-5 (1) (e)
+NIST SP 800-53A :: IA-5 (1).1 (v)
+NIST SP 800-53 Revision 4 :: IA-5 (1) (e)
 
 
 CCI
@@ -226,18 +225,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::010270> – C<RHEL-07-010270> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::010270> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::010270;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::010270->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +256,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-010270> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::010270->new();
 
 The plugin object constructor.
 

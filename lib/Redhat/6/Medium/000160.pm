@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000160;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38633';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50434r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000160';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'The system must set a maximum audit log file size.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+The total storage for audit log files must be large enough to retain log information over the period required. This is a function of the maximum log file size and the number of logs retained.
 DISCUSSION
 }
 
@@ -170,15 +169,12 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Inspect "/etc/audit/auditd.conf" and locate the following line to determine how much data the system will retain in each audit log file: "# grep max_log_file /etc/audit/auditd.conf" 
 
-$ sysctl net.ipv4.ip_forward
+max_log_file = 6
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
-
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If the system audit data threshold hasn't been properly set up, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +186,11 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Determine the amount of audit data (in megabytes) which should be retained in each log file. Edit the file "/etc/audit/auditd.conf". Add or modify the following line, substituting the correct value for [STOREMB]: 
 
-# sysctl -w net.ipv4.ip_forward=0
+max_log_file = [STOREMB]
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+Set the value to "6" (MB) or higher for general-purpose systems. Larger values, of course, support retention of even more audit data.
 FIX_TEXT
 }
 
@@ -226,18 +220,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000160> – C<RHEL-06-000160> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000160> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000160;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000160->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +251,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000160> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000160->new();
 
 The plugin object constructor.
 

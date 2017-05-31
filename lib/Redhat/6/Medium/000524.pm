@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000524;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38439';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000001';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50239r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000524';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The system must provide automated support for account management functions.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+A comprehensive account management process that includes automation helps to ensure the accounts designated as requiring attention are consistently and promptly addressed. Enterprise environments make user account management challenging and complex. A user management process requiring administrators to manually address account management functions adds risk of potential oversight.
 DISCUSSION
 }
 
@@ -170,15 +170,9 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Interview the SA to determine if there is an automated system for managing user accounts, preferably integrated with an existing enterprise user management system.
 
-$ sysctl net.ipv4.ip_forward
-
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
-
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
-
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If there is not, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +184,7 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
-
-# sysctl -w net.ipv4.ip_forward=0
-
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+Implement an automated system for managing user accounts that minimizes the risk of errors, either intentional or deliberate.  If possible, this system should integrate with an existing enterprise user management system, such as, one based Active Directory or Kerberos.
 FIX_TEXT
 }
 
@@ -208,11 +196,11 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000015
+The organization employs automated mechanisms to support the information system account management functions.
+NIST SP 800-53 :: AC-2 (1)
+NIST SP 800-53A :: AC-2 (1).1
+NIST SP 800-53 Revision 4 :: AC-2 (1)
 
 
 CCI
@@ -226,18 +214,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000524> – C<RHEL-06-000524> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000524> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000524;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000524->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +245,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000524> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000524->new();
 
 The plugin object constructor.
 

@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000292;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38679';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50480r2_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000292';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'The DHCP client must be disabled if not needed.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+DHCP relies on trusting the local network. If the local network is not trusted, then it should not be used. However, the automatic configuration provided by DHCP is commonly used and the alternative, manual configuration, presents an unacceptable burden in many circumstances.
 DISCUSSION
 }
 
@@ -170,15 +169,24 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+To verify that DHCP is not being used, examine the following file for each interface. 
 
-$ sysctl net.ipv4.ip_forward
+# /etc/sysconfig/network-scripts/ifcfg-[IFACE]
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+If there is any network interface without a associated "ifcfg" file, this is a finding.
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+Look for the following:
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+BOOTPROTO=none
+
+Also verify the following, substituting the appropriate values based on your site's addressing scheme:
+
+NETMASK=[local LAN netmask]
+IPADDR=[assigned IP address]
+GATEWAY=[local LAN default gateway]
+
+
+If it does not, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +198,18 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+For each interface [IFACE] on the system (e.g. eth0), edit "/etc/sysconfig/network-scripts/ifcfg-[IFACE]" and make the following changes. 
 
-# sysctl -w net.ipv4.ip_forward=0
+Correct the BOOTPROTO line to read:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+BOOTPROTO=none
 
-net.ipv4.ip_forward = 0
+
+Add or correct the following lines, substituting the appropriate values based on your site's addressing scheme:
+
+NETMASK=[local LAN netmask]
+IPADDR=[assigned IP address]
+GATEWAY=[local LAN default gateway]
 FIX_TEXT
 }
 
@@ -226,18 +239,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000292> – C<RHEL-06-000292> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000292> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000292;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000292->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +270,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000292> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000292->new();
 
 The plugin object constructor.
 

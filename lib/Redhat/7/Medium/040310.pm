@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::040310;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72235';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000423-GPOS-00187';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86859r2_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-040310';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'All networked systems must use SSH for confidentiality and integrity of transmitted and received information as well as information during preparation for transmission.';
 }
 
 =for comment
@@ -158,7 +158,13 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Without protection of the transmitted information, confidentiality and integrity may be compromised because unprotected communications can be intercepted and either read or altered. 
+
+This requirement applies to both internal and external networks and all types of information system components from which information can be transmitted (e.g., servers, mobile devices, notebook computers, printers, copiers, scanners, and facsimile machines). Communication paths outside the physical protection of a controlled boundary are exposed to the possibility of interception and modification. 
+
+Protecting the confidentiality and integrity of organizational information can be accomplished by physical means (e.g., employing physical distribution systems) or by logical means (e.g., employing cryptographic techniques). If physical means of protection are employed, then logical means (cryptography) do not have to be employed, and vice versa.
+
+Satisfies: SRG-OS-000423-GPOS-00187, SRG-OS-000423-GPOS-00188, SRG-OS-000423-GPOS-00189, SRG-OS-000423-GPOS-00190
 DISCUSSION
 }
 
@@ -170,15 +176,17 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify SSH is loaded and active with the following command:
 
-$ sysctl net.ipv4.ip_forward
+# systemctl status sshd
+ sshd.service - OpenSSH server daemon
+   Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+   Active: active (running) since Tue 2015-11-17 15:17:22 EST; 4 weeks 0 days ago
+ Main PID: 1348 (sshd)
+   CGroup: /system.slice/sshd.service
+           ??1348 /usr/sbin/sshd -D
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
-
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
-
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If "sshd" does not show a status of "active" and "running", this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +198,9 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the SSH service to automatically start after reboot with the following command:
 
-# sysctl -w net.ipv4.ip_forward=0
-
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+# systemctl enable sshd ln -s '/usr/lib/systemd/system/sshd.service' '/etc/systemd/system/multi-user.target.wants/sshd.service'
 FIX_TEXT
 }
 
@@ -208,11 +212,21 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-002418
+The information system protects the confidentiality and/or integrity of transmitted information.
+NIST SP 800-53 Revision 4 :: SC-8
+
+CCI-002420
+The information system maintains the confidentiality and/or integrity of information during preparation for transmission.
+NIST SP 800-53 Revision 4 :: SC-8 (2)
+
+CCI-002421
+The information system implements cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by organization-defined alternative physical safeguards.
+NIST SP 800-53 Revision 4 :: SC-8 (1)
+
+CCI-002422
+The information system maintains the confidentiality and/or integrity of information during reception.
+NIST SP 800-53 Revision 4 :: SC-8 (2)
 
 
 CCI
@@ -226,18 +240,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::040310> – C<RHEL-07-040310> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::040310> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::040310;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::040310->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +271,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-040310> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::040310->new();
 
 The plugin object constructor.
 

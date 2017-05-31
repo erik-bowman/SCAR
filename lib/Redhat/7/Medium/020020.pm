@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::020020;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-71971';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000324-GPOS-00125';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86595r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-020020';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The operating system must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.';
 }
 
 =for comment
@@ -158,7 +158,9 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.
+
+Privileged functions include, for example, establishing accounts, performing system integrity checks, or administering cryptographic key management activities. Non-privileged users are individuals who do not possess appropriate authorizations. Circumventing intrusion detection and prevention mechanisms or malicious code protection mechanisms are examples of privileged functions that require protection from non-privileged users.
 DISCUSSION
 }
 
@@ -170,15 +172,24 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the operating system prevents non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
 
-$ sysctl net.ipv4.ip_forward
+Get a list of authorized users (other than System Administrator and guest accounts) for the system.
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Check the list against the system by using the following command:
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# semanage login -l | more
+Login Name  SELinux User   MLS/MCS Range  Service
+__default__  user_u    s0-s0:c0.c1023   *
+root   unconfined_u   s0-s0:c0.c1023   *
+system_u  system_u   s0-s0:c0.c1023   *
+joe  staff_u   s0-s0:c0.c1023   *
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+All administrators must be mapped to the "sysadm_u" or "staff_u" users with the appropriate domains (sysadm_t and staff_t).
+
+All authorized non-administrative users must be mapped to the "user_u" role or the appropriate domain (user_t).
+
+If they are not mapped in this way, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +201,31 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
 
-# sysctl -w net.ipv4.ip_forward=0
+Use the following command to map a new user to the "sysdam_u" role: 
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+#semanage login -a -s sysadm_u <username>
 
-net.ipv4.ip_forward = 0
+Use the following command to map an existing user to the "sysdam_u" role:
+
+#semanage login -m -s sysadm_u <username>
+
+Use the following command to map a new user to the "staff_u" role:
+
+#semanage login -a -s staff_u <username>
+
+Use the following command to map an existing user to the "staff_u" role:
+
+#semanage login -m -s staff_u <username>
+
+Use the following command to map a new user to the "user_u" role:
+
+# semanage login -a -s user_u <username>
+
+Use the following command to map an existing user to the "user_u" role:
+
+# semanage login -m -s user_u <username>
 FIX_TEXT
 }
 
@@ -208,11 +237,13 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-002165
+The information system enforces organization-defined discretionary access control policies over defined subjects and objects.
+NIST SP 800-53 Revision 4 :: AC-3 (4)
+
+CCI-002235
+The information system prevents non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+NIST SP 800-53 Revision 4 :: AC-6 (10)
 
 
 CCI
@@ -226,18 +257,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::020020> – C<RHEL-07-020020> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::020020> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::020020;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::020020->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +288,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-020020> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::020020->new();
 
 The plugin object constructor.
 

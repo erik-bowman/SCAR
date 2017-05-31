@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::010500;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-71965';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000104-GPOS-00051';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86589r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-010500';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.';
 }
 
 =for comment
@@ -158,7 +158,17 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
+
+Organizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following:
+
+1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; 
+
+and
+
+2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.
+
+Satisfies: SRG-OS-000104-GPOS-00051, SRG-OS-000106-GPOS-00053, SRG-OS-000107-GPOS-00054, SRG-OS-000109-GPOS-00056, SRG-OS-000108-GPOS-00055, SRG-OS-000108-GPOS-00057, SRG-OS-000108-GPOS-00058
 DISCUSSION
 }
 
@@ -170,15 +180,15 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the operating system requires multifactor authentication to uniquely identify organizational users using multifactor authentication.
 
-$ sysctl net.ipv4.ip_forward
+Check to see if smartcard authentication is enforced on the system:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# authconfig --test | grep -i smartcard
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+The entry for use only smartcard for logon may be enabled, and the smartcard module and smartcard removal actions must not be blank.
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If smartcard authentication is disabled or the smartcard and smartcard removal actions are blank, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +200,18 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to require individuals to be authenticated with a multifactor authenticator.
 
-# sysctl -w net.ipv4.ip_forward=0
+Enable smartcard logons with the following commands:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+# authconfig --enablesmartcard --smartcardaction=1 --update
+# authconfig --enablerequiresmartcard -update
 
-net.ipv4.ip_forward = 0
+Modify the "/etc/pam_pkcs11/pkcs11_eventmgr.conf" file to uncomment the following line:
+
+#/usr/X11R6/bin/xscreensaver-command -lock
+
+Modify the "/etc/pam_pkcs11/pam_pkcs11.conf" file to use the cackey module if required.
 FIX_TEXT
 }
 
@@ -208,11 +223,11 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000766
+The information system implements multifactor authentication for network access to non-privileged accounts.
+NIST SP 800-53 :: IA-2 (2)
+NIST SP 800-53A :: IA-2 (2).1
+NIST SP 800-53 Revision 4 :: IA-2 (2)
 
 
 CCI
@@ -226,18 +241,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::010500> – C<RHEL-07-010500> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::010500> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::010500;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::010500->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +272,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-010500> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::010500->new();
 
 The plugin object constructor.
 

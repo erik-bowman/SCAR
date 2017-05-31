@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000073;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38593';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000228';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50394r3_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000073';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The Department of Defense (DoD) login banner must be displayed immediately prior to, or as part of, console login prompts.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+An appropriate warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers.
 DISCUSSION
 }
 
@@ -170,15 +170,15 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+To check if the system login banner is compliant, run the following command: 
 
-$ sysctl net.ipv4.ip_forward
+$ cat /etc/issue
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+Note: The full text banner must be implemented unless there are character limitations that prevent the display of the full DoD logon banner.
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If the required DoD logon banner is not displayed, this is a finding.
+
 CHECK_CONTENT
 }
 
@@ -190,13 +190,20 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+To configure the system login banner: 
 
-# sysctl -w net.ipv4.ip_forward=0
+Edit "/etc/issue". Replace the default text with a message compliant with the local site policy or a legal disclaimer. The DoD required text is either: 
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. 
+-At any time, the USG may inspect and seize data stored on this IS. 
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. 
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. 
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details." 
 
-net.ipv4.ip_forward = 0
+If the device cannot support the full DoD logon banner due to character limitations, the following text can be used:
+
+"I've read & consent to terms in IS user agreem't."
 FIX_TEXT
 }
 
@@ -208,11 +215,35 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-001384
+The information system, for publicly accessible systems, displays system use information organization-defined conditions before granting further access.
+NIST SP 800-53 :: AC-8 c
+NIST SP 800-53A :: AC-8.2 (i)
+NIST SP 800-53 Revision 4 :: AC-8 c 1
+
+CCI-001385
+The information system, for publicly accessible systems, displays references, if any, to monitoring that are consistent with privacy accommodations for such systems that generally prohibit those activities.
+NIST SP 800-53 :: AC-8 c
+NIST SP 800-53A :: AC-8.2 (ii)
+NIST SP 800-53 Revision 4 :: AC-8 c 2
+
+CCI-001386
+The information system for publicly accessible systems displays references, if any, to recording that are consistent with privacy accommodations for such systems that generally prohibit those activities.
+NIST SP 800-53 :: AC-8 c
+NIST SP 800-53A :: AC-8.2 (ii)
+NIST SP 800-53 Revision 4 :: AC-8 c 2
+
+CCI-001387
+The information system for publicly accessible systems displays references, if any, to auditing that are consistent with privacy accommodations for such systems that generally prohibit those activities.
+NIST SP 800-53 :: AC-8 c
+NIST SP 800-53A :: AC-8.2 (ii)
+NIST SP 800-53 Revision 4 :: AC-8 c 2
+
+CCI-001388
+The information system, for publicly accessible systems, includes a description of the authorized uses of the system.
+NIST SP 800-53 :: AC-8 c
+NIST SP 800-53A :: AC-8.2 (iii)
+NIST SP 800-53 Revision 4 :: AC-8 c 3
 
 
 CCI
@@ -226,18 +257,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000073> – C<RHEL-06-000073> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000073> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000073;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000073->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +288,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000073> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000073->new();
 
 The plugin object constructor.
 

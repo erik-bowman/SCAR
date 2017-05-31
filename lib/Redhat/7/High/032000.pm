@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::High::032000;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72213';
 }
 
 =for comment
@@ -106,7 +106,7 @@ Plugin Severity getter
 =cut
 
 sub get_severity {
-    return 'medium';
+    return 'high';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86837r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-032000';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'The system must use a DoD-approved virus scan program.';
 }
 
 =for comment
@@ -158,7 +157,11 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Virus scanning software can be used to protect a system from penetration from computer viruses and to limit their spread through intermediate systems.  
+
+The virus scanning software should be configured to perform scans dynamically on accessed files. If this capability is not available, the system must be configured to scan, at a minimum, all altered files on the system on a daily basis.
+
+If the system processes inbound SMTP mail, the virus scanner must be configured to scan all received mail.
 DISCUSSION
 }
 
@@ -170,15 +173,26 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the system is using a DoD-approved virus scan program.
 
-$ sysctl net.ipv4.ip_forward
+Check for the presence of "McAfee VirusScan Enterprise for Linux" with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# systemctl status nails
+nails - service for McAfee VirusScan Enterprise for Linux 
+>  Loaded: loaded /opt/NAI/package/McAfeeVSEForLinux/McAfeeVSEForLinux-2.0.2.<build_number>; enabled)
+>  Active: active (running) since Mon 2015-09-27 04:11:22 UTC;21 min ago
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+If the "nails" service is not active, check for the presence of "clamav" on the system with the following command:
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# systemctl status clamav-daemon.socket
+ systemctl status clamav-daemon.socket
+  clamav-daemon.socket - Socket for Clam AntiVirus userspace daemon
+     Loaded: loaded (/lib/systemd/system/clamav-daemon.socket; enabled)
+     Active: active (running) since Mon 2015-01-12 09:32:59 UTC; 7min ago
+
+If neither of these applications are loaded and active, ask the System Administrator if there is an antivirus package installed and active on the system. 
+
+If no antivirus scan program is active on the system, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +204,7 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
-
-# sysctl -w net.ipv4.ip_forward=0
-
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+Install an approved DoD antivirus solution on the system.
 FIX_TEXT
 }
 
@@ -208,11 +216,10 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-001668
+The organization employs malicious code protection mechanisms at workstations, servers, or mobile computing devices on the network to detect and eradicate malicious code transported by electronic mail, electronic mail attachments, web accesses, removable media, or other common means or inserted through the exploitation of information system vulnerabilities.
+NIST SP 800-53 :: SI-3 a
+NIST SP 800-53A :: SI-3.1 (ii)
 
 
 CCI
@@ -226,18 +233,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::High::032000> – C<RHEL-07-032000> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::High::032000> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::High::032000;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::High::032000->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +264,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-032000> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::High::032000->new();
 
 The plugin object constructor.
 

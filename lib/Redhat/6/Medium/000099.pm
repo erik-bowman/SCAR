@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::6::Medium::000099;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-38548';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-50349r3_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-06-000099';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'The system must ignore ICMPv6 redirects by default.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+An illicit ICMP redirect message could result in a man-in-the-middle attack.
 DISCUSSION
 }
 
@@ -170,15 +169,17 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+If IPv6 is disabled, this is not applicable.
 
-$ sysctl net.ipv4.ip_forward
+The status of the "net.ipv6.conf.default.accept_redirects" kernel parameter can be queried by running the following command:
+
+$ sysctl net.ipv6.conf.default.accept_redirects
 
 The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+$ grep net.ipv6.conf.default.accept_redirects /etc/sysctl.conf
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If the correct value is not returned, this is a finding. 
 CHECK_CONTENT
 }
 
@@ -190,13 +191,13 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+To set the runtime status of the "net.ipv6.conf.default.accept_redirects" kernel parameter, run the following command: 
 
-# sysctl -w net.ipv4.ip_forward=0
+# sysctl -w net.ipv6.conf.default.accept_redirects=0
 
 If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
 
-net.ipv4.ip_forward = 0
+net.ipv6.conf.default.accept_redirects = 0
 FIX_TEXT
 }
 
@@ -226,18 +227,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::6::Medium::000099> – C<RHEL-06-000099> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::6::Medium::000099> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::6::Medium::000099;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::6::Medium::000099->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +258,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-06-000099> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::6::Medium::000099->new();
 
 The plugin object constructor.
 

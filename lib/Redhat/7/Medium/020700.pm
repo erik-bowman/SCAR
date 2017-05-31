@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::020700;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72031';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86655r2_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-020700';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'Local initialization files for local interactive users must be group-owned by the users primary group or root.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Local initialization files for interactive users are used to configure the user's shell environment upon logon. Malicious modification of these files could compromise accounts upon logon.
 DISCUSSION
 }
 
@@ -170,15 +170,28 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the local initialization files of all local interactive users are group-owned by that users primary Group Identifier (GID).
 
-$ sysctl net.ipv4.ip_forward
+Check the home directory assignment for all non-privileged users on the system with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Note: The example will be for the smithj user, who has a home directory of "/home/smithj" and a primary group of "users".
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# cut -d: -f 1,4,6 /etc/passwd | egrep ":[1-4][0-9]{3}"
+smithj:1000:/home/smithj
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# grep 1000 /etc/group
+users:x:1000:smithj,jonesj,jacksons 
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+Check the group owner of all local interactive users initialization files with the following command:
+
+# ls -al /home/smithj/.*
+-rwxr-xr-x  1 smithj users        896 Mar 10  2011 .profile
+-rwxr-xr-x  1 smithj users        497 Jan  6  2007 .login
+-rwxr-xr-x  1 smithj users        886 Jan  6  2007 .something
+
+If all local interactive users initialization files are not group-owned by that users primary GID, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +203,11 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Change the group owner of a local interactive users files to the group found in "/etc/passwd" for the user. To change the group owner of a local interactive user home directory, use the following command:
 
-# sysctl -w net.ipv4.ip_forward=0
+Note: The example will be for the user smithj, who has a home directory of "/home/smithj", and has a primary group of users.
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+# chgrp users /home/smithj/<file>
 FIX_TEXT
 }
 
@@ -226,18 +237,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::020700> – C<RHEL-07-020700> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::020700> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::020700;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::020700->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +268,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-020700> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::020700->new();
 
 The plugin object constructor.
 

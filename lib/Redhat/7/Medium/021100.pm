@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::021100;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72051';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86675r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-021100';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'Cron logging must be implemented.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.
 DISCUSSION
 }
 
@@ -170,15 +169,26 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify that "rsyslog" is configured to log cron events.
 
-$ sysctl net.ipv4.ip_forward
+Check the configuration of "/etc/rsyslog.conf" for the cron facility with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Note: If another logging package is used, substitute the utility configuration file for "/etc/rsyslog.conf". 
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# grep cron /etc/rsyslog.conf
+cron.* /var/log/cron.log
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If the command does not return a response, check for cron logging all facilities by inspecting the "/etc/rsyslog.conf" file:
+
+# more /etc/rsyslog.conf
+
+Look for the following entry:
+
+*.* /var/log/messages
+
+If "rsyslog" is not logging messages for the cron facility or all facilities, this is a finding.  
+
+If the entry is in the "/etc/rsyslog.conf" file but is after the entry "*.*", this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +200,13 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure "rsyslog" to log all cron messages by adding or updating the following line to "/etc/rsyslog.conf":
 
-# sysctl -w net.ipv4.ip_forward=0
+cron.* /var/log/cron.log
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+Note: The line must be added before the following entry if it exists in "/etc/rsyslog.conf":
 
-net.ipv4.ip_forward = 0
+*.* ~ # discards everything
 FIX_TEXT
 }
 
@@ -226,18 +236,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::021100> – C<RHEL-07-021100> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::021100> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::021100;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::021100->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +267,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-021100> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::021100->new();
 
 The plugin object constructor.
 

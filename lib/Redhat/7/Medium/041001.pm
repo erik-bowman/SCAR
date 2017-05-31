@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::041001;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72417';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000375-GPOS-00160';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-87041r2_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-041001';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The operating system must have the required packages for multifactor authentication installed.';
 }
 
 =for comment
@@ -158,7 +158,19 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Using an authentication device, such as a CAC or token that is separate from the information system, ensures that even if the information system is compromised, that compromise will not affect credentials stored on the authentication device.
+
+Multifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification card and the DoD Common Access Card.
+
+A privileged account is defined as an information system account with authorizations of a privileged user.
+
+Remote access is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+
+This requirement only applies to components where this is specific to the function of the device or has the concept of an organizational user (e.g., VPN, proxy capability). This does not apply to authentication for the purpose of configuring the device itself (management).
+
+Requires further clarification from NIST.
+
+Satisfies: SRG-OS-000375-GPOS-00160, SRG-OS-000375-GPOS-00161, SRG-OS-000375-GPOS-00162
 DISCUSSION
 }
 
@@ -170,15 +182,20 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the operating system has the packages required for multifactor authentication installed.
 
-$ sysctl net.ipv4.ip_forward
+Check for the presence of the packages required to support multifactor authentication with the following commands:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# yum list installed esc
+esc-1.1.0-26.el7.noarch.rpm
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# yum list installed pam_pkcs11
+pam_pkcs11-0.6.2-14.el7.noarch.rpm
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# yum list installed authconfig-gtk
+authconfig-gtk-6.1.12-19.el7.noarch.rpm
+
+If the "esc", "pam_pkcs11", and "authconfig-gtk" packages are not installed, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +207,11 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to implement multifactor authentication by installing the required packages.
 
-# sysctl -w net.ipv4.ip_forward=0
+Install the "esc", "pam_pkcs11", "authconfig", and "authconfig-gtk" packages on the system with the following command:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+# yum install esc pam_pkcs11 authconfig-gtk
 FIX_TEXT
 }
 
@@ -208,11 +223,17 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-001948
+The information system implements multifactor authentication for remote access to privileged accounts such that one of the factors is provided by a device separate from the system gaining access.
+NIST SP 800-53 Revision 4 :: IA-2 (11)
+
+CCI-001953
+The information system accepts Personal Identity Verification (PIV) credentials.
+NIST SP 800-53 Revision 4 :: IA-2 (12)
+
+CCI-001954
+The information system electronically verifies Personal Identity Verification (PIV) credentials.
+NIST SP 800-53 Revision 4 :: IA-2 (12)
 
 
 CCI
@@ -226,18 +247,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::041001> – C<RHEL-07-041001> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::041001> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::041001;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::041001->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +278,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-041001> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::041001->new();
 
 The plugin object constructor.
 

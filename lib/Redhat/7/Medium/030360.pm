@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::030360;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72095';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000327-GPOS-00127';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86719r2_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-030360';
 }
 
 =for comment
@@ -146,8 +146,7 @@ Plugin Rule Title getter
 =cut
 
 sub get_rule_title {
-    return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+    return 'All privileged function executions must be audited.';
 }
 
 =for comment
@@ -158,7 +157,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.
 DISCUSSION
 }
 
@@ -170,15 +169,19 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the operating system audits the execution of privileged functions.
 
-$ sysctl net.ipv4.ip_forward
+To find relevant setuid and setgid programs, use the following command once for each local partition [PART]:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# find [PART] -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+Run the following command to verify entries in the audit rules for all programs found with the previous command:
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# grep <suid_prog_with_full_path> -a always,exit -F <suid_prog_with_full_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -k setuid/setgid
+
+All "setuid" and "setgid" files on the system must have a corresponding audit rule, or must have an audit rule for the (sub) directory that contains the "setuid"/"setgid" file.
+
+If all "setuid"/"setgid" files on the system do not have audit rule coverage, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +193,15 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to audit the execution of privileged functions.
 
-# sysctl -w net.ipv4.ip_forward=0
+To find the relevant "setuid"/"setgid" programs, run the following command for each local partition [PART]:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+# find [PART] -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null
 
-net.ipv4.ip_forward = 0
+For each "setuid"/"setgid" program on the system, which is not covered by an audit rule for a (sub) directory (such as "/usr/sbin"), add a line of the following form to "/etc/audit/audit.rules", where <suid_prog_with_full_path> is the full path to each "setuid"/"setgid" program in the list:
+
+-a always,exit -F <suid_prog_with_full_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -k setuid/setgid
 FIX_TEXT
 }
 
@@ -208,11 +213,9 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-002234
+The information system audits the execution of privileged functions.
+NIST SP 800-53 Revision 4 :: AC-6 (9)
 
 
 CCI
@@ -226,18 +229,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::030360> – C<RHEL-07-030360> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::030360> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::030360;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::030360->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +260,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-030360> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::030360->new();
 
 The plugin object constructor.
 

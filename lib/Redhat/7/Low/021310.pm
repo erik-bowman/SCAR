@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Low::021310;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72059';
 }
 
 =for comment
@@ -106,7 +106,7 @@ Plugin Severity getter
 =cut
 
 sub get_severity {
-    return 'medium';
+    return 'low';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86683r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-021310';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'A separate file system must be used for user home directories (such as /home or an equivalent).';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+The use of separate file systems for different paths can protect the system from failures resulting from a file system becoming full or failing.
 DISCUSSION
 }
 
@@ -170,15 +170,26 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify that a separate file system/partition has been created for non-privileged local interactive user home directories.
 
-$ sysctl net.ipv4.ip_forward
+Check the home directory assignment for all non-privileged users (those with a UID greater than 1000) on the system with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+#cut -d: -f 1,3,6,7 /etc/passwd | egrep ":[1-4][0-9]{3}" | tr ":" "\t"
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+adamsj /home/adamsj /bin/bash
+jacksonm /home/jacksonm /bin/bash
+smithj /home/smithj /bin/bash
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+The output of the command will give the directory/partition that contains the home directories for the non-privileged users on the system (in this example, /home) and users shell. All accounts with a valid shell (such as /bin/bash) are considered interactive users.
+
+Check that a file system/partition has been created for the non-privileged interactive users with the following command:
+
+Note: The partition of /home is used in the example.
+
+# grep /home /etc/fstab
+UUID=333ada18    /home                   ext4    noatime,nobarrier,nodev  1 2
+
+If a separate entry for the file system/partition that contains the non-privileged interactive users' home directories does not exist, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +201,7 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
-
-# sysctl -w net.ipv4.ip_forward=0
-
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+Migrate the "/home" directory onto a separate file system/partition.
 FIX_TEXT
 }
 
@@ -226,18 +231,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Low::021310> – C<RHEL-07-021310> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Low::021310> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Low::021310;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Low::021310->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +262,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-021310> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Low::021310->new();
 
 The plugin object constructor.
 

@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Low::040600;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72281';
 }
 
 =for comment
@@ -106,7 +106,7 @@ Plugin Severity getter
 =cut
 
 sub get_severity {
-    return 'medium';
+    return 'low';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86905r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-040600';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'For systems using DNS resolution, at least two name servers must be configured.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.
 DISCUSSION
 }
 
@@ -170,15 +170,29 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Determine whether the system is using local or DNS name resolution with the following command:
 
-$ sysctl net.ipv4.ip_forward
+# grep hosts /etc/nsswitch.conf
+hosts:   files dns
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+If the DNS entry is missing from the hosts line in the "/etc/nsswitch.conf" file, the "/etc/resolv.conf" file must be empty.
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+Verify the "/etc/resolv.conf" file is empty with the following command:
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# ls -al /etc/resolv.conf
+-rw-r--r--  1 root root        0 Aug 19 08:31 resolv.conf
+
+If local host authentication is being used and the "/etc/resolv.conf" file is not empty, this is a finding.
+
+If the DNS entry is found on the hosts line of the "/etc/nsswitch.conf" file, verify the operating system is configured to use two or more name servers for DNS resolution.
+
+Determine the name servers used by the system with the following command:
+
+# grep nameserver /etc/resolv.conf
+nameserver 192.168.1.2
+nameserver 192.168.1.3
+
+If less than two lines are returned that are not commented out, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +204,17 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to use two or more name servers for DNS resolution.
 
-# sysctl -w net.ipv4.ip_forward=0
+Edit the "/etc/resolv.conf" file to uncomment or add the two or more "nameserver" option lines with the IP address of local authoritative name servers. If local host resolution is being performed, the "/etc/resolv.conf" file must be empty. An empty "/etc/resolv.conf" file can be created as follows:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+# echo -n > /etc/resolv.conf
 
-net.ipv4.ip_forward = 0
+And then make the file immutable with the following command:
+
+# chattr +i /etc/resolv.conf
+
+If the "/etc/resolv.conf" file must be mutable, the required configuration must be documented with the Information System Security Officer (ISSO) and the file must be verified by the system file integrity tool.
 FIX_TEXT
 }
 
@@ -226,18 +244,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Low::040600> – C<RHEL-07-040600> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Low::040600> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Low::040600;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Low::040600->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +275,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-040600> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Low::040600->new();
 
 The plugin object constructor.
 

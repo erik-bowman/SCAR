@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::030010;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72081';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000046-GPOS-00022';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86705r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-030010';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The operating system must shut down upon audit processing failure, unless availability is an overriding concern. If availability is a concern, the system must alert the designated staff (System Administrator [SA] and Information System Security Officer [ISSO] at a minimum) in the event of an audit processing failure.';
 }
 
 =for comment
@@ -158,7 +158,13 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.
+
+Audit processing failures include software/hardware errors, failures in the audit capturing mechanisms, and audit storage capacity being reached or exceeded.
+
+This requirement applies to each audit data storage repository (i.e., distinct information system component where audit records are stored), the centralized audit storage capacity of organizations (i.e., all audit data storage repositories combined), or both.
+
+Satisfies: SRG-OS-000046-GPOS-00022, SRG-OS-000047-GPOS-00023
 DISCUSSION
 }
 
@@ -170,15 +176,22 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Confirm the audit configuration regarding how auditing processing failures are handled.
 
-$ sysctl net.ipv4.ip_forward
+Check to see what level "auditctl" is set to with following command: 
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# auditctl -l | grep /-f
+ -f 2
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+If the value of "-f" is set to "2", the system is configured to panic (shut down) in the event of an auditing failure.
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If the value of "-f" is set to "1", the system is configured to only send information to the kernel log regarding the failure.
+
+If the "-f" flag is not set, this is a CAT I finding.
+
+If the "-f" flag is set to any value other than "1" or "2", this is a CAT II finding.
+
+If the "-f" flag is set to "1" but the availability concern is not documented or there is no monitoring of the kernel log, this is a CAT III finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +203,19 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Configure the operating system to shut down in the event of an audit processing failure.
 
-# sysctl -w net.ipv4.ip_forward=0
+Add or correct the option to shut down the operating system with the following command:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+# auditctl -f 2
 
-net.ipv4.ip_forward = 0
+If availability has been determined to be more important, and this decision is documented with the ISSO, configure the operating system to notify system administration staff and ISSO staff in the event of an audit processing failure with the following command:
+
+# auditctl -f 1
+
+Kernel log monitoring must also be configured to properly alert designated staff.
+
+The audit daemon must be restarted for the changes to take effect.
 FIX_TEXT
 }
 
@@ -208,11 +227,11 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000139
+The information system alerts designated organization-defined personnel or roles in the event of an audit processing failure.
+NIST SP 800-53 :: AU-5 a
+NIST SP 800-53A :: AU-5.1 (ii)
+NIST SP 800-53 Revision 4 :: AU-5 a
 
 
 CCI
@@ -226,18 +245,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::030010> – C<RHEL-07-030010> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::030010> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::030010;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::030010->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +276,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-030010> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::030010->new();
 
 The plugin object constructor.
 

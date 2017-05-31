@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::021040;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72049';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86673r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-021040';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The umask must be set to 077 for all local interactive user accounts.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+The umask controls the default access mode assigned to newly created files. A umask of 077 limits new files to mode 700 or less permissive. Although umask can be represented as a four-digit number, the first digit representing special access modes is typically ignored or required to be "0". This requirement applies to the globally configured system defaults and the local interactive user defaults for each account on the system.
 DISCUSSION
 }
 
@@ -170,15 +170,17 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify that the default umask for all local interactive users is "077".
 
-$ sysctl net.ipv4.ip_forward
+Identify the locations of all local interactive user home directories by looking at the "/etc/passwd" file.
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Check all local interactive user initialization files for interactive users with the following command:
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+Note: The example is for a system that is configured to create users home directories in the "/home" directory.
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# grep -i umask /home/*/.*
+
+If any local interactive user initialization files are found to have a umask statement that has a value less restrictive than "077", this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +192,9 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Remove the umask statement from all local interactive users initialization files. 
 
-# sysctl -w net.ipv4.ip_forward=0
-
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+If the account is for an application, the requirement for a umask less restrictive than "077" can be documented with the Information System Security Officer, but the user agreement for access to the account must specify that the local interactive user must log on to their account first and then switch the user to the application account with the correct option to gain the accounts environment variables.
 FIX_TEXT
 }
 
@@ -208,11 +206,29 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000318
+The organization audits and reviews activities associated with configuration controlled changes to the system.
+NIST SP 800-53 :: CM-3 e
+NIST SP 800-53A :: CM-3.1 (v)
+NIST SP 800-53 Revision 4 :: CM-3 f
+
+CCI-000368
+The organization documents any deviations from the established configuration settings for organization-defined information system components based on organization-defined operational requirements.
+NIST SP 800-53 :: CM-6 c
+NIST SP 800-53A :: CM-6.1 (v)
+NIST SP 800-53 Revision 4 :: CM-6 c
+
+CCI-001812
+The information system prohibits user installation of software without explicit privileged status.
+NIST SP 800-53 Revision 4 :: CM-11 (2)
+
+CCI-001813
+The information system enforces access restrictions.
+NIST SP 800-53 Revision 4 :: CM-5 (1)
+
+CCI-001814
+The Information system supports auditing of the enforcement actions.
+NIST SP 800-53 Revision 4 :: CM-5 (1)
 
 
 CCI
@@ -226,18 +242,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::021040> – C<RHEL-07-021040> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::021040> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::021040;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::021040->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +273,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-021040> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::021040->new();
 
 The plugin object constructor.
 

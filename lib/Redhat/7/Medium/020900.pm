@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::020900;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72039';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86663r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-020900';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'All system device files must be correctly labeled to prevent unauthorized modification.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+If an unauthorized or modified device is allowed to exist on the system, there is the possibility the system may perform unintended or unauthorized operations.
 DISCUSSION
 }
 
@@ -170,15 +170,19 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify that all system device files are correctly labeled to prevent unauthorized modification.
 
-$ sysctl net.ipv4.ip_forward
+List all device files on the system that are incorrectly labeled with the following commands:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Note: Device files are normally found under "/dev", but applications may place device files in other directories and may necessitate a search of the entire system.
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+#find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+#find /dev -context *:unlabeled_t:* \( -type c -o -type b \) -printf "%p %Z\n"
+
+Note: There are device files, such as "/dev/vmci", that are used when the operating system is a host virtual machine. They will not be owned by a user on the system and require the "device_t" label to operate. These device files are not a finding.
+
+If there is output from either of these commands, other than already noted, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +194,17 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Run the following command to determine which package owns the device file:
 
-# sysctl -w net.ipv4.ip_forward=0
+# rpm -qf <filename>
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+The package can be reinstalled from a yum repository using the command:
 
-net.ipv4.ip_forward = 0
+# sudo yum reinstall <packagename>
+
+Alternatively, the package can be reinstalled from trusted media using the command:
+
+# sudo rpm -Uvh <packagename>
 FIX_TEXT
 }
 
@@ -208,11 +216,29 @@ Plugin CCI getter
 
 sub get_cci {
     return <<'CCI';
-CCI-000366
-The organization implements the security configuration settings.
-NIST SP 800-53 :: CM-6 b
-NIST SP 800-53A :: CM-6.1 (iv)
-NIST SP 800-53 Revision 4 :: CM-6 b
+CCI-000318
+The organization audits and reviews activities associated with configuration controlled changes to the system.
+NIST SP 800-53 :: CM-3 e
+NIST SP 800-53A :: CM-3.1 (v)
+NIST SP 800-53 Revision 4 :: CM-3 f
+
+CCI-000368
+The organization documents any deviations from the established configuration settings for organization-defined information system components based on organization-defined operational requirements.
+NIST SP 800-53 :: CM-6 c
+NIST SP 800-53A :: CM-6.1 (v)
+NIST SP 800-53 Revision 4 :: CM-6 c
+
+CCI-001812
+The information system prohibits user installation of software without explicit privileged status.
+NIST SP 800-53 Revision 4 :: CM-11 (2)
+
+CCI-001813
+The information system enforces access restrictions.
+NIST SP 800-53 Revision 4 :: CM-5 (1)
+
+CCI-001814
+The Information system supports auditing of the enforcement actions.
+NIST SP 800-53 Revision 4 :: CM-5 (1)
 
 
 CCI
@@ -226,18 +252,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::020900> – C<RHEL-07-020900> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::020900> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::020900;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::020900->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +283,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-020900> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::020900->new();
 
 The plugin object constructor.
 

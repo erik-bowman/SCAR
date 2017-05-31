@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::020680;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72027';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86651r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-020680';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'All files and directories contained in local interactive user home directories must have mode 0750 or less permissive.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+If a local interactive user files have excessive permissions, unintended users may be able to access or modify them.
 DISCUSSION
 }
 
@@ -170,15 +170,20 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify all files and directories contained in a local interactive user home directory, excluding local initialization files, have a mode of "0750".
 
-$ sysctl net.ipv4.ip_forward
+Check the mode of all non-initialization files in a local interactive user home directory with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Files that begin with a "." are excluded from this requirement.
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+# ls -lLR /home/smithj
+-rwxr-x--- 1 smithj smithj  18 Mar  5 17:06 file1
+-rwxr----- 1 smithj smithj 193 Mar  5 17:06 file2
+-rw-r-x--- 1 smithj smithj 231 Mar  5 17:06 file3
+
+If any files are found with a mode more permissive than "0750", this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +195,11 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Set the mode on files and directories in the local interactive user home directory with the following command:
 
-# sysctl -w net.ipv4.ip_forward=0
+Note: The example will be for the user smithj, who has a home directory of "/home/smithj" and is a member of the users group.
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+# chmod 0750 /home/smithj/<file>
 FIX_TEXT
 }
 
@@ -226,18 +229,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::020680> – C<RHEL-07-020680> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::020680> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::020680;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::020680->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +260,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-020680> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::020680->new();
 
 The plugin object constructor.
 

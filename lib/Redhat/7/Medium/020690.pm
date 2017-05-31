@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::020690;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72029';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86653r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-020690';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'All local initialization files for interactive users must be owned by the home directory user or root.';
 }
 
 =for comment
@@ -158,7 +158,7 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Local initialization files are used to configure the user's shell environment upon logon. Malicious modification of these files could compromise accounts upon logon.
 DISCUSSION
 }
 
@@ -170,15 +170,18 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify all local initialization files for interactive users are owned by the home directory user or root.
 
-$ sysctl net.ipv4.ip_forward
+Check the owner on all local initialization files with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+Note: The example will be for the "smithj" user, who has a home directory of "/home/smithj".
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+# ls -al /home/smithj/.* | more
+-rwxr-xr-x  1 smithj users        896 Mar 10  2011 .bash_profile
+-rwxr-xr-x  1 smithj users        497 Jan  6  2007 .login
+-rwxr-xr-x  1 smithj users        886 Jan  6  2007 .profile
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If any file that sets a local interactive users environment variables to override the system is not owned by the home directory owner or root, this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +193,11 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Set the owner of the local initialization files for interactive users to either the directory owner or root with the following command:
 
-# sysctl -w net.ipv4.ip_forward=0
+Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
-
-net.ipv4.ip_forward = 0
+# chown smithj /home/smithj/.*
 FIX_TEXT
 }
 
@@ -226,18 +227,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::020690> – C<RHEL-07-020690> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::020690> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::020690;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::020690->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +258,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-020690> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::020690->new();
 
 The plugin object constructor.
 

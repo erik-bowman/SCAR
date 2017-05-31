@@ -1,4 +1,4 @@
-package Redhat::6::Medium::000082;
+package Redhat::7::Medium::040520;
 
 =for comment
 
@@ -96,7 +96,7 @@ Plugin Vuln ID getter
 =cut
 
 sub get_vuln_id {
-    return 'V-38511';
+    return 'V-72273';
 }
 
 =for comment
@@ -116,7 +116,7 @@ Plugin Group Title getter
 =cut
 
 sub get_group_title {
-    return 'SRG-OS-999999';
+    return 'SRG-OS-000480-GPOS-00227';
 }
 
 =for comment
@@ -126,7 +126,7 @@ Plugin Rule ID getter
 =cut
 
 sub get_rule_id {
-    return 'SV-50312r2_rule';
+    return 'SV-86897r1_rule';
 }
 
 =for comment
@@ -136,7 +136,7 @@ Plugin STIG ID getter
 =cut
 
 sub get_stig_id {
-    return 'RHEL-06-000082';
+    return 'RHEL-07-040520';
 }
 
 =for comment
@@ -147,7 +147,7 @@ Plugin Rule Title getter
 
 sub get_rule_title {
     return
-        'IP forwarding for IPv4 must not be enabled, unless the system is a router.';
+        'The operating system must enable an application firewall, if available.';
 }
 
 =for comment
@@ -158,7 +158,9 @@ Plugin Discussion getter
 
 sub get_discussion {
     return <<'DISCUSSION';
-IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.
+Firewalls protect computers from network attacks by blocking or limiting access to open network ports. Application firewalls limit which applications are allowed to communicate over the network.
+
+Satisfies: SRG-OS-000480-GPOS-00227, SRG-OS-000480-GPOS-00231, SRG-OS-000480-GPOS-00232
 DISCUSSION
 }
 
@@ -170,15 +172,33 @@ Plugin Check Content getter
 
 sub get_check_content {
     return <<'CHECK_CONTENT';
-The status of the "net.ipv4.ip_forward" kernel parameter can be queried by running the following command:
+Verify the operating system enabled an application firewall.
 
-$ sysctl net.ipv4.ip_forward
+Check to see if "firewalld" is installed with the following command:
 
-The output of the command should indicate a value of "0". If this value is not the default value, investigate how it could have been adjusted at runtime, and verify it is not set improperly in "/etc/sysctl.conf".
+# yum list installed firewalld
+firewalld-0.3.9-11.el7.noarch.rpm
 
-$ grep net.ipv4.ip_forward /etc/sysctl.conf
+If the "firewalld" package is not installed, ask the System Administrator if another firewall application (such as iptables) is installed. 
 
-The ability to forward packets is only appropriate for routers. If the correct value is not returned, this is a finding. 
+If an application firewall is not installed, this is a finding. 
+
+Check to see if the firewall is loaded and active with the following command:
+
+# systemctl status firewalld
+firewalld.service - firewalld - dynamic firewall daemon
+
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: active (running) since Tue 2014-06-17 11:14:49 CEST; 5 days ago
+
+If "firewalld" does not show a status of "loaded" and "active", this is a finding. 
+
+Check the state of the firewall:
+
+# firewall-cmd --state 
+running
+
+If "firewalld" does not show a state of "running", this is a finding.
 CHECK_CONTENT
 }
 
@@ -190,13 +210,15 @@ Plugin Fix Text getter
 
 sub get_fix_text {
     return <<'FIX_TEXT';
-To set the runtime status of the "net.ipv4.ip_forward" kernel parameter, run the following command: 
+Ensure the operating system's application firewall is enabled.
 
-# sysctl -w net.ipv4.ip_forward=0
+Install the "firewalld" package, if it is not on the system, with the following command:
 
-If this is not the system's default value, add the following line to "/etc/sysctl.conf": 
+# yum install firewalld
 
-net.ipv4.ip_forward = 0
+Start the firewall via "systemctl" with the following command:
+
+# systemctl start firewalld
 FIX_TEXT
 }
 
@@ -226,18 +248,18 @@ CCI
 
 =head1 NAME
 
-C<Redhat::6::Medium::000082> – C<RHEL-06-000082> Plugin
+C<Redhat::7::Medium::040520> – C<RHEL-07-040520> Plugin
 
 =head1 VERSION
 
-This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
+This documentation refers to C<Redhat::7::Medium::040520> version 1.4.0.
 
 =head1 SYNOPSIS
 
-    use Redhat::6::Medium::000082;
+    use Redhat::7::Medium::040520;
 
     # Create the plugin object
-    my $plugin              = Redhat::6::Medium::000082->new();
+    my $plugin              = Redhat::7::Medium::040520->new();
 
     # Perform checks and remediations
     my $check_result        = $plugin->check();
@@ -257,11 +279,11 @@ This documentation refers to C<Redhat::6::Medium::000082> version 1.4.0.
 
 =head1 DESCRIPTION
 
-C<RHEL-06-000082> Compliance and remediation plugin
+C<RHEL-07-040520> Compliance and remediation plugin
 
 =head1 METHODS
 
-=head2 my $plugin              = Redhat::6::Medium::000082->new();
+=head2 my $plugin              = Redhat::7::Medium::040520->new();
 
 The plugin object constructor.
 
